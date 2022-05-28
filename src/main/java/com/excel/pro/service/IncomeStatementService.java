@@ -4,6 +4,7 @@ import com.excel.pro.entity.IncomeExportEntity;
 import com.excel.pro.entity.Incomestatement;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface IncomeStatementService {
@@ -13,4 +14,5 @@ public interface IncomeStatementService {
 
     List<Incomestatement> queryMonthMoney(String catType);
 
+    Incomestatement queryMonthMoneyOther(String cartype, ArrayList<String> otherRowTitleList);
 }

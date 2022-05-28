@@ -64,7 +64,7 @@ public class ConstantUtil {
     }
 
 
-    //导出解放车过路费，需要的表头名称
+    //导出 过路费 燃油费 罚款等，需要的表头名称
     public static final String month = "月份";
     public static final String runcount = "月度运行单程数";
     public static final String sumkilo = "总里程";
@@ -80,6 +80,39 @@ public class ConstantUtil {
         toolsTitleList.add(money);
 
         return toolsTitleList;
+    }
+
+
+
+
+    //导出 毛利 表头名称
+    public static final String totalincome = "总收入";
+    public static final String tolls = "过路费";
+    public static final String fuel = "燃油费";
+    public static final String fines = "罚款";
+    public static final String parking = "停车费";
+    public static final String tire = "轮胎费";
+    public static final String repair = "维修费";
+    public static final String other = "其他";
+    public static final String totalcost = "总成本";
+
+
+    public static LinkedList makeGrossTitle() {
+        LinkedList<String> titleList = new LinkedList();
+        titleList.add(month);
+        titleList.add(runcount);
+        titleList.add(sumkilo);
+        titleList.add(totalincome);
+        titleList.add(tolls);
+        titleList.add(fuel);
+        titleList.add(fines);
+        titleList.add(parking);
+        titleList.add(tire);
+        titleList.add(repair);
+        titleList.add(other);
+        titleList.add(totalcost);
+
+        return titleList;
     }
 
 
@@ -184,6 +217,8 @@ public class ConstantUtil {
     public static final String title10 = "            大修基金";
     public static final String title11 = "       差旅费";
     public static final String title12 = "       车队其他";
+    public static final String title13 = "       伙食费";
+    public static final String title14 = "   车队成本";
 
     public static ArrayList<String> makeIncomeImportRowTitle() {
         ArrayList<String> incomeImportRowTitleList = new ArrayList<>();
@@ -200,6 +235,8 @@ public class ConstantUtil {
         incomeImportRowTitleList.add(title10);
         incomeImportRowTitleList.add(title11);
         incomeImportRowTitleList.add(title12);
+        incomeImportRowTitleList.add(title13);
+        incomeImportRowTitleList.add(title14);
 
 
         return incomeImportRowTitleList;

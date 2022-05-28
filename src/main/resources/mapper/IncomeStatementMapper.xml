@@ -21,20 +21,64 @@
         select max(CARTYPE)                                            cartype,
                columnname,
                listagg(CARID, ',') within group ( order by CARID desc) carid,
-               round(sum(THREEMONTH/10000), 2)                               threemonth,
-               round(sum(FOURMONTH/10000), 2)                                fourmonth,
-               round(sum(FIVEMONTH/10000), 2)                                fivemonth,
-               round(sum(SIXMONTH/10000), 2)                                 sixmonth,
-               round(sum(SEVENMONTH/10000), 2)                               sevenmonth,
-               round(sum(EIGHTMONTH/10000), 2)                               eightmonth,
-               round(sum(NINEMONTH/10000), 2)                                ninemonth,
-               round(sum(TENMONTH/10000), 2)                                 tenmonth,
-               round(sum(ELEVENTMONTH/10000), 2)                             eleventmonth,
-               round(sum(TWELVEMONTH/10000), 2)                              twelvemonth,
-               round(sum(ONEMONTH/10000), 2)                                 onemonth,
-               round(sum(TWOMONTH/10000), 2)                                 twomonth
+               round(sum(THREEMONTH / 10000), 2)                       threemonth,
+               round(sum(FOURMONTH / 10000), 2)                        fourmonth,
+               round(sum(FIVEMONTH / 10000), 2)                        fivemonth,
+               round(sum(SIXMONTH / 10000), 2)                         sixmonth,
+               round(sum(SEVENMONTH / 10000), 2)                       sevenmonth,
+               round(sum(EIGHTMONTH / 10000), 2)                       eightmonth,
+               round(sum(NINEMONTH / 10000), 2)                        ninemonth,
+               round(sum(TENMONTH / 10000), 2)                         tenmonth,
+               round(sum(ELEVENTMONTH / 10000), 2)                     eleventmonth,
+               round(sum(TWELVEMONTH / 10000), 2)                      twelvemonth,
+               round(sum(ONEMONTH / 10000), 2)                         onemonth,
+               round(sum(TWOMONTH / 10000), 2)                         twomonth
         from INCOMESTATEMENT I
         where I.CARTYPE = #{carType}
         group by COLUMNNAME
+    </select>
+
+
+    <select id="queryMonthMoneyOther" resultType="com.excel.pro.entity.Incomestatement">
+        select max(CARTYPE) cartype,
+        carid,
+        listagg(columnname, ',') within group ( order by columnname desc) columnname,
+        round(sum(threemonth/10000) , 2) threemonth,
+        round(sum(fourmonth/10000) , 2) fourmonth,
+        round(sum(fivemonth/10000) , 2) fivemonth,
+        round(sum(sixmonth/10000) , 2) sixmonth,
+        round(sum(sevenmonth/10000) , 2) sevenmonth,
+        round(sum(eightmonth/10000), 2) eightmonth,
+        round(sum(ninemonth/10000), 2) ninemonth,
+        round(sum(tenmonth/10000), 2) tenmonth,
+        round(sum(eleventmonth/10000), 2) eleventmonth,
+        round(sum(twelvemonth/10000), 2) twelvemonth,
+        round(sum(onemonth/10000) , 2) onemonth,
+        round(sum(twomonth/10000) , 2) twomonth
+        from (
+        select max(CARTYPE) cartype,
+        columnname,
+        listagg(CARID, ',') within group ( order by CARID desc) carid,
+        sum(THREEMONTH) threemonth,
+        sum(FOURMONTH) fourmonth,
+        sum(FIVEMONTH) fivemonth,
+        sum(SIXMONTH) sixmonth,
+        sum(SEVENMONTH) sevenmonth,
+        sum(EIGHTMONTH) eightmonth,
+        sum(NINEMONTH) ninemonth,
+        sum(TENMONTH) tenmonth,
+        sum(ELEVENTMONTH) eleventmonth,
+        sum(TWELVEMONTH) twelvemonth,
+        sum(ONEMONTH) onemonth,
+        sum(TWOMONTH) twomonth
+        from INCOMESTATEMENT I
+        where I.CARTYPE = #{carType}
+        and COLUMNNAME in
+        <foreach item="item" index="index" collection="otherRowTitleList" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        group by COLUMNNAME
+        ) a
+        group by cartype, carid
     </select>
 </mapper>

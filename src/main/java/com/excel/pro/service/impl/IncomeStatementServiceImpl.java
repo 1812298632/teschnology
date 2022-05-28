@@ -209,4 +209,9 @@ public class IncomeStatementServiceImpl implements IncomeStatementService {
     public List<Incomestatement> queryMonthMoney(String carType) {
         return incomeStatementDao.queryMonthMoney(carType);
     }
+
+    @Override
+    public Incomestatement queryMonthMoneyOther(String cartype, ArrayList<String> otherRowTitleList) {
+        return incomeStatementDao.queryMonthMoneyOther(cartype,otherRowTitleList);
+    }
 }

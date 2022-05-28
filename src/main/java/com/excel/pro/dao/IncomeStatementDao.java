@@ -5,6 +5,7 @@ import com.excel.pro.entity.IncomeExportEntity;
 import com.excel.pro.entity.Incomestatement;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface IncomeStatementDao extends BaseMapper<Incomestatement> {
@@ -12,4 +13,5 @@ public interface IncomeStatementDao extends BaseMapper<Incomestatement> {
 
     List<Incomestatement> queryMonthMoney(@Param("carType") String carType);
 
+    Incomestatement queryMonthMoneyOther(@Param("carType")String cartype, @Param("otherRowTitleList")ArrayList<String> otherRowTitleList);
 }
