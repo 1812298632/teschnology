@@ -1,13 +1,17 @@
 package com.excel.pro.service.impl;
 
-import com.excel.pro.dao.impl.DepartDetailDao;
+import com.excel.pro.dao.DepartDetailDao;
+import com.excel.pro.entity.DepartExportEntity;
 import com.excel.pro.entity.Departdetail;
 import com.excel.pro.service.DepartService;
+import com.excel.pro.util.ConstantUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,9 +23,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 @Service
 public class DepartServiceImpl implements DepartService {
+    Logger logger = LoggerFactory.getLogger(DepartServiceImpl.class);
 
     @Resource
     private DepartDetailDao departDetailDao;
@@ -47,15 +53,18 @@ public class DepartServiceImpl implements DepartService {
         }
         XSSFSheet sheet = excel.getSheet(sheetName);
 
-        ArrayList<String> columnNameList = new ArrayList<>();
         //需要保存哪些列的数据
-        columnNameList.add("派车单号");
-        columnNameList.add("起点");
-        columnNameList.add("终点");
-        columnNameList.add("起始公里数");
-        columnNameList.add("结束公里数");
-        columnNameList.add("行驶公里数");
-        columnNameList.add("序列号");
+       /* ArrayList<String> columnNameList = new ArrayList<>();
+        columnNameList.add(ConstantUtil.carnum);
+        columnNameList.add(ConstantUtil.startcity);
+        columnNameList.add(ConstantUtil.endcity);
+        columnNameList.add(ConstantUtil.startkilo);
+        columnNameList.add(ConstantUtil.endkilo);
+        columnNameList.add(ConstantUtil.kilo);
+        columnNameList.add(ConstantUtil.id);
+        columnNameList.add(ConstantUtil.number);*/
+
+        ArrayList<String> columnNameList = ConstantUtil.makeDepartColumnNameList();
 
         LinkedList<Departdetail> departDetailList = new LinkedList<>();
 
@@ -71,40 +80,70 @@ public class DepartServiceImpl implements DepartService {
                 }
             }
         }
-
         for (Row row : sheet) {
-            if(row.getRowNum()>=3){
-                String s = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(0)).toString())));
-                if(s.equals("")){
+            //获取从第四行开始的数据，第四行之前都是标题
+            if (row.getRowNum() >= 3) {
+                String s = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(7)).toString())));
+
+                //如果获取到的派单车号数据为空，结束本次循环
+                if (s.equals("")) {
                     continue;
                 }
+                //派车单号 数据
+                String carnum = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(0)).toString())));
+
+                String startcity = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(1)).toString())));
+                String endctiy = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(2)).toString())));
+
+                if (carnum.equals("")) {
+                    carnum = "ooooooooo";
+                }
+                if (startcity.equals("")) {
+                    continue;
+                }
+                if (endctiy.equals("")) {
+                    continue;
+                }
+
+
+                Cell cell1 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(6)).toString()));
+
+                double id = cell1.getNumericCellValue();
+
                 Departdetail departdetail = new Departdetail();
 
                 Cell cell = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(5)).toString()));
                 //获取excel中的实际值而不是公式
                 double numericCellValue = cell.getNumericCellValue();
 
-                Cell cell1 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(6)).toString()));
-                double id = cell1.getNumericCellValue();
 
-
-                departdetail.setCarnum(formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(0)).toString()))));
-                departdetail.setStartcity(formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(1)).toString()))));
-                departdetail.setEndcity(formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(2)).toString()))));
+                departdetail.setCarnum(carnum);
+                departdetail.setStartcity(startcity);
+                departdetail.setEndcity(endctiy);
 
                 departdetail.setStartkilo(Long.valueOf(formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(3)).toString())))));
                 departdetail.setEndkilo(Long.valueOf(formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(4)).toString())))));
-                departdetail.setKilo((long)numericCellValue);
+                departdetail.setKilo((long) numericCellValue);
                 departdetail.setSheet(sheetName);
-                departdetail.setSheetid((long)id);
+                departdetail.setSheetid((long) id);
 
-                System.out.println("正在插入"+sheetName+"序列号为"+(long)id+"的数据");
+                logger.info("正在插入" + sheetName + "序列号为" + (long) id + "的数据");
                 departDetailDao.insert(departdetail);
-                System.out.println(sheetName+"序列号为"+(long)id+"的数据插入成功");
+                logger.info(sheetName + "序列号为" + (long) id + "的数据插入成功");
 
                 departDetailList.add(departdetail);
             }
         }
 
+    }
+
+    @Override
+    public List<Departdetail> querybyid() {
+        return departDetailDao.queryByid();
+    }
+
+    @Override
+    public DepartExportEntity exportDepart(String cityname) {
+        return departDetailDao.exportDepart(cityname);
     }
 }

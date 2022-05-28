@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.excel.pro.dao.IncomeStatementDao">
+    <select id="exportIncome" resultType="com.excel.pro.entity.IncomeExportEntity">
+        select *
+        from (
+                 select SHEET,
+                        to_number(substr(SHEET, 4))          month,
+                        sum(kilo)                            kilosum,
+                        count(SHEETID)                       runcount,
+                        round(sum(kilo) / count(SHEETID), 2) avg
+                 from DEPARTDETAIL D
+                 group by SHEET
+             ) a
+        order by month
+    </select>
+
+    <select id="queryMonthMoney" resultType="com.excel.pro.entity.Incomestatement">
+        select max(CARTYPE)                                            cartype,
+               columnname,
+               listagg(CARID, ',') within group ( order by CARID desc) carid,
+               round(sum(THREEMONTH/10000), 2)                               threemonth,
+               round(sum(FOURMONTH/10000), 2)                                fourmonth,
+               round(sum(FIVEMONTH/10000), 2)                                fivemonth,
+               round(sum(SIXMONTH/10000), 2)                                 sixmonth,
+               round(sum(SEVENMONTH/10000), 2)                               sevenmonth,
+               round(sum(EIGHTMONTH/10000), 2)                               eightmonth,
+               round(sum(NINEMONTH/10000), 2)                                ninemonth,
+               round(sum(TENMONTH/10000), 2)                                 tenmonth,
+               round(sum(ELEVENTMONTH/10000), 2)                             eleventmonth,
+               round(sum(TWELVEMONTH/10000), 2)                              twelvemonth,
+               round(sum(ONEMONTH/10000), 2)                                 onemonth,
+               round(sum(TWOMONTH/10000), 2)                                 twomonth
+        from INCOMESTATEMENT I
+        where I.CARTYPE = #{carType}
+        group by COLUMNNAME
+    </select>
+</mapper>
