@@ -128,6 +128,13 @@
             </exclusions>
         </dependency>
 
+        <!-- 标准Java库无法提供足够的方法来处理其核心类。Apache Commons Lang提供了这些额外的方法。-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.7</version>
+        </dependency>
+
     </dependencies>
 
     <build>

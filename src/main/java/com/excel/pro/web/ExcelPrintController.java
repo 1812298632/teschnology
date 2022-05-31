@@ -12,6 +12,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -441,11 +442,10 @@ public class ExcelPrintController {
      * @return
      */
     @GetMapping("/exportIncomeParking")
-    public String exportIncomeParking() {
-
+    public String exportIncomeParking(String type) {
         List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome();
 
-        String cartype = "解放车";
+        String cartype = type;
 
         List<Incomestatement> monthMoneyList = incomeStatementService.queryMonthMoney(cartype);
 
@@ -513,7 +513,6 @@ public class ExcelPrintController {
                 }
             }
         }
-
         return "success";
     }
 
