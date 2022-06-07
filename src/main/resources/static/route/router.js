@@ -7,13 +7,18 @@ Vue.component('my-sidebar', Sidebar);
 var Tags = httpVueLoader('components/common/Tags.vue');
 Vue.component('my-tags', Tags);
 
+const first = httpVueLoader('view/system/first.vue');
+
+
+
 //路由
 const Foo = {
-    template: '<div>foo</div>'
+    template: '<div>测试foo界面</div>'
 };
 const Bar = {
-    template: '<div>bar</div>'
+    template: '<div>测试bar界面</div>'
 };
+
 const routes = [
     /*     {
             path: '/',
@@ -22,16 +27,23 @@ const routes = [
     {
         path: '/',
         component: Home,
-        meta: { title: '系统首页' },
+        meta: {title: '系统首页'},
         children: [{
             path: '/foo',
             component: Foo,
-            meta: { title: 'foo' }
+            meta: {title: 'foo'}
         },
             {
                 path: '/bar',
                 component: Bar,
-                meta: { title: 'bar' }
+                meta: {title: 'bar'}
+            },
+
+            {
+                path: "/first",
+                name: "页面1",
+                component: first,
+                meta: {title: '沃尔沃'}
             },
         ]
     },];
