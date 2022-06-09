@@ -134,6 +134,15 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.7</version>
         </dependency>
+        <!--net.sf.json.JSONObject、commons-beanutils-1.7.0.jar、commons-collections-3.1.jar、commons-lang-2.5.jar、commons-logging.jar、ezmorph-1.0.3.jar、json-lib-2.1-jdk15.jar。-->
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.2.1</version>
+            <classifier>jdk15</classifier>
+        </dependency>
+
+
 
     </dependencies>
 

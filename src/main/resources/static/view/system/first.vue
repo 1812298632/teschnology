@@ -106,10 +106,13 @@ module.exports = {
                 this.isCollapse = !this.isCollapse
             } */
     submit() {
+      //将"key1=value1&key2=valu2" 形式封装整FromData形式
+      let formData = new FormData();
+//new URLSearchParams([["foo", 1],["bar", 2]]).toString()
       this.loading = true
       fetch("http://localhost:9080/myquery", {
         method: 'POST', // 请求方法还可以是 put
-        body: 'aaa=213123',
+        body: JSON.stringify({username:'111',password:'222'}),
         headers: new Headers({
           'Content-Type': 'application/json'
         })
@@ -126,8 +129,6 @@ module.exports = {
             });
             this.loading = false
           });
-
-
       /*
       *  fetch("http://localhost:9080/myquery"+"?name=111", {
         method: 'GET', // 请求方法还可以是 put

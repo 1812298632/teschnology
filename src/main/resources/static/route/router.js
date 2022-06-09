@@ -8,6 +8,7 @@ var Tags = httpVueLoader('components/common/Tags.vue');
 Vue.component('my-tags', Tags);
 
 const first = httpVueLoader('view/system/first.vue');
+const upload = httpVueLoader('view/system/upload.vue');
 
 
 
@@ -44,6 +45,12 @@ const routes = [
                 name: "页面1",
                 component: first,
                 meta: {title: '沃尔沃'}
+            },
+            {
+                path: "/upload",
+                name: "页面1",
+                component: upload,
+                meta: {title: '上传'}
             },
         ]
     },];
