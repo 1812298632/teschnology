@@ -1,5 +1,8 @@
 package com.excel.pro.util;
 
+import com.excel.pro.entity.DepartUploadEntity;
+import com.excel.pro.entity.IncomeUploadEntity;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -46,7 +49,8 @@ public class ConstantUtil {
     public static final String endkilo = "结束公里数";
     public static final String kilo = "行驶公里数";
     public static final String id = "序列号";
-    public static final String number = "表单号";
+    public static final String fromno = "表单号";
+
 
     public static ArrayList<String> makeDepartColumnNameList() {
         ArrayList<String> departColumnNameList = new ArrayList<>();
@@ -58,7 +62,7 @@ public class ConstantUtil {
         departColumnNameList.add(ConstantUtil.endkilo);
         departColumnNameList.add(ConstantUtil.kilo);
         departColumnNameList.add(ConstantUtil.id);
-        departColumnNameList.add(ConstantUtil.number);
+        departColumnNameList.add(ConstantUtil.fromno);
 
         return departColumnNameList;
     }
@@ -266,4 +270,12 @@ public class ConstantUtil {
         return incomeSheetNameList;
     }
 
+
+    //用于保存文件导入时的基本信息
+    public static DepartUploadEntity departUploadEntity = new DepartUploadEntity();
+    public static IncomeUploadEntity incomeUploadEntity = new IncomeUploadEntity();
+
+    public static String RESPONSE_SUCCESS ="success";
+    public static String RESPONSE_ERROR ="error";
+    public static String RESPONSE_WARNING ="warning";
 }

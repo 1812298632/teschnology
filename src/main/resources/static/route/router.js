@@ -8,8 +8,12 @@ var Tags = httpVueLoader('components/common/Tags.vue');
 Vue.component('my-tags', Tags);
 
 const first = httpVueLoader('view/system/first.vue');
-const upload = httpVueLoader('view/system/upload.vue');
-
+const uploaddepart = httpVueLoader('view/system/uploaddepart.vue');
+const uploadincome = httpVueLoader('view/system/uploadincome.vue');
+const jfcar = httpVueLoader('view/system/jfcar.vue');
+const wrwcar = httpVueLoader('view/system/wrwcar.vue');
+const jfandwrwcar = httpVueLoader('view/system/jfandwrwcar.vue');
+const incomequery = httpVueLoader('view/system/incomequery.vue');
 
 
 //路由
@@ -29,7 +33,7 @@ const routes = [
         path: '/',
         component: Home,
         meta: {title: '系统首页'},
-        children: [{
+        children: [/*{
             path: '/foo',
             component: Foo,
             meta: {title: 'foo'}
@@ -39,18 +43,41 @@ const routes = [
                 component: Bar,
                 meta: {title: 'bar'}
             },
-
+*/
             {
                 path: "/first",
-                name: "页面1",
                 component: first,
                 meta: {title: '沃尔沃'}
             },
             {
-                path: "/upload",
-                name: "页面1",
-                component: upload,
-                meta: {title: '上传'}
+                path: "/uploaddepart",
+                component: uploaddepart,
+                meta: {title: '台账上传'}
+            },
+            {
+                path: "/uploadincome",
+                component: uploadincome,
+                meta: {title: '损益表上传'}
+            },
+            {
+                path: "/jfcar",
+                component: jfcar,
+                meta: {title: '解放'}
+            },
+            {
+                path: "/wrwcar",
+                component: wrwcar,
+                meta: {title: '沃尔沃'}
+            },
+            {
+                path: "/jfandwrwcar",
+                component: jfandwrwcar,
+                meta: {title: '台账综合查询'}
+            },
+            {
+                path: "/incomequery",
+                component: incomequery,
+                meta: {title: '损益表综合查询'}
             },
         ]
     },];

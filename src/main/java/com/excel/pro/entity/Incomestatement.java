@@ -20,4 +20,5 @@ public class Incomestatement {
     private Double tenmonth;
     private Double eleventmonth;
     private Double twelvemonth;
+    private String excelname;
 }

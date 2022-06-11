@@ -212,6 +212,92 @@ public class IncomeStatementServiceImpl implements IncomeStatementService {
 
     @Override
     public Incomestatement queryMonthMoneyOther(String cartype, ArrayList<String> otherRowTitleList) {
-        return incomeStatementDao.queryMonthMoneyOther(cartype,otherRowTitleList);
+        return incomeStatementDao.queryMonthMoneyOther(cartype, otherRowTitleList);
+    }
+
+    @Override
+    public void insertIncomeStatementByUpload(XSSFSheet sheet) {
+        DataFormatter formatter = new DataFormatter();
+        HashMap<String, Object> titleColumnMap = new HashMap<>();
+
+        int titleRowIndex = -1;
+        String titleRowAndColumnName = "项  目";
+        //需要保存哪些列的数据
+        ArrayList<String> columnNameList = ConstantUtil.makeIncomeImportTitle();
+
+
+        //获取需要插入表中的数据列的下标
+        for (Row row : sheet) {
+            //for循环row中的所有sheet
+            for (Cell cell : row) {
+                for (String s : columnNameList) {
+                    if (formatter.formatCellValue(cell).equals(s)) {//将获取到的cell数据格式化，不然会出错
+                        //如果进入了if判断，说明找到了数据，将列的下标存入map中
+                        titleColumnMap.put(s, cell.getColumnIndex());
+                    }
+                }
+                if (formatter.formatCellValue(cell).equals(titleRowAndColumnName)) {
+                    titleRowIndex = cell.getColumnIndex();
+                }
+            }
+        }
+
+
+        ArrayList<String> rowNameList = ConstantUtil.makeIncomeImportRowTitle();
+
+        String sheetName = ConstantUtil.incomeUploadEntity.getSheetname();
+
+        for (Row row : sheet) {
+            //获取从第五行开始的数据，第五行之前都是标题
+            if (row.getRowNum() >= 4) {
+                for (String rowName : rowNameList) {
+                    if (formatter.formatCellValue(row.getCell(titleRowIndex)).equals(rowName)) {
+                        Incomestatement incomestatement = new Incomestatement();
+                        incomestatement.setCarid(sheetName);
+
+
+                        incomestatement.setCartype(ConstantUtil.incomeUploadEntity.getCartype());
+
+                        incomestatement.setColumnname(rowName);
+                        String subjectCode = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(0)).toString())));
+                        incomestatement.setSubjectcode(subjectCode);
+
+                        double mon1 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(1)).toString())).getNumericCellValue();
+                        double mon2 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(2)).toString())).getNumericCellValue();
+                        double mon3 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(3)).toString())).getNumericCellValue();
+                        double mon4 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(4)).toString())).getNumericCellValue();
+                        double mon5 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(5)).toString())).getNumericCellValue();
+                        double mon6 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(6)).toString())).getNumericCellValue();
+                        double mon7 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(7)).toString())).getNumericCellValue();
+                        double mon8 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(8)).toString())).getNumericCellValue();
+                        double mon9 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(9)).toString())).getNumericCellValue();
+                        double mon10 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(10)).toString())).getNumericCellValue();
+                        double mon11 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(11)).toString())).getNumericCellValue();
+                        double mon12 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(12)).toString())).getNumericCellValue();
+
+
+                        incomestatement.setOnemonth(new BigDecimal(mon1).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue());
+                        incomestatement.setTwomonth(new BigDecimal(mon2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+                        incomestatement.setThreemonth(new BigDecimal(mon3).setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue());
+                        incomestatement.setFourmonth(new BigDecimal(mon4).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue());
+                        incomestatement.setFivemonth(new BigDecimal(mon5).setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue());
+                        incomestatement.setSixmonth(new BigDecimal(mon6).setScale(6, BigDecimal.ROUND_HALF_UP).doubleValue());
+                        incomestatement.setSevenmonth(new BigDecimal(mon7).setScale(7, BigDecimal.ROUND_HALF_UP).doubleValue());
+                        incomestatement.setEightmonth(new BigDecimal(mon8).setScale(8, BigDecimal.ROUND_HALF_UP).doubleValue());
+                        incomestatement.setNinemonth(new BigDecimal(mon9).setScale(9, BigDecimal.ROUND_HALF_UP).doubleValue());
+                        incomestatement.setTenmonth(new BigDecimal(mon10).setScale(10, BigDecimal.ROUND_HALF_UP).doubleValue());
+                        incomestatement.setEleventmonth(new BigDecimal(mon11).setScale(11, BigDecimal.ROUND_HALF_UP).doubleValue());
+                        incomestatement.setTwelvemonth(new BigDecimal(mon12).setScale(12, BigDecimal.ROUND_HALF_UP).doubleValue());
+                        incomestatement.setExcelname(ConstantUtil.incomeUploadEntity.getExcelname());
+
+                        logger.info("开始插入车牌号" + sheetName + "title为" + rowName + "的数据");
+                        incomeStatementDao.insert(incomestatement);
+                        logger.info("车牌号" + sheetName + "title为" + rowName + "的数据插入成功");
+
+                    }
+                }
+
+            }
+        }
     }
 }

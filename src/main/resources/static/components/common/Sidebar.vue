@@ -20,6 +20,7 @@
         </el-menu-item>-->
 
 
+<!--
         <el-submenu index="10">
           <template slot="title">
             <i class="el-icon-setting"></i>
@@ -37,25 +38,9 @@
             <el-menu-item index="1-4-1">选项1</el-menu-item>
           </el-submenu>
         </el-submenu>
+-->
 
 
-        <el-submenu index="1">
-          <template slot="title">
-            <i class="el-icon-document"></i>
-            <span slot="title">数据查询</span>
-          </template>
-          <el-menu-item-group>
-            <span slot="title">台账</span>
-            <el-menu-item index="/z">综合查询</el-menu-item>
-
-            <el-menu-item index="/first">沃尔沃</el-menu-item>
-            <el-menu-item index="1-2">解放车</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="损益表">
-            <el-menu-item index="1-3">损益表综合查询</el-menu-item>
-          </el-menu-item-group>
-
-        </el-submenu>
 
 
 <!--        <el-submenu index="1">
@@ -76,11 +61,34 @@
             <el-menu-item index="1-4-1">选项1</el-menu-item>
           </el-submenu>
         </el-submenu>-->
-        <el-menu-item index="/upload">
+        <el-menu-item index="/uploaddepart">
           <i class="el-icon-menu"></i>
-          <span slot="title">上传</span>
+          <span slot="title">台账上传</span>
         </el-menu-item>
-        <el-menu-item index="3" disabled>
+        <el-menu-item index="/uploadincome">
+          <i class="el-icon-menu"></i>
+          <span slot="title">损益表上传</span>
+        </el-menu-item>
+
+
+        <el-submenu index="1">
+          <template slot="title">
+            <i class="el-icon-document"></i>
+            <span slot="title">数据查询</span>
+          </template>
+          <el-menu-item-group>
+            <span slot="title">台账</span>
+            <el-menu-item index="/jfandwrwcar">台账综合查询</el-menu-item>
+
+            <el-menu-item index="/wrwcar">沃尔沃</el-menu-item>
+            <el-menu-item index="/jfcar">解放车</el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group title="损益表">
+            <el-menu-item index="/incomequery">损益表综合查询</el-menu-item>
+          </el-menu-item-group>
+
+        </el-submenu>
+<!--        <el-menu-item index="3" disabled>
           <i class="el-icon-document"></i>
           <span slot="title">导航三</span>
         </el-menu-item>
@@ -115,7 +123,7 @@
         <el-menu-item index="4">
           <i class="el-icon-setting"></i>
           <span slot="title">导航四</span>
-        </el-menu-item>
+        </el-menu-item>-->
       </el-menu>
     </el-scrollbar>
   </div>

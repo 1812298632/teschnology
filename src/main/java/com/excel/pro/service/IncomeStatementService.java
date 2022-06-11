@@ -2,6 +2,7 @@ package com.excel.pro.service;
 
 import com.excel.pro.entity.IncomeExportEntity;
 import com.excel.pro.entity.Incomestatement;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -15,4 +16,6 @@ public interface IncomeStatementService {
     List<Incomestatement> queryMonthMoney(String catType);
 
     Incomestatement queryMonthMoneyOther(String cartype, ArrayList<String> otherRowTitleList);
+
+    void insertIncomeStatementByUpload(XSSFSheet sheet);
 }

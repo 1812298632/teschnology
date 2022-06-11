@@ -2,6 +2,7 @@ package com.excel.pro.service;
 
 import com.excel.pro.entity.DepartExportEntity;
 import com.excel.pro.entity.Departdetail;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -12,4 +13,6 @@ public interface DepartService {
     List<Departdetail> querybyid();
 
     DepartExportEntity exportDepart(String cityname);
+
+    void insertDepartDeatilByUpload(XSSFSheet sheet);
 }

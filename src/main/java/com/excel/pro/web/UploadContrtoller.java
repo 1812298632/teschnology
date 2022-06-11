@@ -1,42 +1,193 @@
 package com.excel.pro.web;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.excel.pro.dao.DepartDetailDao;
+import com.excel.pro.dao.IncomeStatementDao;
+import com.excel.pro.entity.*;
+import com.excel.pro.service.DepartService;
+import com.excel.pro.service.IncomeStatementService;
+import com.excel.pro.util.ConstantUtil;
+import com.excel.pro.util.RequestUtil;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 public class UploadContrtoller {
+    Logger logger = LoggerFactory.getLogger(UploadContrtoller.class);
 
+    @Resource
+    private DepartService departService;
+
+    @Resource
+    private DepartDetailDao departDetailDao;
+
+    @Resource
+    private IncomeStatementService incomeStatementService;
+
+    @Resource
+    private IncomeStatementDao incomeStatementDao;
 
     /**
      * 上传文件之后直接解析
+     *
      * @param file
      * @throws IOException
      */
     @RequestMapping("/upload")
-    public void upload(@RequestParam("file") MultipartFile file) throws IOException {
+    @ResponseBody
+    public ResponseEntity upload(@RequestParam("file") MultipartFile file) throws IOException {
+        ResponseEntity responseEntity = new ResponseEntity();
+
+
         Map<String, Object> map = new HashMap<>();
         FileOutputStream out = null;
         String fileName = file.getOriginalFilename();
         if (fileName.indexOf("\\") != -1) {
             fileName = fileName.substring(fileName.lastIndexOf("\\"));
         }
-        HSSFWorkbook workbook = new HSSFWorkbook(file.getInputStream());
+        ConstantUtil.departUploadEntity.setExcelname(fileName);
 
-        HSSFSheet sheet = workbook.getSheet("解放车毛利");
+        /*HSSFWorkbook workbook = new HSSFWorkbook(file.getInputStream());
 
-        System.out.println(111);
+        HSSFSheet sheet = workbook.getSheet("解放车毛利");*/
+        XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
+        XSSFSheet sheet = workbook.getSheet(ConstantUtil.departUploadEntity.getSheetname());
+        departService.insertDepartDeatilByUpload(sheet);
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+        responseEntity.setResMessage("上传成功");
+
+        return responseEntity;
+    }
+
+
+    @RequestMapping("/incomeUpload")
+    @ResponseBody
+    public ResponseEntity incomeUpload(@RequestParam("file") MultipartFile file) throws IOException {
+        ResponseEntity responseEntity = new ResponseEntity();
+
+
+        Map<String, Object> map = new HashMap<>();
+        FileOutputStream out = null;
+        String fileName = file.getOriginalFilename();
+        if (fileName.indexOf("\\") != -1) {
+            fileName = fileName.substring(fileName.lastIndexOf("\\"));
+        }
+        ConstantUtil.incomeUploadEntity.setExcelname(fileName);
+
+
+        XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
+        XSSFSheet sheet = workbook.getSheet(ConstantUtil.incomeUploadEntity.getSheetname());
+        incomeStatementService.insertIncomeStatementByUpload(sheet);
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+        responseEntity.setResMessage("上传成功");
+
+        return responseEntity;
+    }
+
+
+    @RequestMapping("setParamter")
+    @ResponseBody
+    public ResponseEntity setUploadParam(HttpServletRequest request) {
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        DepartUploadEntity departUploadEntity = ConstantUtil.departUploadEntity;
+        String requestParam = RequestUtil.getJsonObjectData(request);
+
+
+        try {
+            departUploadEntity.setType(RequestUtil.getObjectValue(requestParam, "type"));
+
+            departUploadEntity.setCartype(RequestUtil.getObjectValue(requestParam, "cartype"));
+            departUploadEntity.setMonth(RequestUtil.getObjectValue(requestParam, "month"));
+            departUploadEntity.setSheetname(RequestUtil.getObjectValue(requestParam, "sheetname"));
+            responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+            responseEntity.setResMessage("设置成功");
+
+        } catch (Exception e) {
+            responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
+            logger.error(e.getMessage());
+        }
+
+
+        return responseEntity;
+    }
+
+
+    @RequestMapping("setIncomeParamter")
+    @ResponseBody
+    public ResponseEntity setIncomeParamter(HttpServletRequest request) {
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        IncomeUploadEntity incomeUploadEntity = ConstantUtil.incomeUploadEntity;
+        String requestParam = RequestUtil.getJsonObjectData(request);
+
+
+        try {
+            incomeUploadEntity.setType(RequestUtil.getObjectValue(requestParam, "type"));
+            incomeUploadEntity.setCartype(RequestUtil.getObjectValue(requestParam, "cartype"));
+            incomeUploadEntity.setSheetname(RequestUtil.getObjectValue(requestParam, "sheetname"));
+            responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+            responseEntity.setResMessage("设置成功");
+
+        } catch (Exception e) {
+            responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
+            logger.error(e.getMessage());
+        }
+
+        return responseEntity;
+    }
+
+    @RequestMapping("queryByUploadEntity")
+    @ResponseBody
+    public ResponseEntity queryByUploadEntity(HttpServletRequest request) {
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        LambdaQueryWrapper<Departdetail> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Departdetail::getMonth, ConstantUtil.departUploadEntity.getMonth())
+                .eq(Departdetail::getSheet, ConstantUtil.departUploadEntity.getSheetname())
+                .eq(Departdetail::getExcelname, ConstantUtil.departUploadEntity.getExcelname()).orderByAsc(Departdetail::getSheetid);
+
+        List<Departdetail> departdetails = departDetailDao.selectList(queryWrapper);
+        responseEntity.setResList(departdetails);
+        responseEntity.setResMessage("查询成功");
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+
+        return responseEntity;
+    }
+
+
+    @RequestMapping("queryByUploadIncomeEntity")
+    @ResponseBody
+    public ResponseEntity queryByUploadIncomeEntity(HttpServletRequest request) {
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        LambdaQueryWrapper<Incomestatement> queryWrapper = new LambdaQueryWrapper<>();
+
+        queryWrapper.eq(Incomestatement::getCarid, ConstantUtil.incomeUploadEntity.getSheetname())
+                .eq(Incomestatement::getCartype, ConstantUtil.incomeUploadEntity.getCartype());
+
+        List<Incomestatement> incomestatementList = incomeStatementDao.selectList(queryWrapper);
+        responseEntity.setResList(incomestatementList);
+        responseEntity.setResMessage("查询成功");
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+
+        return responseEntity;
     }
 
 

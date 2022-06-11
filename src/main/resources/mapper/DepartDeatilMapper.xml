@@ -32,4 +32,24 @@
                  order by SHEET
              )
     </select>
+
+    <select id="queryCitySelect" resultType="com.excel.pro.entity.SelectEntity">
+        select distinct STARTCITY as key ,STARTCITY as value
+        from DEPARTDETAIL
+    </select>
+
+    <select id="queryEndCitySelect" resultType="com.excel.pro.entity.SelectEntity">
+        select distinct ENDCITY as key ,ENDCITY as value
+        from DEPARTDETAIL
+    </select>
+
+    <select id="queryJFMonthSelect" resultType="com.excel.pro.entity.SelectEntity">
+        select distinct month as key ,month as value
+        from DEPARTDETAIL order by  MONTH
+    </select>
+
+    <select id="queryCarTypeByDepart" resultType="com.excel.pro.entity.SelectEntity">
+        select distinct CARTYPE as key ,CARTYPE as value
+        from DEPARTDETAIL
+    </select>
 </mapper>

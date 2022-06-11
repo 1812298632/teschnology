@@ -5,9 +5,10 @@
           v-loading="loading"
           :data="tableData"
           height="100%"
+          style="width: 100%"
           border
           stripe
-          style="width: 100%">
+          >
         <el-table-column
             prop="sheetid"
             label="序号"
@@ -43,8 +44,11 @@
     </el-container>
     <el-container style="height: 10%; margin-top: 30px">
       <el-form :inline="true" ref="form" :model="form" label-width="80px">
-        <el-form-item label="活动名称">
-          <el-input v-model="form.name"></el-input>
+        <el-form-item label="活动区域">
+          <el-select v-model="form.city" placeholder="城市">
+            <el-option v-for ="city in selectData" :label="city.value"  :key="city.key" :value="city.key"></el-option>
+
+          </el-select>
         </el-form-item>
         <el-form-item label="活动区域">
           <el-select v-model="form.region" placeholder="请选择活动区域">
@@ -74,9 +78,11 @@ module.exports = {
       tagsList: [],
       isCollapse: true,
       tableData: [],
+      selectData:[],
       form: {
         name: '',
         region: '',
+        city: '',
         date1: '',
         date2: '',
         delivery: false,
@@ -98,6 +104,18 @@ module.exports = {
       }
       this.tagsList = arr;
     });
+
+
+    fetch("http://localhost:9080/queryCitySelect", {
+      method: 'POST', // 请求方法还可以是 put
+      body: '',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    }).then(res => res.json())
+        .then(response => {
+          this.selectData = response.resList
+        });
 
   },
   methods: {
@@ -129,43 +147,6 @@ module.exports = {
             });
             this.loading = false
           });
-      /*
-      *  fetch("http://localhost:9080/myquery"+"?name=111", {
-        method: 'GET', // 请求方法还可以是 put
-
-        headers: new Headers({
-          'Content-Type': 'application/json'
-        })
-      }).then(res => res.json())
-          .then(response => {
-
-            this.tableData = response
-            this.$message({
-              showClose: true,
-              message: '查询成功',
-              center: true,
-              offset: 150,
-              type: 'success'
-            });
-            this.loading = false
-          });
-      * */
-
-    /*  $.ajax({
-        url: "http://localhost:9080/myquery", // 请求路径
-        type: "POST", //请求方式
-        data: {"name": "zhangsan"},//请求参数
-        dataType: "JSON", //设置接受到的响应数据的格式,还有很多格式，如:text
-        //async:false,//默认是true（异步）,false（同步）
-        success: function (data) {//响应成功后的回调函数
-          alert(data);
-
-          $("#div1").html(data);//数据渲染
-        },
-        error: function () {
-          alert("出错啦...");
-        },
-      });*/
 
     }
   },

@@ -81,4 +81,19 @@
         ) a
         group by cartype, carid
     </select>
+
+    <select id="querycarid" resultType="com.excel.pro.entity.SelectEntity">
+        select distinct CARID as key, CARID as value
+        from INCOMESTATEMENT
+    </select>
+
+    <select id="querycarTypeByIncome" resultType="com.excel.pro.entity.SelectEntity">
+        select distinct CARTYPE as key, CARTYPE as value
+        from INCOMESTATEMENT
+    </select>
+
+    <select id="querycolumnsByIncome" resultType="com.excel.pro.entity.SelectEntity">
+        select distinct COLUMNNAME as key, COLUMNNAME as value
+        from INCOMESTATEMENT
+    </select>
 </mapper>
