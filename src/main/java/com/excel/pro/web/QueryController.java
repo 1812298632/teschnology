@@ -175,4 +175,28 @@ public class QueryController {
         return responseEntity;
     }
 
+    @RequestMapping("/queryJfCount")
+    public ResponseEntity queryJfCount(HttpServletRequest request) {
+        ResponseEntity responseEntity = new ResponseEntity();
+        String requestParam = RequestUtil.getJsonObjectData(request);
+        String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
+        List<SelectEntity> selectEntityList = departDetailDao.queryJfCount(cartype);
+
+        responseEntity.setResList(selectEntityList);
+        return responseEntity;
+    }
+
+
+    @RequestMapping("/queryjfmoney")
+    public ResponseEntity queryjfmoney(HttpServletRequest request) {
+        ResponseEntity responseEntity = new ResponseEntity();
+        String requestParam = RequestUtil.getJsonObjectData(request);
+        String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
+        List<Incomestatement> incomestatements = departDetailDao.queryjfmoney(cartype);
+
+        responseEntity.setResList(incomestatements);
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+        return responseEntity;
+    }
+
 }

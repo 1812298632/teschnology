@@ -17,7 +17,7 @@
         <el-table-column
             prop="cartype"
             label="类型"
-            width="60">
+            width="89">
         </el-table-column>
         <el-table-column
             prop="month"
@@ -36,23 +36,23 @@
         <el-table-column
             prop="startcity"
             label="起点"
-            width="60">
+            width="100">
         </el-table-column>
         <el-table-column
             prop="endcity"
-            label="终点" width="60">
+            label="终点" width="100">
         </el-table-column>
         <el-table-column
             prop="startkilo"
-            label="起始公里数">
+            label="起始公里数" width="100">
         </el-table-column>
         <el-table-column
             prop="endkilo"
-            label="结束公里数">
+            label="结束公里数" width="100">
         </el-table-column>
         <el-table-column
             prop="kilo"
-            label="行驶里程">
+            label="行驶里程" width="80">
         </el-table-column>
         <el-table-column
             prop="sheet"
@@ -71,7 +71,7 @@
           <el-select v-model="form.startcity" placeholder="城市">
             <el-option label="全部" value=""></el-option>
 
-            <el-option v-for ="city in startCitySelData" :label="city.value"  :key="city.key" :value="city.key"></el-option>
+            <el-option v-for ="tmp in startCitySelData" :label="tmp.value"  :key="tmp.key" :value="tmp.key"></el-option>
 
           </el-select>
         </el-form-item>
@@ -79,7 +79,7 @@
         <el-form-item label="终点">
           <el-select v-model="form.endcity" placeholder="城市">
             <el-option label="全部" value=""></el-option>
-            <el-option v-for ="city in endCitySelData" :label="city.value"  :key="city.key" :value="city.key"></el-option>
+            <el-option v-for ="tmp in endCitySelData" :label="tmp.value"  :key="tmp.key" :value="tmp.key"></el-option>
 
           </el-select>
         </el-form-item>
@@ -88,7 +88,7 @@
           <el-select v-model="form.month" placeholder="月份">
             <el-option label="全部" value=""></el-option>
 
-            <el-option v-for ="month in monthselData" :label="month.value"  :key="month.key" :value="month.key"></el-option>
+            <el-option v-for ="tmp in monthselData" :label="tmp.value"  :key="tmp.key" :value="tmp.key"></el-option>
 
           </el-select>
         </el-form-item>
@@ -140,7 +140,7 @@ module.exports = {
       this.tagsList = arr;
     });
 
-
+    this.loading = true
     fetch("http://localhost:9080/queryCitySelect", {
       method: 'POST', // 请求方法还可以是 put
       body: '',
@@ -152,43 +152,42 @@ module.exports = {
           this.startCitySelData = response.resList
      });
 
-    fetch("http://localhost:9080/queryEndCitySelect", {
-      method: 'POST', // 请求方法还可以是 put
-      body: '',
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
-    }).then(res => res.json())
-        .then(response => {
-          this.endCitySelData = response.resList
-    });
+     fetch("http://localhost:9080/queryEndCitySelect", {
+       method: 'POST', // 请求方法还可以是 put
+       body: '',
+       headers: new Headers({
+         'Content-Type': 'application/json'
+       })
+     }).then(res => res.json())
+         .then(response => {
+           this.endCitySelData = response.resList
+     });
 
 
-    fetch("http://localhost:9080/queryJFMonthSelect", {
-      method: 'POST', // 请求方法还可以是 put
-      body: '',
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
-    }).then(res => res.json())
-        .then(response => {
-          this.monthselData = response.resList
-    });
+     fetch("http://localhost:9080/queryJFMonthSelect", {
+       method: 'POST', // 请求方法还可以是 put
+       body: '',
+       headers: new Headers({
+         'Content-Type': 'application/json'
+       })
+     }).then(res => res.json())
+         .then(response => {
+           this.monthselData = response.resList
+     });
 
-    this.loading = true
+
     fetch("http://localhost:9080/queryDeaprtList", {
       method: 'POST', // 请求方法还可以是 put
       body: JSON.stringify({type:'解放车'}),
       headers: new Headers({
         'Content-Type': 'application/json'
       })
-    }).then(res => res.json())
-        .then(response => {
+    }).then(res => res.json()).then(response => {
           this.tableData = response.resList
           this.size = response.resList.length
+          this.loading = false
         });
 
-    this.loading = false
   },
   methods: {
 

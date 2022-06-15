@@ -17,7 +17,7 @@
         <el-table-column
             prop="cartype"
             label="类型"
-            width="60">
+            width="89">
         </el-table-column>
         <el-table-column
             prop="month"
@@ -36,23 +36,23 @@
         <el-table-column
             prop="startcity"
             label="起点"
-            width="60">
+             width="100">
         </el-table-column>
         <el-table-column
             prop="endcity"
-            label="终点" width="60">
+            label="终点" width="100">
         </el-table-column>
         <el-table-column
             prop="startkilo"
-            label="起始公里数">
+            label="起始公里数" width="100">
         </el-table-column>
         <el-table-column
             prop="endkilo"
-            label="结束公里数">
+            label="结束公里数" width="100">
         </el-table-column>
         <el-table-column
             prop="kilo"
-            label="行驶里程">
+            label="行驶里程" width="80">
         </el-table-column>
         <el-table-column
             prop="sheet"

@@ -11,7 +11,7 @@ import java.util.List;
 public interface IncomeStatementService {
     void insertIncomeStatement(String sheetName) throws FileNotFoundException;
 
-    List<IncomeExportEntity> exportIncome();
+    List<IncomeExportEntity> exportIncome(String cartype);
 
     List<Incomestatement> queryMonthMoney(String catType);
 

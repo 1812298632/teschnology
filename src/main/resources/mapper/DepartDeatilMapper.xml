@@ -8,48 +8,88 @@
         from DEPARTDETAIL
     </select>
     <select id="exportDepart" resultType="com.excel.pro.entity.DepartExportEntity">
-        select #{cityname}                                           city,
-
-               nvl(sum(CASE WHEN SHEET = '解放车3' then count end), 0)  three,
-               nvl(sum(CASE WHEN SHEET = '解放车4' then count end), 0)  four,
-               nvl(sum(CASE WHEN SHEET = '解放车5' then count end), 0)  five,
-               nvl(sum(CASE WHEN SHEET = '解放车6' then count end), 0)  six,
-               nvl(sum(CASE WHEN SHEET = '解放车7' then count end), 0)  seven,
-               nvl(sum(CASE WHEN SHEET = '解放车8' then count end), 0)  eight,
-               nvl(sum(CASE WHEN SHEET = '解放车9' then count end), 0)  nine,
-               nvl(sum(CASE WHEN SHEET = '解放车10' then count end), 0) ten,
-               nvl(sum(CASE WHEN SHEET = '解放车11' then count end), 0) eleven,
-               nvl(sum(CASE WHEN SHEET = '解放车12' then count end), 0) twelve,
-               nvl(sum(CASE WHEN SHEET = '解放车1' then count end), 0)  one,
-               nvl(sum(CASE WHEN SHEET = '解放车2' then count end), 0)  two,
-               nvl(sum(count),0) allcount
+        select #{cityname}                                        city,
+               nvl(sum(CASE WHEN month = '3' then count end), 0)  three,
+               nvl(sum(CASE WHEN month = '4' then count end), 0)  four,
+               nvl(sum(CASE WHEN month = '5' then count end), 0)  five,
+               nvl(sum(CASE WHEN month = '6' then count end), 0)  six,
+               nvl(sum(CASE WHEN month = '7' then count end), 0)  seven,
+               nvl(sum(CASE WHEN month = '8' then count end), 0)  eight,
+               nvl(sum(CASE WHEN month = '9' then count end), 0)  nine,
+               nvl(sum(CASE WHEN month = '10' then count end), 0) ten,
+               nvl(sum(CASE WHEN month = '11' then count end), 0) eleven,
+               nvl(sum(CASE WHEN month = '12' then count end), 0) twelve,
+               nvl(sum(CASE WHEN month = '1' then count end), 0)  one,
+               nvl(sum(CASE WHEN month = '2' then count end), 0)  two,
+               nvl(sum(count), 0)                                 allcount
 
         from (
-                 select SHEET, count(STARTCITY) count
+                 select month, count(STARTCITY) count
                  from DEPARTDETAIL
                  where STARTCITY = #{cityname}
-                 group by sheet
-                 order by SHEET
+                   and CARTYPE = #{cartype}
+                 group by month
+                 order by month
              )
     </select>
 
     <select id="queryCitySelect" resultType="com.excel.pro.entity.SelectEntity">
-        select distinct STARTCITY as key ,STARTCITY as value
+
+        select distinct STARTCITY as key, STARTCITY as value
         from DEPARTDETAIL
+        where STARTCITY is not null
+          and STARTCITY is not null
+
     </select>
 
     <select id="queryEndCitySelect" resultType="com.excel.pro.entity.SelectEntity">
-        select distinct ENDCITY as key ,ENDCITY as value
+        select distinct ENDCITY as key, ENDCITY as value
         from DEPARTDETAIL
+        where ENDCITY is not null
+          and ENDCITY is not null
     </select>
 
     <select id="queryJFMonthSelect" resultType="com.excel.pro.entity.SelectEntity">
-        select distinct month as key ,month as value
-        from DEPARTDETAIL order by  MONTH
+        select distinct month as key, month as value
+        from DEPARTDETAIL
+        where month is not null
+          and month is not null
+        order by MONTH
+
     </select>
 
     <select id="queryCarTypeByDepart" resultType="com.excel.pro.entity.SelectEntity">
-        select distinct CARTYPE as key ,CARTYPE as value
+        select distinct CARTYPE as key, CARTYPE as value
         from DEPARTDETAIL
+    </select>
+
+    <select id="queryJfCount" resultType="com.excel.pro.entity.SelectEntity">
+        select  month  key, count(STARTCITY)  value
+        from DEPARTDETAIL
+        where  CARTYPE =#{cartype}
+        group by month
+        order by month
+    </select>
+
+    <select id="queryjfmoney" resultType="com.excel.pro.entity.Incomestatement">
+
+        select listagg(distinct CARID, ',') within group ( order by CARID desc) CARID,COLUMNNAME,
+               round(sum(onemonth)/10000,2) onemonth,
+               round(sum(twomonth)/10000,2) twomonth,
+               round(sum(threemonth)/10000,2) threemonth,
+               round(sum(fourmonth)/10000,2) fourmonth,
+               round(sum(fivemonth)/10000,2) fivemonth,
+               round(sum(sixmonth)/10000,2) sixmonth,
+               round(sum(sevenmonth)/10000,2) sevenmonth,
+               round(sum(eightmonth)/10000,2) eightmonth,
+               round(sum(ninemonth)/10000,2) ninemonth,
+               round(sum(tenmonth)/10000,2) tenmonth,
+               round(sum(eleventmonth)/10000,2) eleventmonth,
+               round(sum(twelvemonth)/10000,2) twelvemonth
+        from INCOMESTATEMENT I
+        where I.CARTYPE =  #{cartype}  group by COLUMNNAME
+
+
+
     </select>
 </mapper>

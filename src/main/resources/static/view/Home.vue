@@ -6,7 +6,7 @@
       <my-sidebar ></my-sidebar>
       <!--<my-sidebar :side-collapse="isCollapse"></my-sidebar>-->
 
-      <el-container>
+      <el-container >
         <!--头部-->
         <el-header>
           <!-- <i class="el-icon-s-fold" @click="isC" ></i> -->
@@ -16,7 +16,7 @@
         <my-tags></my-tags>
         <!-- <my-tag></my-tag> -->
         <!--主页面-->
-        <el-main>
+        <el-main style="height: 90%">
           <router-view>
 
 

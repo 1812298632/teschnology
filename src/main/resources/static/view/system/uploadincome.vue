@@ -13,7 +13,7 @@
     <el-container style="height: 20%">
       <el-steps :active="active" finish-status="success" style="width: 90%" align-center>
         <el-step title="选择数据" description="选择完成之后，下一步"></el-step>
-        <el-step title="上传文件" description="上传文件，如果失败可以重新导入，重新选择数据"></el-step>
+        <el-step title="上传文件" description="上传文件，如果失败可以点击重新导入，重新选择数据"></el-step>
         <el-step title="查看数据" description="查看导入的数据,查看无误 下一步，可以再次导入新的数据"></el-step>
       </el-steps>
     </el-container>
@@ -200,7 +200,9 @@ module.exports = {
         offset: 150,
         type: response.res
       });
-
+      this.showbutton =false;
+      this.shownextbutton =true;
+      this.nextDisable = false
       this.nextDisable = false
     },
     uploadError(err, file, fileList){

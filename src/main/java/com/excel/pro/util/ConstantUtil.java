@@ -2,7 +2,11 @@ package com.excel.pro.util;
 
 import com.excel.pro.entity.DepartUploadEntity;
 import com.excel.pro.entity.IncomeUploadEntity;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.http.MediaType;
 
+import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -223,6 +227,7 @@ public class ConstantUtil {
     public static final String title12 = "       车队其他";
     public static final String title13 = "       伙食费";
     public static final String title14 = "   车队成本";
+    public static final String title15 = "         物料消耗";
 
     public static ArrayList<String> makeIncomeImportRowTitle() {
         ArrayList<String> incomeImportRowTitleList = new ArrayList<>();
@@ -241,6 +246,7 @@ public class ConstantUtil {
         incomeImportRowTitleList.add(title12);
         incomeImportRowTitleList.add(title13);
         incomeImportRowTitleList.add(title14);
+        incomeImportRowTitleList.add(title15);
 
 
         return incomeImportRowTitleList;
@@ -278,4 +284,25 @@ public class ConstantUtil {
     public static String RESPONSE_SUCCESS ="success";
     public static String RESPONSE_ERROR ="error";
     public static String RESPONSE_WARNING ="warning";
+
+
+    /**
+     * excel表格直接下载
+     */
+    public static void exportExcelByDownload(HSSFWorkbook wb, HttpServletResponse httpServletResponse, String fileName) throws Exception {
+        //响应类型为application/octet- stream情况下使用了这个头信息的话，那就意味着不想直接显示内容
+        httpServletResponse.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+        //attachment为以附件方式下载
+        httpServletResponse.setHeader("Content-Disposition","attachment;filename=" + URLEncoder.encode(
+                fileName + ".xlsx",
+                "utf-8"));
+        /**
+         * 代码里面使用Content-Disposition来确保浏览器弹出下载对话框的时候。
+         * response.addHeader("Content-Disposition","attachment");一定要确保没有做过关于禁止浏览器缓存的操作
+         */
+        httpServletResponse.setHeader("Cache-Control", "No-cache");
+        httpServletResponse.flushBuffer();
+        wb.write(httpServletResponse.getOutputStream());
+        wb.close();
+    }
 }

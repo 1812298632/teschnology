@@ -201,8 +201,8 @@ public class IncomeStatementServiceImpl implements IncomeStatementService {
     }
 
     @Override
-    public List<IncomeExportEntity> exportIncome() {
-        return incomeStatementDao.exportIncome();
+    public List<IncomeExportEntity> exportIncome(String cartype) {
+        return incomeStatementDao.exportIncome(cartype);
     }
 
     @Override

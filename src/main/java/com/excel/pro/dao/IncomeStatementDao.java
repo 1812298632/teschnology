@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface IncomeStatementDao extends BaseMapper<Incomestatement> {
-    List<IncomeExportEntity> exportIncome();
+    List<IncomeExportEntity> exportIncome(@Param("carType")String cartype);
 
     List<Incomestatement> queryMonthMoney(@Param("carType") String carType);
 

@@ -1,33 +1,30 @@
 package com.excel.pro.web;
 
-import com.excel.pro.dao.DepartDetailDao;
 import com.excel.pro.dao.UserDao;
 import com.excel.pro.entity.*;
 import com.excel.pro.service.DepartService;
 import com.excel.pro.service.IncomeStatementService;
 import com.excel.pro.util.ConstantUtil;
+import com.excel.pro.util.RequestUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 public class ExcelPrintController {
@@ -117,9 +114,17 @@ public class ExcelPrintController {
      * @return
      * @throws IOException
      */
-    @GetMapping("/exportDepart")
-    public String exportDepart() throws IOException {
+    @RequestMapping("/exportDepart")
+    public ResponseEntity exportDepart(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+
+        String requestParam = RequestUtil.getJsonObjectData(request);
+        String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
+
+        responseEntity.setResMessage("文件生成成功,生成文件名称为[" + cartype + "发车明细]");
 
         LinkedList<DepartExportEntity> countList = new LinkedList<>();
 
@@ -128,14 +133,14 @@ public class ExcelPrintController {
 
         for (String cityname : cityList) {
             //根据城市，查询出每个城市每个月份的发车次数
-            DepartExportEntity exportDepart = departService.exportDepart(cityname);
+            DepartExportEntity exportDepart = departService.exportDepart(cityname, cartype);
 
             countList.add(exportDepart);
         }
 
         HSSFWorkbook wb = new HSSFWorkbook();
 
-        HSSFSheet sheet = wb.createSheet("解放车发车明细");
+        HSSFSheet sheet = wb.createSheet(cartype + "发车明细");
 
         LinkedList<String> titleList = ConstantUtil.makeDepartTitle();
 
@@ -163,14 +168,16 @@ public class ExcelPrintController {
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\解放车发车次数.xls");
+            fileOutputStream = new FileOutputStream("E:\\解放车发车次数.xlsx");
+
             wb.write(fileOutputStream);
             fileOutputStream.flush();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
+            responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
+            responseEntity.setResMessage(e.getMessage());
             e.printStackTrace();
         } finally {
+
             if (fileOutputStream != null) {
                 try {
                     fileOutputStream.close();
@@ -181,7 +188,13 @@ public class ExcelPrintController {
         }
 
 
-        return "1";
+        if (responseEntity.getRes().equals(ConstantUtil.RESPONSE_SUCCESS)) {
+            File f1 = new File("E:\\");
+            Desktop.getDesktop().open(f1);
+        }
+
+
+        return responseEntity;
     }
 
 
@@ -190,12 +203,18 @@ public class ExcelPrintController {
      *
      * @return
      */
-    @GetMapping("/exportIncomeTolls")
-    public String exportIncomeTolls() {
+    @RequestMapping("/exportIncomeTolls")
+    public ResponseEntity exportIncomeTolls(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ResponseEntity responseEntity = new ResponseEntity();
 
-        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome();
+        String requestParam = RequestUtil.getJsonObjectData(request);
+        String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
 
-        String cartype = "解放车";
+        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome(cartype);
+
+
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+        responseEntity.setResMessage("文件生成成功,生成文件名称为[" + cartype + "过路费]");
 
         List<Incomestatement> monthMoneyList = incomeStatementService.queryMonthMoney(cartype);
 
@@ -224,7 +243,7 @@ public class ExcelPrintController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
 
-        HSSFSheet sheet = wb.createSheet("解放车过路费");
+        HSSFSheet sheet = wb.createSheet(cartype + "过路费");
 
         HSSFRow row = sheet.createRow(0);
         for (int i = 0; i < titleList.size(); i++) {
@@ -248,12 +267,12 @@ public class ExcelPrintController {
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\解放车过路费.xls");
+            fileOutputStream = new FileOutputStream("E:\\"+cartype+"过路费.xlsx");
             wb.write(fileOutputStream);
             fileOutputStream.flush();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
+            responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
+            responseEntity.setResMessage(e.getMessage());
             e.printStackTrace();
         } finally {
             if (fileOutputStream != null) {
@@ -265,7 +284,13 @@ public class ExcelPrintController {
             }
         }
 
-        return "success";
+        if (responseEntity.getRes().equals(ConstantUtil.RESPONSE_SUCCESS)) {
+            File f1 = new File("E:\\");
+            Desktop.getDesktop().open(f1);
+        }
+
+
+        return responseEntity;
     }
 
 
@@ -274,12 +299,18 @@ public class ExcelPrintController {
      *
      * @return
      */
-    @GetMapping("/exportIncomeFuel")
-    public String exportIncomeFuel() {
+    @RequestMapping("/exportIncomeFuel")
+    public ResponseEntity exportIncomeFuel(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome();
+        ResponseEntity responseEntity = new ResponseEntity();
 
-        String cartype = "解放车";
+        String requestParam = RequestUtil.getJsonObjectData(request);
+        String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
+
+        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome(cartype);
+
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+        responseEntity.setResMessage("文件生成成功,生成文件名称为[" + cartype + "燃油费]");
 
         List<Incomestatement> monthMoneyList = incomeStatementService.queryMonthMoney(cartype);
 
@@ -308,7 +339,7 @@ public class ExcelPrintController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
 
-        HSSFSheet sheet = wb.createSheet("解放车燃油费");
+        HSSFSheet sheet = wb.createSheet(cartype + "燃油费");
 
         HSSFRow row = sheet.createRow(0);
         for (int i = 0; i < titleList.size(); i++) {
@@ -332,14 +363,14 @@ public class ExcelPrintController {
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\解放车燃油费.xls");
+            fileOutputStream = new FileOutputStream("E:\\"+cartype+"燃油费.xlsx");
             wb.write(fileOutputStream);
             fileOutputStream.flush();
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
+            responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
+            responseEntity.setResMessage(e.getMessage());
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
+        }  finally {
             if (fileOutputStream != null) {
                 try {
                     fileOutputStream.close();
@@ -349,7 +380,14 @@ public class ExcelPrintController {
             }
         }
 
-        return "success";
+        if (responseEntity.getRes().equals(ConstantUtil.RESPONSE_SUCCESS)) {
+            File f1 = new File("E:\\");
+            Desktop.getDesktop().open(f1);
+        }
+
+
+        return responseEntity;
+
     }
 
 
@@ -358,12 +396,18 @@ public class ExcelPrintController {
      *
      * @return
      */
-    @GetMapping("/exportIncomeFine")
-    public String exportIncomeFine() {
+    @RequestMapping("/exportIncomeFine")
+    public ResponseEntity exportIncomeFine(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome();
+        ResponseEntity responseEntity = new ResponseEntity();
+        String requestParam = RequestUtil.getJsonObjectData(request);
+        String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
 
-        String cartype = "解放车";
+        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome(cartype);
+
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+        responseEntity.setResMessage("文件生成成功,生成文件名称为[" + cartype + "罚款]");
+
 
         List<Incomestatement> monthMoneyList = incomeStatementService.queryMonthMoney(cartype);
 
@@ -392,7 +436,7 @@ public class ExcelPrintController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
 
-        HSSFSheet sheet = wb.createSheet("解放车罚款");
+        HSSFSheet sheet = wb.createSheet( cartype + "罚款");
 
         HSSFRow row = sheet.createRow(0);
         for (int i = 0; i < titleList.size(); i++) {
@@ -415,12 +459,12 @@ public class ExcelPrintController {
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\解放车罚款.xls");
+            fileOutputStream = new FileOutputStream("E:\\"+cartype+"罚款.xlsx");
             wb.write(fileOutputStream);
             fileOutputStream.flush();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
+            responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
+            responseEntity.setResMessage(e.getMessage());
             e.printStackTrace();
         } finally {
             if (fileOutputStream != null) {
@@ -432,7 +476,12 @@ public class ExcelPrintController {
             }
         }
 
-        return "success";
+        if (responseEntity.getRes().equals(ConstantUtil.RESPONSE_SUCCESS)) {
+            File f1 = new File("E:\\");
+            Desktop.getDesktop().open(f1);
+        }
+
+        return responseEntity;
     }
 
 
@@ -441,11 +490,16 @@ public class ExcelPrintController {
      *
      * @return
      */
-    @GetMapping("/exportIncomeParking")
-    public String exportIncomeParking(String type) {
-        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome();
+    @RequestMapping("/exportIncomeParking")
+    public ResponseEntity exportIncomeParking(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ResponseEntity responseEntity = new ResponseEntity();
+        String requestParam = RequestUtil.getJsonObjectData(request);
+        String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
 
-        String cartype = type;
+        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome(cartype);
+
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+        responseEntity.setResMessage("文件生成成功,生成文件名称为[" + cartype + "停车费]");
 
         List<Incomestatement> monthMoneyList = incomeStatementService.queryMonthMoney(cartype);
 
@@ -474,7 +528,7 @@ public class ExcelPrintController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
 
-        HSSFSheet sheet = wb.createSheet("解放车停车费");
+        HSSFSheet sheet = wb.createSheet(cartype + "停车费");
 
         HSSFRow row = sheet.createRow(0);
         for (int i = 0; i < titleList.size(); i++) {
@@ -497,12 +551,12 @@ public class ExcelPrintController {
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\解放车停车费.xls");
+            fileOutputStream = new FileOutputStream("E:\\"+cartype+"停车费.xlsx");
             wb.write(fileOutputStream);
             fileOutputStream.flush();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
+            responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
+            responseEntity.setResMessage(e.getMessage());
             e.printStackTrace();
         } finally {
             if (fileOutputStream != null) {
@@ -513,7 +567,13 @@ public class ExcelPrintController {
                 }
             }
         }
-        return "success";
+
+
+        if (responseEntity.getRes().equals(ConstantUtil.RESPONSE_SUCCESS)) {
+            File f1 = new File("E:\\");
+            Desktop.getDesktop().open(f1);
+        }
+        return responseEntity;
     }
 
 
@@ -522,12 +582,17 @@ public class ExcelPrintController {
      *
      * @return
      */
-    @GetMapping("/exportIncomeTire")
-    public String exportIncomeTire() {
+    @RequestMapping("/exportIncomeTire")
+    public ResponseEntity exportIncomeTire(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ResponseEntity responseEntity = new ResponseEntity();
+        String requestParam = RequestUtil.getJsonObjectData(request);
+        String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
 
-        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome();
+        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome(cartype);
 
-        String cartype = "解放车";
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+        responseEntity.setResMessage("文件生成成功,生成文件名称为[" + cartype + "轮胎费]");
+
 
         List<Incomestatement> monthMoneyList = incomeStatementService.queryMonthMoney(cartype);
 
@@ -556,7 +621,7 @@ public class ExcelPrintController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
 
-        HSSFSheet sheet = wb.createSheet("解放车轮胎费");
+        HSSFSheet sheet = wb.createSheet( cartype + "轮胎费");
 
         HSSFRow row = sheet.createRow(0);
         for (int i = 0; i < titleList.size(); i++) {
@@ -579,12 +644,12 @@ public class ExcelPrintController {
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\解放车轮胎费.xls");
+            fileOutputStream = new FileOutputStream("E:\\"+cartype+"轮胎费.xlsx");
             wb.write(fileOutputStream);
             fileOutputStream.flush();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        }  catch (Exception e) {
+            responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
+            responseEntity.setResMessage(e.getMessage());
             e.printStackTrace();
         } finally {
             if (fileOutputStream != null) {
@@ -596,7 +661,13 @@ public class ExcelPrintController {
             }
         }
 
-        return "success";
+
+        if (responseEntity.getRes().equals(ConstantUtil.RESPONSE_SUCCESS)) {
+            File f1 = new File("E:\\");
+            Desktop.getDesktop().open(f1);
+        }
+
+        return responseEntity;
     }
 
 
@@ -605,12 +676,16 @@ public class ExcelPrintController {
      *
      * @return
      */
-    @GetMapping("/exportIncomeRepair")
-    public String exportIncomeRepair() {
+    @RequestMapping("/exportIncomeRepair")
+    public ResponseEntity exportIncomeRepair(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ResponseEntity responseEntity = new ResponseEntity();
+        String requestParam = RequestUtil.getJsonObjectData(request);
+        String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
 
-        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome();
+        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome(cartype);
 
-        String cartype = "解放车";
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+        responseEntity.setResMessage("文件生成成功,生成文件名称为[" + cartype + "维修费]");
 
         List<Incomestatement> monthMoneyList = incomeStatementService.queryMonthMoney(cartype);
 
@@ -639,7 +714,7 @@ public class ExcelPrintController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
 
-        HSSFSheet sheet = wb.createSheet("解放车维修费");
+        HSSFSheet sheet = wb.createSheet( cartype + "维修费");
 
         HSSFRow row = sheet.createRow(0);
         for (int i = 0; i < titleList.size(); i++) {
@@ -662,12 +737,12 @@ public class ExcelPrintController {
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\解放车维修费.xls");
+            fileOutputStream = new FileOutputStream("E:\\"+cartype+"维修费.xlsx");
             wb.write(fileOutputStream);
             fileOutputStream.flush();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        }  catch (Exception e) {
+            responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
+            responseEntity.setResMessage(e.getMessage());
             e.printStackTrace();
         } finally {
             if (fileOutputStream != null) {
@@ -679,7 +754,13 @@ public class ExcelPrintController {
             }
         }
 
-        return "success";
+
+        if (responseEntity.getRes().equals(ConstantUtil.RESPONSE_SUCCESS)) {
+            File f1 = new File("E:\\");
+            Desktop.getDesktop().open(f1);
+        }
+
+        return responseEntity;
     }
 
 
@@ -688,12 +769,12 @@ public class ExcelPrintController {
      *
      * @return
      */
-    @GetMapping("/exportIncomeGross")
-    public String exportIncomeGross() {
+    @RequestMapping("/exportIncomeGross")
+    public String exportIncomeGross(HttpServletRequest request, HttpServletResponse response) {
+        String requestParam = RequestUtil.getJsonObjectData(request);
+        String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
+        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome(cartype);
 
-        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome();
-
-        String cartype = "解放车";
 
         List<Incomestatement> monthMoneyList = incomeStatementService.queryMonthMoney(cartype);
 
@@ -932,8 +1013,6 @@ public class ExcelPrintController {
         exportEntityList.forEach(x -> {
             x.setTotalcostmoney(Double.parseDouble(hashMap.get(x.getMonth()).toString()));
         });*/
-
-
 
 
         LinkedList<String> titleList = ConstantUtil.makeGrossTitle();

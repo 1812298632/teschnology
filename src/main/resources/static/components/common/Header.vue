@@ -37,7 +37,7 @@ module.exports = {
   data() {
     return {
       msg: "hello world!  Header",
-      username: "靖靖",
+      username: "123",
       isCollapse: false
     };
   },

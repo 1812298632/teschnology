@@ -119,12 +119,41 @@ public class UploadContrtoller {
             responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
             responseEntity.setResMessage("设置成功");
 
+            LambdaQueryWrapper<Departdetail> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(Departdetail::getCartype, departUploadEntity.getCartype());
+            wrapper.eq(Departdetail::getMonth, departUploadEntity.getMonth());
+            //wrapper.eq(Departdetail::getSheet, departUploadEntity.getSheetname());
+
+            List<Departdetail> departdetails = departDetailDao.selectList(wrapper);
+            if (departdetails.size() >= 1) {
+                responseEntity.setResMessage(RequestUtil.getObjectValue(requestParam, "cartype") +
+                        RequestUtil.getObjectValue(requestParam, "type") + " [" + RequestUtil.getObjectValue(requestParam, "month") + "月份],  "
+                       + "的数据已经有" + departdetails.size() + "条，再次新增会导致有多条数据，是否要先删除他们?");
+                responseEntity.setRes(ConstantUtil.RESPONSE_WARNING);
+            }
+
+
         } catch (Exception e) {
             responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
             logger.error(e.getMessage());
         }
 
+        return responseEntity;
+    }
 
+    @RequestMapping("deleteDepart")
+    @ResponseBody
+    public ResponseEntity deleteDepart() {
+        ResponseEntity responseEntity = new ResponseEntity();
+        DepartUploadEntity departUploadEntity = ConstantUtil.departUploadEntity;
+        LambdaQueryWrapper<Departdetail> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Departdetail::getCartype, departUploadEntity.getCartype());
+        wrapper.eq(Departdetail::getMonth, departUploadEntity.getMonth());
+        wrapper.eq(Departdetail::getSheet, departUploadEntity.getSheetname());
+        int delete = departDetailDao.delete(wrapper);
+
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+        responseEntity.setResMessage("本次共删除【"+departUploadEntity.getCartype()+departUploadEntity.getMonth()+"月份】"+delete+"条数据");
         return responseEntity;
     }
 

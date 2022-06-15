@@ -62,18 +62,18 @@
           </el-submenu>
         </el-submenu>-->
         <el-menu-item index="/uploaddepart">
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-upload"></i>
           <span slot="title">台账上传</span>
         </el-menu-item>
         <el-menu-item index="/uploadincome">
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-upload"></i>
           <span slot="title">损益表上传</span>
         </el-menu-item>
 
 
         <el-submenu index="1">
           <template slot="title">
-            <i class="el-icon-document"></i>
+            <i class="el-icon-menu"></i>
             <span slot="title">数据查询</span>
           </template>
           <el-menu-item-group>
@@ -119,11 +119,16 @@
         <el-menu-item index="3" disabled>
           <i class="el-icon-document"></i>
           <span slot="title">导航三</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <i class="el-icon-setting"></i>
-          <span slot="title">导航四</span>
         </el-menu-item>-->
+        <el-menu-item index="/wrwdownload">
+          <i class="el-icon-download"></i>
+          <span slot="title">沃尔沃数据导出</span>
+        </el-menu-item>
+        <el-menu-item index="/jfdownload">
+          <i class="el-icon-download"></i>
+          <span slot="title">解放车数据导出</span>
+        </el-menu-item>
+
       </el-menu>
     </el-scrollbar>
   </div>

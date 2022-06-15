@@ -3,7 +3,7 @@
     <el-container style="height: 5%">
       <div style="margin-left: 92%;">
         <el-button type="primary" v-show="shownextbutton" @click="submit()" :disabled="nextDisable">下一步</el-button>
-        <el-button v-show="showbutton" type="primary" @click="again()" >重新导入</el-button>
+        <el-button v-show="showbutton" type="primary" @click="again()">重新导入</el-button>
 
       </div>
 
@@ -13,13 +13,13 @@
     <el-container style="height: 20%">
       <el-steps :active="active" finish-status="success" style="width: 90%" align-center>
         <el-step title="选择数据" description="选择完成之后，下一步"></el-step>
-        <el-step title="上传文件" description="上传文件，如果失败可以重新导入，重新选择数据"></el-step>
+        <el-step title="上传文件" description="上传文件，如果失败可以点击重新导入，重新选择数据"></el-step>
         <el-step title="查看数据" description="查看导入的数据,查看无误 下一步，可以再次导入新的数据"></el-step>
       </el-steps>
     </el-container>
     <el-container style="height: 75%">
-      <div v-show="showone" align="center">
-        <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" >
+      <div v-show="showone">
+        <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm">
           <el-form-item label="车辆" prop="cartype">
             <el-select v-model="ruleForm.cartype">
               <el-option label="沃尔沃" value="沃尔沃"></el-option>
@@ -29,7 +29,7 @@
 
           <el-form-item label="导入名称" prop="type">
             <el-select v-model="ruleForm.type">
-<!--              <el-option label="损益表" value="损益"></el-option>-->
+              <!--              <el-option label="损益表" value="损益"></el-option>-->
               <el-option label="中卡物流车辆作业台账" value="台账"></el-option>
             </el-select>
           </el-form-item>
@@ -142,10 +142,10 @@
 module.exports = {
   data() {
     return {
-      showbutton:false,
-      shownextbutton:true,
-      nextDisable:false,
-      loading:false,
+      showbutton: false,
+      shownextbutton: true,
+      nextDisable: false,
+      loading: false,
       showone: true,
       showtwo: false,
       showthree: false,
@@ -191,7 +191,7 @@ module.exports = {
     });
   },
   methods: {
-    uploadSuccess(response, file, fileList){
+    uploadSuccess(response, file, fileList) {
       this.$message({
         showClose: true,
         message: response.resMessage,
@@ -199,10 +199,11 @@ module.exports = {
         offset: 150,
         type: response.res
       });
-
+      this.showbutton = false;
+      this.shownextbutton = true;
       this.nextDisable = false
     },
-    uploadError(err, file, fileList){
+    uploadError(err, file, fileList) {
       this.$message({
         showClose: true,
         message: "上传失败",
@@ -211,18 +212,18 @@ module.exports = {
         center: true,
         type: 'error'
       });
-      this.showbutton =true;
-      this.shownextbutton =false;
+      this.showbutton = true;
+      this.shownextbutton = false;
     }
     ,
-    again(){
+    again() {
       this.active = 0;
       this.showtwo = false
       this.showone = true
       this.showthree = false
-      this.showbutton =false;
-      this.shownextbutton =true;
-      this.nextDisable =false;
+      this.showbutton = false;
+      this.shownextbutton = true;
+      this.nextDisable = false;
     },
     submit() {
       let vali = true;
@@ -238,17 +239,77 @@ module.exports = {
               headers: new Headers({
                 'Content-Type': 'application/json'
               })
-            }).then(res => res.json())
-                .then(response => {
-
-                  this.$message({
-                    showClose: true,
-                    message: response.resMessage,
-                    center: true,
-                    offset: 150,
-                    type: response.res
-                  });
+            }).then(res => res.json()).then(response => {
+              if (response.res == 'success') {
+                this.$message({
+                  showClose: true,
+                  message: response.resMessage,
+                  center: true,
+                  offset: 150,
+                  type: response.res
                 });
+
+                this.showtwo = true
+                this.showone = false
+                this.showthree = false
+                if (this.active++ > 2) this.active = 0;
+
+              } else if (response.res == 'warning') {
+
+                this.$confirm(response.resMessage, '提示', {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                  type: 'warning'
+                }).then(() => {
+                  fetch("http://localhost:9080/deleteDepart", {
+                    method: 'POST', // 请求方法还可以是 put
+                    body: JSON.stringify(this.form),
+                    headers: new Headers({
+                      'Content-Type': 'application/json'
+                    })
+                  }).then(res => res.json()).then(response => {
+                    this.$message({
+                      showClose: true,
+                      message: response.resMessage,
+                      center: true,
+                      offset: 150,
+                      type: response.res
+                    });
+                    if (response.res == 'success') {
+                      this.showtwo = true
+                      this.showone = false
+                      this.showthree = false
+                      if (this.active++ > 2) this.active = 0;
+                    }
+
+
+                  });
+
+
+                }).catch(() => {
+                  /* this.$message({
+                     type: 'info',
+                     message: '已取消删除'
+                   });*/
+                  this.$notify({
+                    title: '警告',
+                    message: '会导致数据重复，生成的excel会出错！',
+                    type: 'warning'
+                  });
+
+                  this.showtwo = true
+                  this.showone = false
+                  this.showthree = false
+                  if (this.active++ > 2) this.active = 0;
+
+
+                });
+
+
+              }
+
+
+            });
 
           }
 
@@ -256,22 +317,12 @@ module.exports = {
 
       }
 
-      if (!vali) {
-        return;
-      }
-
-      if (this.active == 0 && vali) {
-        this.showtwo = true
-        this.showone = false
-        this.showthree = false
-      }
-
       if (this.active == 1) {
 
         this.showtwo = false
         this.showone = false
         this.showthree = true
-        this.loading =true
+        this.loading = true
         fetch("http://localhost:9080/queryByUploadEntity", {
           method: 'POST', // 请求方法还可以是 put
           body: '',
@@ -289,25 +340,28 @@ module.exports = {
                 type: response.res
               });
 
-              this.tableData =response.resList
-              this.loading =false
+              this.tableData = response.resList
+              this.loading = false
 
             });
-
+        if (this.active++ > 2) this.active = 0;
       }
       if (this.active == 2) {
-        this.nextDisable =true;
-        this.showbutton =true;
-        this.shownextbutton =false
+        this.nextDisable = true;
+        this.showbutton = true;
+        this.shownextbutton = false
+        if (this.active++ > 2) this.active = 0;
       }
       if (this.active == 3) {
-        this.showbutton =false;
-        this.shownextbutton =true
+        this.showbutton = false;
+        this.shownextbutton = true
         this.showtwo = false
         this.showone = true
         this.showthree = false
+
+        if (this.active++ > 2) this.active = 0;
       }
-      if (this.active++ > 2) this.active = 0;
+
     }
 
 

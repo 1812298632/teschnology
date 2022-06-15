@@ -12,7 +12,7 @@ public interface DepartService {
 
     List<Departdetail> querybyid();
 
-    DepartExportEntity exportDepart(String cityname);
+    DepartExportEntity exportDepart(String cityname, String cartype);
 
     void insertDepartDeatilByUpload(XSSFSheet sheet);
 }

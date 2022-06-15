@@ -143,8 +143,8 @@ public class DepartServiceImpl implements DepartService {
     }
 
     @Override
-    public DepartExportEntity exportDepart(String cityname) {
-        return departDetailDao.exportDepart(cityname);
+    public DepartExportEntity exportDepart(String cityname, String cartype) {
+        return departDetailDao.exportDepart(cityname,cartype);
     }
 
     @Override

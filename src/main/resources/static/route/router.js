@@ -14,6 +14,8 @@ const jfcar = httpVueLoader('view/system/jfcar.vue');
 const wrwcar = httpVueLoader('view/system/wrwcar.vue');
 const jfandwrwcar = httpVueLoader('view/system/jfandwrwcar.vue');
 const incomequery = httpVueLoader('view/system/incomequery.vue');
+const jfdownload = httpVueLoader('view/system/jfdownload.vue');
+const wrwdownload = httpVueLoader('view/system/wrwdownload.vue');
 
 
 //路由
@@ -78,6 +80,16 @@ const routes = [
                 path: "/incomequery",
                 component: incomequery,
                 meta: {title: '损益表综合查询'}
+            },
+            {
+                path: "/jfdownload",
+                component: jfdownload,
+                meta: {title: '解放车数据导出'}
+            },
+            {
+                path: "/wrwdownload",
+                component: wrwdownload,
+                meta: {title: '沃尔沃数据导出'}
             },
         ]
     },];

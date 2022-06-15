@@ -6,13 +6,14 @@
     <select id="exportIncome" resultType="com.excel.pro.entity.IncomeExportEntity">
         select *
         from (
-                 select SHEET,
-                        to_number(substr(SHEET, 4))          month,
+                 select CARTYPE,
+                        month                                month,
                         sum(kilo)                            kilosum,
                         count(SHEETID)                       runcount,
                         round(sum(kilo) / count(SHEETID), 2) avg
                  from DEPARTDETAIL D
-                 group by SHEET
+                 where CARTYPE =#{carType}
+                 group by month, CARTYPE
              ) a
         order by month
     </select>
