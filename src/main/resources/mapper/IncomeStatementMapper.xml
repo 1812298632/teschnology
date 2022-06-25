@@ -97,4 +97,30 @@
         select distinct COLUMNNAME as key, COLUMNNAME as value
         from INCOMESTATEMENT
     </select>
+
+    <select id="queryincomeIndex" resultType="com.excel.pro.entity.IndexPageEntity">
+        select cartype, listagg(distinct CARID, ',') within group ( order by CARID) tmp
+        from INCOMESTATEMENT
+        group by CARTYPE
+    </select>
+
+    <select id="queryIncomeWarning" resultType="com.excel.pro.entity.IndexPageEntity">
+
+        select cartype,
+        carid,
+        columnname
+        from INCOMESTATEMENT
+        where ONEMONTH &lt; 0
+        or TWOMONTH &lt; 0
+        or THREEMONTH &lt; 0
+        or FOURMONTH &lt; 0
+        or FIVEMONTH &lt; 0
+        or SIXMONTH &lt; 0
+        or SEVENMONTH &lt; 0
+        or EIGHTMONTH &lt; 0
+        or NINEMONTH &lt; 0
+        or TENMONTH &lt; 0
+        or ELEVENTMONTH &lt; 0
+        or TWELVEMONTH &lt; 0
+    </select>
 </mapper>

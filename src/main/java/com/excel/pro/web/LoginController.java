@@ -16,7 +16,7 @@ public class LoginController {
     @Resource
     private DepartDetailDao departDetailDao;
 
-    @GetMapping("/page")
+    @GetMapping("/")
     public String page() {
         // back前面不写 斜杠
         System.out.println("into index ...");

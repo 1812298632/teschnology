@@ -1,26 +1,16 @@
 <template>
   <div class="home">
-    <el-container style="height: 5%">
-      <div style="margin-left: 92%;">
-        <el-button type="primary" v-show="shownextbutton" @click="submit()" :disabled="nextDisable">下一步</el-button>
-        <el-button v-show="showbutton" type="primary" @click="again()">重新导入</el-button>
-
-      </div>
-
-
-    </el-container>
-
     <el-container style="height: 20%">
-      <el-steps :active="active" finish-status="success" style="width: 90%" align-center>
-        <el-step title="选择数据" description="选择完成之后，下一步"></el-step>
-        <el-step title="上传文件" description="上传文件，如果失败可以点击重新导入，重新选择数据"></el-step>
-        <el-step title="查看数据" description="查看导入的数据,查看无误 下一步，可以再次导入新的数据"></el-step>
+      <el-steps :active="active"  finish-status="success" style="width: 100%" align-center>
+        <el-step title="选择数据" icon="el-icon-edit" description="选择完成之后，下一步"></el-step>
+        <el-step title="上传文件" icon="el-icon-upload" description="上传成功将自动跳到下一步，如果失败可以点击重新导入，重新选择数据"></el-step>
+        <el-step title="查看数据" icon="el-icon-view" description="查看导入的数据,查看无误 下一步，可以再次导入新的数据"></el-step>
       </el-steps>
     </el-container>
-    <el-container style="height: 75%">
-      <div v-show="showone">
-        <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm">
-          <el-form-item label="车辆" prop="cartype">
+    <el-container style="height: 75%" >
+      <div  style="width: 100%" v-show="showone">
+        <el-form   style="margin:0 auto;" :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" >
+          <el-form-item label="车辆" prop="cartype" placeholder="请选择沃尔沃或解放车" >
             <el-select v-model="ruleForm.cartype">
               <el-option label="沃尔沃" value="沃尔沃"></el-option>
               <el-option label="解放车" value="解放车"></el-option>
@@ -49,13 +39,14 @@
               <el-option label="12月" value="12"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="sheet名称" prop="sheetname">
-            <el-input v-model="ruleForm.sheetname"></el-input>
+          <el-form-item label="sheet名称" prop="sheetname" >
+            <el-input v-model="ruleForm.sheetname" placeholder="excel对应的sheet名字"></el-input>
           </el-form-item>
 
         </el-form>
       </div>
-      <div v-show="showtwo" style="margin-left: 35%;">
+
+      <div style="width: 360px;margin:0 auto;" v-show="showtwo"  >
         <el-upload
             class="upload-demo"
             drag
@@ -65,10 +56,11 @@
             action="http://localhost:9080/upload"
             multiple>
           <i class="el-icon-upload"></i>
-          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-          <div class="el-upload__tip" slot="tip">上传excel/xlsx文件</div>
+          <div  class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+          <div   class="el-upload__tip" slot="tip">支持上传xlsx文件</div>
         </el-upload>
       </div>
+
       <div v-show="showthree" height="100%"
            style="width: 100%">
         <el-table
@@ -86,7 +78,7 @@
           <el-table-column
               prop="cartype"
               label="类型"
-              width="60">
+              width="100">
           </el-table-column>
           <el-table-column
               prop="month"
@@ -134,6 +126,16 @@
 
         </el-table>
       </div>
+    </el-container>
+
+    <el-container style="height: 5%">
+      <div style="margin-left: 92%;">
+        <el-button type="primary" v-show="shownextbutton" @click="submit()" :disabled="nextDisable">下一步</el-button>
+        <el-button v-show="showbutton" type="primary" @click="again()">重新导入</el-button>
+
+      </div>
+
+
     </el-container>
   </div>
 </template>
@@ -202,6 +204,8 @@ module.exports = {
       this.showbutton = false;
       this.shownextbutton = true;
       this.nextDisable = false
+
+      this.submit()
     },
     uploadError(err, file, fileList) {
       this.$message({
@@ -252,7 +256,7 @@ module.exports = {
                 this.showtwo = true
                 this.showone = false
                 this.showthree = false
-                if (this.active++ > 2) this.active = 0;
+                this.nextDisable = true;
 
               } else if (response.res == 'warning') {
 
@@ -268,6 +272,8 @@ module.exports = {
                       'Content-Type': 'application/json'
                     })
                   }).then(res => res.json()).then(response => {
+
+
                     this.$message({
                       showClose: true,
                       message: response.resMessage,
@@ -279,7 +285,7 @@ module.exports = {
                       this.showtwo = true
                       this.showone = false
                       this.showthree = false
-                      if (this.active++ > 2) this.active = 0;
+                      this.nextDisable = true;
                     }
 
 
@@ -300,8 +306,7 @@ module.exports = {
                   this.showtwo = true
                   this.showone = false
                   this.showthree = false
-                  if (this.active++ > 2) this.active = 0;
-
+                  this.nextDisable = true;
 
                 });
 
@@ -344,13 +349,11 @@ module.exports = {
               this.loading = false
 
             });
-        if (this.active++ > 2) this.active = 0;
       }
       if (this.active == 2) {
         this.nextDisable = true;
         this.showbutton = true;
         this.shownextbutton = false
-        if (this.active++ > 2) this.active = 0;
       }
       if (this.active == 3) {
         this.showbutton = false;
@@ -359,8 +362,13 @@ module.exports = {
         this.showone = true
         this.showthree = false
 
-        if (this.active++ > 2) this.active = 0;
       }
+
+      if(vali){
+
+      if (this.active++ > 2) this.active = 0;
+      }
+
 
     }
 

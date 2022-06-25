@@ -3,6 +3,7 @@ package com.excel.pro.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.excel.pro.entity.IncomeExportEntity;
 import com.excel.pro.entity.Incomestatement;
+import com.excel.pro.entity.IndexPageEntity;
 import com.excel.pro.entity.SelectEntity;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,4 +22,8 @@ public interface IncomeStatementDao extends BaseMapper<Incomestatement> {
     List<SelectEntity> querycarTypeByIncome();
 
     List<SelectEntity> querycolumnsByIncome();
+
+    List<IndexPageEntity> queryincomeIndex();
+
+    List<IndexPageEntity> queryIncomeWarning();
 }

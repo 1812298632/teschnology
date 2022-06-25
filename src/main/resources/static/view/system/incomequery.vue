@@ -1,12 +1,17 @@
 <template>
   <div class="home">
     <el-container style="height: 80%">
+<!--              style="border-collapse:collapse;width:880px;"
+  -->
       <el-table
+          class="el-table"
           v-loading="loading"
+          ref="tableData"
           :data="tableData"
-          style="border-collapse:collapse;width:880px;"
           height="100%"
+          style="width:880px;"
           border
+          show-summary
           stripe
           >
 <!--宽度固定 style="border-collapse:collapse;width:880px;"         -->
@@ -103,7 +108,7 @@
           <el-select v-model="form.cartype" placeholder="选择沃尔沃或解放">
             <el-option label="全部" value=""></el-option>
 
-            <el-option v-for ="tmp in cartypeSelData" :label="tmp.value"  :key="tmp.key" :value="tmp.key"></el-option>
+            <el-option v-for ="(tmp,index) in cartypeSelData" :label="tmp.value"  :key="tmp.key" :value="tmp.key"></el-option>
 
           </el-select>
         </el-form-item>
@@ -111,7 +116,7 @@
           <el-select v-model="form.carid" placeholder="车牌号">
             <el-option label="全部" value=""></el-option>
 
-            <el-option v-for ="tmp in caridSelData" :label="tmp.value"  :key="tmp.key" :value="tmp.key"></el-option>
+            <el-option v-for ="(tmp,index) in caridSelData" :label="tmp.value"  :key="tmp.key" :value="tmp.key"></el-option>
 
           </el-select>
         </el-form-item>
@@ -119,7 +124,7 @@
         <el-form-item label="项目">
           <el-select v-model="form.columnname" placeholder="项目">
             <el-option label="全部" value=""></el-option>
-            <el-option v-for ="tmp in columnnameSelData" :label="tmp.value"  :key="tmp.key" :value="tmp.key"></el-option>
+            <el-option v-for ="(tmp,index) in columnnameSelData" :label="tmp.value"  :key="tmp.key" :value="tmp.key"></el-option>
 
           </el-select>
         </el-form-item>
@@ -159,7 +164,11 @@ module.exports = {
       }
     };
   },
-
+  updated() {
+    this.$nextTick(() => {
+      this.$refs['tableData'].doLayout();
+    })
+  },
   created() {
     // 只有在标签页列表里的页面才使用keep-alive，即关闭标签之后就不保存到内存中了。
     bus.$on("tags", (msg) => {
@@ -238,6 +247,7 @@ module.exports = {
   },
   methods: {
 
+
     submit() {
       let formData = new FormData();
       this.loading = true
@@ -300,4 +310,5 @@ module.exports = {
   background-color: #f9fafc;
 }
 
+.el-table { overflow: visible !important; }
 </style>

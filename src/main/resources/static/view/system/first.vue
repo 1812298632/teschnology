@@ -46,7 +46,7 @@
       <el-form :inline="true" ref="form" :model="form" label-width="80px">
         <el-form-item label="活动区域">
           <el-select v-model="form.city" placeholder="城市">
-            <el-option v-for ="city in selectData" :label="city.value"  :key="city.key" :value="city.key"></el-option>
+            <el-option v-for ="(city,index) in selectData" :label="city.value"  :key="city.key" :value="city.key"></el-option>
 
           </el-select>
         </el-form-item>

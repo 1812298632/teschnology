@@ -72,7 +72,7 @@
             <el-option label="全部" value=""></el-option>
 
 
-            <el-option v-for ="city in startCitySelData" :label="city.value"  :key="city.key" :value="city.key"></el-option>
+            <el-option v-for ="(city,index) in startCitySelData" :label="city.value"  :key="city.key" :value="city.key"></el-option>
 
           </el-select>
         </el-form-item>
@@ -80,7 +80,7 @@
         <el-form-item label="终点">
           <el-select v-model="form.endcity" placeholder="城市">
             <el-option label="全部" value=""></el-option>
-            <el-option v-for ="city in endCitySelData" :label="city.value"  :key="city.key" :value="city.key"></el-option>
+            <el-option v-for ="(city,index) in endCitySelData" :label="city.value"  :key="city.key" :value="city.key"></el-option>
 
           </el-select>
         </el-form-item>
@@ -89,7 +89,7 @@
           <el-select v-model="form.month" placeholder="月份">
             <el-option label="全部" value=""></el-option>
 
-            <el-option v-for ="month in monthselData" :label="month.value"  :key="month.key" :value="month.key"></el-option>
+            <el-option v-for ="(month,index) in monthselData" :label="month.value"  :key="month.key" :value="month.key"></el-option>
 
           </el-select>
         </el-form-item>
@@ -112,7 +112,7 @@
 module.exports = {
   data() {
     return {
-      loading: false,
+      loading: true,
       tagsList: [],
       size:0,
       isCollapse: true,
@@ -141,7 +141,7 @@ module.exports = {
       this.tagsList = arr;
     });
 
-
+    this.loading = true
     fetch("http://localhost:9080/queryCitySelect", {
       method: 'POST', // 请求方法还可以是 put
       body: '',
@@ -176,7 +176,7 @@ module.exports = {
           this.monthselData = response.resList
     });
 
-    this.loading = true
+
     fetch("http://localhost:9080/queryDeaprtList", {
       method: 'POST', // 请求方法还可以是 put
       body: JSON.stringify({type:'沃尔沃'}),
@@ -187,9 +187,10 @@ module.exports = {
         .then(response => {
           this.tableData = response.resList
           this.size = response.resList.length
+          this.loading = false
         });
 
-    this.loading = false
+
   },
   methods: {
 

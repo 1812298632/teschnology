@@ -126,8 +126,8 @@ public class UploadContrtoller {
 
             List<Departdetail> departdetails = departDetailDao.selectList(wrapper);
             if (departdetails.size() >= 1) {
-                responseEntity.setResMessage(RequestUtil.getObjectValue(requestParam, "cartype") +
-                        RequestUtil.getObjectValue(requestParam, "type") + " [" + RequestUtil.getObjectValue(requestParam, "month") + "月份],  "
+                responseEntity.setResMessage("【"+RequestUtil.getObjectValue(requestParam, "cartype") +
+                        RequestUtil.getObjectValue(requestParam, "type") + RequestUtil.getObjectValue(requestParam, "month") + "月份】  "
                        + "的数据已经有" + departdetails.size() + "条，再次新增会导致有多条数据，是否要先删除他们?");
                 responseEntity.setRes(ConstantUtil.RESPONSE_WARNING);
             }
@@ -149,14 +149,28 @@ public class UploadContrtoller {
         LambdaQueryWrapper<Departdetail> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Departdetail::getCartype, departUploadEntity.getCartype());
         wrapper.eq(Departdetail::getMonth, departUploadEntity.getMonth());
-        wrapper.eq(Departdetail::getSheet, departUploadEntity.getSheetname());
+        //wrapper.eq(Departdetail::getSheet, departUploadEntity.getSheetname());
         int delete = departDetailDao.delete(wrapper);
 
         responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
-        responseEntity.setResMessage("本次共删除【"+departUploadEntity.getCartype()+departUploadEntity.getMonth()+"月份】"+delete+"条数据");
+        responseEntity.setResMessage("本次共删除【"+departUploadEntity.getCartype()+departUploadEntity.getType()+departUploadEntity.getMonth()+"月份】"+delete+"条数据");
         return responseEntity;
     }
+    @RequestMapping("deleteIncome")
+    @ResponseBody
+    public ResponseEntity deleteIncome() {
+        ResponseEntity responseEntity = new ResponseEntity();
+        IncomeUploadEntity incomeUploadEntity = ConstantUtil.incomeUploadEntity;
+        LambdaQueryWrapper<Incomestatement> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Incomestatement::getCartype, incomeUploadEntity.getCartype());
+        wrapper.eq(Incomestatement::getCarid, incomeUploadEntity.getSheetname());
+        //wrapper.eq(Departdetail::getSheet, departUploadEntity.getSheetname());
+        int delete = incomeStatementDao.delete(wrapper);
 
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+        responseEntity.setResMessage("本次共删除【"+incomeUploadEntity.getCartype()+incomeUploadEntity.getSheetname()+incomeUploadEntity.getType()+"】"+ delete + "条数据");
+        return responseEntity;
+    }
 
     @RequestMapping("setIncomeParamter")
     @ResponseBody
@@ -173,6 +187,17 @@ public class UploadContrtoller {
             incomeUploadEntity.setSheetname(RequestUtil.getObjectValue(requestParam, "sheetname"));
             responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
             responseEntity.setResMessage("设置成功");
+
+            LambdaQueryWrapper<Incomestatement> queryWrapper = new LambdaQueryWrapper<Incomestatement>();
+            queryWrapper.eq(Incomestatement::getCarid,RequestUtil.getObjectValue(requestParam, "sheetname"));
+            queryWrapper.eq(Incomestatement::getCartype,RequestUtil.getObjectValue(requestParam, "cartype"));
+            List<Incomestatement> incomestatementList = incomeStatementDao.selectList(queryWrapper);
+            if(incomestatementList.size()>=1){
+
+                responseEntity.setResMessage("【"+RequestUtil.getObjectValue(requestParam, "cartype") +
+                        RequestUtil.getObjectValue(requestParam, "type")+"车牌号为"+RequestUtil.getObjectValue(requestParam, "sheetname")+"】的数据已经有"+incomestatementList.size()+"条，再次新增会导致有多条数据，是否要先删除他们?");
+                responseEntity.setRes(ConstantUtil.RESPONSE_WARNING);
+            }
 
         } catch (Exception e) {
             responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);

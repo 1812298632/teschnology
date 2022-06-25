@@ -16,6 +16,7 @@ const jfandwrwcar = httpVueLoader('view/system/jfandwrwcar.vue');
 const incomequery = httpVueLoader('view/system/incomequery.vue');
 const jfdownload = httpVueLoader('view/system/jfdownload.vue');
 const wrwdownload = httpVueLoader('view/system/wrwdownload.vue');
+const index = httpVueLoader('view/system/index.vue');
 
 
 //路由
@@ -46,6 +47,11 @@ const routes = [
                 meta: {title: 'bar'}
             },
 */
+            {
+                path: "/index",
+                component: index,
+                meta: {title: '首页'}
+            },
             {
                 path: "/first",
                 component: first,

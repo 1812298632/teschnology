@@ -1,32 +1,32 @@
 <template>
-  <div class="home" >
-  <el-container style="margin-top: 3%" >
+  <div class="home" style="height: 100%">
+    <el-container >
 
-  <el-card class="box-card" style="width: 17%">
-      <div slot="header" class="clearfix">
-        <span>发车次数统计</span>
-        <el-button style="float: right; padding: 3px 0" type="text" @click="createDepartCount()">生成
-        </el-button>
-      </div>
-      <div v-for="list in this.countList" :key="list" class="text item">
-        <font size="2">解放车 <font size="2" color="#ff291a">{{ list.key }} </font>月份发车次数为
-          <font size="2" color="#ff291a">{{ list.value }}</font></font>
-
-
-      </div>
-      <font size="2">
-        <el-link href="http://localhost:9080/page#/uploaddepart" type="primary" target="_blank">其余月份没有数据导入</el-link>
-      </font>
-    </el-card>
+      <el-card  class="box-card"   style="width: 18%">
+        <div slot="header" class="clearfix">
+          <span>发车统计</span>
+          <el-button style="float: right; padding: 3px 0" type="text" @click="createDepartCount()">生成
+          </el-button>
+        </div>
+        <div v-for="(list,index) in this.countList" :key="index"  class="text item">
+          <font size="2"> <font size="2" color="#ff291a">{{ list.key }} </font>月份发车次数为
+            <font size="2" color="#ff291a">{{ list.value }}</font></font>
 
 
-        <el-card class="box-card" style="width: 17%;margin-left: 3%">
+        </div>
+        <font size="2">
+          <el-link href="http://localhost:9080/page#/uploaddepart" type="primary" target="_blank">其余月份没有数据导入</el-link>
+        </font>
+      </el-card>
+
+
+      <el-card  class="box-card"   style="width: 18%;margin-left: 3%">
         <div slot="header" class="clearfix">
           <span>过路费统计</span>
           <el-button style="float: right; padding: 3px 0" type="text" @click="createJfGlf()">生成</el-button>
         </div>
-        <div v-for="list in this.glfList" :key="list" class="text item">
-          <font size="2">{{ list.carid }} {{ list.columnname }}</font><br/>
+        <div v-for="(list,index) in this.glfList" :key="index" class="text item">
+          <font size="2">{{ list.columnname }}</font><br/>
           <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
           <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
           <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
@@ -44,13 +44,13 @@
         </div>
       </el-card>
 
-      <el-card class="box-card" style="width: 17%;margin-left: 3%">
+      <el-card  class="box-card"   style="width: 18%;margin-left: 3%">
         <div slot="header" class="clearfix">
           <span>燃油费统计</span>
           <el-button style="float: right; padding: 3px 0" type="text" @click="createJfRy()">生成</el-button>
         </div>
-        <div v-for="list in this.ryList" :key="list" class="text item">
-          <font size="2">{{ list.carid }} {{ list.columnname }}</font><br/>
+        <div v-for="(list,index) in this.ryList" :key="index" class="text item">
+          <font size="2">{{ list.columnname }}</font><br/>
           <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
           <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
           <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
@@ -69,13 +69,13 @@
       </el-card>
 
 
-      <el-card class="box-card" style="width: 17%;margin-left: 3%">
+      <el-card  class="box-card"   style="width: 18%;margin-left: 3%">
         <div slot="header" class="clearfix">
           <span>罚款统计</span>
           <el-button style="float: right; padding: 3px 0" type="text" @click="createJfFk()">生成</el-button>
         </div>
-        <div v-for="list in this.fkList" :key="list" class="text item">
-          <font size="2">{{ list.carid }} {{ list.columnname }}</font><br/>
+        <div v-for="(list,index) in this.fkList" :key="index" class="text item">
+          <font size="2">{{ list.columnname }}</font><br/>
           <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
           <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
           <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
@@ -93,13 +93,13 @@
         </div>
       </el-card>
 
-      <el-card class="box-card" style="width: 17%;margin-left: 3%">
-        <div slot="header" class="clearfix">
+      <el-card  class="box-card"   style="width: 18%;margin-left: 3%">
+        <div slot="header" class="clearfix" >
           <span>停车费统计</span>
           <el-button style="float: right; padding: 3px 0" type="text" @click="createJfTc()">生成</el-button>
         </div>
-        <div v-for="list in this.tcList" :key="list" class="text item">
-          <font size="2">{{ list.carid }} {{ list.columnname }}</font><br/>
+        <div v-for="(list,index) in this.tcList" :key="index" class="text item">
+          <font size="2">{{ list.columnname }}</font><br/>
           <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
           <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
           <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
@@ -118,91 +118,116 @@
       </el-card>
 
 
+    </el-container>
+    <el-container style="margin-top: 3%">
+          <el-card  style="width: 18%">
+            <div slot="header" >
+              <span>轮胎费统计</span>
+              <el-button style="float: right; padding: 3px 0" type="text" @click="createJfLt()">生成
+              </el-button>
+            </div>
+            <div v-for="(list,index) in this.ltList" :key="index" class="text item">
+              <font size="2"> {{ list.columnname }}</font><br/>
+              <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
+              <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
+              <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
+              <font size="2" color="#ff291a"> 4月 {{ list.fourmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 5月 {{ list.fivemonth }}</font><br/>
+              <font size="2" color="#ff291a"> 6月 {{ list.sixmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 7月 {{ list.sevenmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 8月 {{ list.eightmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 9月 {{ list.ninemonth }}</font><br/>
+              <font size="2" color="#ff291a"> 10月 {{ list.tenmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 11月 {{ list.eleventmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 12月 {{ list.twelvemonth }}</font>
 
 
-  </el-container>
-  <el-container style="margin-top: 3%">
-    <el-card class="box-card" style="width: 17%">
-      <div slot="header" class="clearfix">
-        <span>轮胎费统计</span>
-        <el-button style="float: right; padding: 3px 0" type="text" @click="createJfLt()">生成
-        </el-button>
-      </div>
-      <div v-for="list in this.ltList" :key="list" class="text item">
-        <font size="2">{{ list.carid }} {{ list.columnname }}</font><br/>
-        <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
-        <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
-        <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
-        <font size="2" color="#ff291a"> 4月 {{ list.fourmonth }}</font><br/>
-        <font size="2" color="#ff291a"> 5月 {{ list.fivemonth }}</font><br/>
-        <font size="2" color="#ff291a"> 6月 {{ list.sixmonth }}</font><br/>
-        <font size="2" color="#ff291a"> 7月 {{ list.sevenmonth }}</font><br/>
-        <font size="2" color="#ff291a"> 8月 {{ list.eightmonth }}</font><br/>
-        <font size="2" color="#ff291a"> 9月 {{ list.ninemonth }}</font><br/>
-        <font size="2" color="#ff291a"> 10月 {{ list.tenmonth }}</font><br/>
-        <font size="2" color="#ff291a"> 11月 {{ list.eleventmonth }}</font><br/>
-        <font size="2" color="#ff291a"> 12月 {{ list.twelvemonth }}</font>
+            </div>
+
+          </el-card>
 
 
-      </div>
-
-    </el-card>
-
-
-    <el-card class="box-card" style="width: 17%;margin-left: 3%">
-      <div slot="header" class="clearfix">
-        <span>维修费统计</span>
-        <el-button style="float: right; padding: 3px 0" type="text" @click="createJfWx()">生成
-        </el-button>
-      </div>
-      <div v-for="list in this.wxList" :key="list" class="text item">
-        <font size="2">{{ list.carid }} {{ list.columnname }}</font><br/>
-        <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
-        <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
-        <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
-        <font size="2" color="#ff291a"> 4月 {{ list.fourmonth }}</font><br/>
-        <font size="2" color="#ff291a"> 5月 {{ list.fivemonth }}</font><br/>
-        <font size="2" color="#ff291a"> 6月 {{ list.sixmonth }}</font><br/>
-        <font size="2" color="#ff291a"> 7月 {{ list.sevenmonth }}</font><br/>
-        <font size="2" color="#ff291a"> 8月 {{ list.eightmonth }}</font><br/>
-        <font size="2" color="#ff291a"> 9月 {{ list.ninemonth }}</font><br/>
-        <font size="2" color="#ff291a"> 10月 {{ list.tenmonth }}</font><br/>
-        <font size="2" color="#ff291a"> 11月 {{ list.eleventmonth }}</font><br/>
-        <font size="2" color="#ff291a"> 12月 {{ list.twelvemonth }}</font>
+          <el-card  style="width: 18%;margin-left: 3%">
+            <div slot="header" >
+              <span>维修费统计</span>
+              <el-button style="float: right; padding: 3px 0" type="text" @click="createJfWx()">生成
+              </el-button>
+            </div>
+            <div v-for="(list,index) in this.wxList" :key="index" class="text item">
+              <font size="2"> {{ list.columnname }}</font><br/>
+              <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
+              <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
+              <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
+              <font size="2" color="#ff291a"> 4月 {{ list.fourmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 5月 {{ list.fivemonth }}</font><br/>
+              <font size="2" color="#ff291a"> 6月 {{ list.sixmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 7月 {{ list.sevenmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 8月 {{ list.eightmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 9月 {{ list.ninemonth }}</font><br/>
+              <font size="2" color="#ff291a"> 10月 {{ list.tenmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 11月 {{ list.eleventmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 12月 {{ list.twelvemonth }}</font>
 
 
-      </div>
+            </div>
 
-    </el-card>
-
-
-    <el-card class="box-card" style="width: 17%;margin-left: 3%">
-      <div slot="header" class="clearfix">
-        <span>辅料统计</span>
-        <el-button style="float: right; padding: 3px 0" type="text" @click="createDepartCount()">生成
-        </el-button>
-      </div>
-      <div v-for="list in this.flList" :key="list" class="text item">
-        <font size="2">{{ list.carid }} {{ list.columnname }}</font><br/>
-        <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
-        <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
-        <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
-        <font size="2" color="#ff291a"> 4月 {{ list.fourmonth }}</font><br/>
-        <font size="2" color="#ff291a"> 5月 {{ list.fivemonth }}</font><br/>
-        <font size="2" color="#ff291a"> 6月 {{ list.sixmonth }}</font><br/>
-        <font size="2" color="#ff291a"> 7月 {{ list.sevenmonth }}</font><br/>
-        <font size="2" color="#ff291a"> 8月 {{ list.eightmonth }}</font><br/>
-        <font size="2" color="#ff291a"> 9月 {{ list.ninemonth }}</font><br/>
-        <font size="2" color="#ff291a"> 10月 {{ list.tenmonth }}</font><br/>
-        <font size="2" color="#ff291a"> 11月 {{ list.eleventmonth }}</font><br/>
-        <font size="2" color="#ff291a"> 12月 {{ list.twelvemonth }}</font>
+          </el-card>
 
 
-      </div>
+          <el-card  style="width: 18%;margin-left: 3%">
+            <div slot="header" >
+              <span>辅料统计</span>
+              <el-button style="float: right; padding: 3px 0" type="text" @click="createJffl()">生成
+              </el-button>
+            </div>
+            <div v-for="(list,index) in this.flList" :key="index" class="text item">
+              <font size="2"> {{ list.columnname }}</font><br/>
+              <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
+              <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
+              <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
+              <font size="2" color="#ff291a"> 4月 {{ list.fourmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 5月 {{ list.fivemonth }}</font><br/>
+              <font size="2" color="#ff291a"> 6月 {{ list.sixmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 7月 {{ list.sevenmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 8月 {{ list.eightmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 9月 {{ list.ninemonth }}</font><br/>
+              <font size="2" color="#ff291a"> 10月 {{ list.tenmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 11月 {{ list.eleventmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 12月 {{ list.twelvemonth }}</font>
 
-    </el-card>
 
-  </el-container>
+            </div>
+
+          </el-card>
+
+
+          <el-card  style="width: 39%;margin-left: 3%">
+            <div slot="header" >
+              <span>解放车毛利</span>
+              <el-button style="float: right; padding: 3px 0" type="text" @click="createJfml()">生成
+              </el-button>
+            </div>
+            <div v-for="(list,index) in this.otherList" :key="index" class="text item">
+              <font size="3" color="#dda0dd">{{ list.carid }} 车牌属于解放</font><br/>
+              <font size="2">{{ list.columnname }}</font><br/>
+              <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
+              <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
+              <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
+              <font size="2" color="#ff291a"> 4月 {{ list.fourmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 5月 {{ list.fivemonth }}</font><br/>
+              <font size="2" color="#ff291a"> 6月 {{ list.sixmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 7月 {{ list.sevenmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 8月 {{ list.eightmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 9月 {{ list.ninemonth }}</font><br/>
+              <font size="2" color="#ff291a"> 10月 {{ list.tenmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 11月 {{ list.eleventmonth }}</font><br/>
+              <font size="2" color="#ff291a"> 12月 {{ list.twelvemonth }}</font>
+            </div>
+
+          </el-card>
+
+
+        </el-container>
   </div>
 </template>
 
@@ -219,12 +244,14 @@ module.exports = {
       ltList: [],
       wxList: [],
       flList: [],
+      otherList:[],
       form: {
         type: '',
         startcity: '',
         endcity: '',
         month: '',
         cartype: '',
+        columnname: ''
       },
       isCollapse: true,
     };
@@ -288,16 +315,28 @@ module.exports = {
         'Content-Type': 'application/json'
       })
     }).then(res => res.json()).then(response => {
-      this.glfList = response.resList.filter( item => item.columnname == '         路桥费')
-      this.ryList = response.resList.filter( item => item.columnname == '         燃油费')
-      this.fkList = response.resList.filter( item => item.columnname == '         罚金、滞纳金')
-      this.tcList = response.resList.filter( item => item.columnname == '         停车费')
-      this.ltList = response.resList.filter( item => item.columnname == '            轮胎维修')
-      this.wxList = response.resList.filter( item => item.columnname == '            日常维修')
-      this.flList = response.resList.filter( item => item.columnname == '         物料消耗')
+      this.glfList = response.resList.filter(item => item.columnname == '         路桥费')
+      this.ryList = response.resList.filter(item => item.columnname == '         燃油费')
+      this.fkList = response.resList.filter(item => item.columnname == '         罚金、滞纳金')
+      this.tcList = response.resList.filter(item => item.columnname == '         停车费')
+      this.ltList = response.resList.filter(item => item.columnname == '            轮胎维修')
+      this.wxList = response.resList.filter(item => item.columnname == '            日常维修')
+      this.flList = response.resList.filter(item => item.columnname == '         物料消耗')
 
     });
 
+
+    fetch("http://localhost:9080/queryOthermoney", {
+      method: 'POST', // 请求方法还可以是 put
+      body: JSON.stringify(this.form),
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    }).then(res => res.json()).then(response => {
+      this.otherList = response.resList
+
+
+    });
 
 
     this.$notify({
@@ -333,7 +372,8 @@ module.exports = {
 
     createJfGlf() {
       this.form.cartype = '解放车'
-      fetch("http://localhost:9080/exportIncomeTolls", {
+      this.form.columnname = this.glfList[0].columnname
+      fetch("http://localhost:9080/exportIncomeData", {
         method: 'POST', // 请求方法还可以是 put
         body: JSON.stringify(this.form),
         headers: new Headers({
@@ -350,9 +390,10 @@ module.exports = {
       });
 
     },
-    createJfRy(){
+    createJfRy() {
       this.form.cartype = '解放车'
-      fetch("http://localhost:9080/exportIncomeFuel", {
+      this.form.columnname = this.ryList[0].columnname
+      fetch("http://localhost:9080/exportIncomeData", {
         method: 'POST', // 请求方法还可以是 put
         body: JSON.stringify(this.form),
         headers: new Headers({
@@ -369,9 +410,10 @@ module.exports = {
       });
 
     },
-    createJfFk(){
+    createJfFk() {
       this.form.cartype = '解放车'
-      fetch("http://localhost:9080/exportIncomeFine", {
+      this.form.columnname = this.fkList[0].columnname
+      fetch("http://localhost:9080/exportIncomeData", {
         method: 'POST', // 请求方法还可以是 put
         body: JSON.stringify(this.form),
         headers: new Headers({
@@ -387,9 +429,10 @@ module.exports = {
         });
       });
     },
-    createJfTc(){
+    createJfTc() {
       this.form.cartype = '解放车'
-      fetch("http://localhost:9080/exportIncomeParking", {
+      this.form.columnname = this.tcList[0].columnname
+      fetch("http://localhost:9080/exportIncomeData", {
         method: 'POST', // 请求方法还可以是 put
         body: JSON.stringify(this.form),
         headers: new Headers({
@@ -405,9 +448,10 @@ module.exports = {
         });
       });
     },
-    createJfLt(){
+    createJfLt() {
       this.form.cartype = '解放车'
-      fetch("http://localhost:9080/exportIncomeTire", {
+      this.form.columnname = this.ltList[0].columnname
+      fetch("http://localhost:9080/exportIncomeData", {
         method: 'POST', // 请求方法还可以是 put
         body: JSON.stringify(this.form),
         headers: new Headers({
@@ -423,9 +467,10 @@ module.exports = {
         });
       });
     },
-    createJfWx(){
+    createJfWx() {
       this.form.cartype = '解放车'
-      fetch("http://localhost:9080/exportIncomeRepair", {
+      this.form.columnname = this.wxList[0].columnname
+      fetch("http://localhost:9080/exportIncomeData", {
         method: 'POST', // 请求方法还可以是 put
         body: JSON.stringify(this.form),
         headers: new Headers({
@@ -440,8 +485,45 @@ module.exports = {
           type: response.res
         });
       });
-    }
-
+    },
+    createJffl() {
+      this.form.cartype = '解放车'
+      this.form.columnname = this.flList[0].columnname
+      fetch("http://localhost:9080/exportIncomeData", {
+        method: 'POST', // 请求方法还可以是 put
+        body: JSON.stringify(this.form),
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        })
+      }).then(res => res.json()).then(response => {
+        this.$message({
+          showClose: true,
+          message: response.resMessage,
+          center: true,
+          offset: 150,
+          type: response.res
+        });
+      });
+    },
+    createJfml() {
+      this.form.cartype = '解放车'
+      this.form.columnname = this.flList[0].columnname
+      fetch("http://localhost:9080/exportIncomeGross", {
+        method: 'POST', // 请求方法还可以是 put
+        body: JSON.stringify(this.form),
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        })
+      }).then(res => res.json()).then(response => {
+        this.$message({
+          showClose: true,
+          message: response.resMessage,
+          center: true,
+          offset: 150,
+          type: response.res
+        });
+      });
+    },
 
 
   },

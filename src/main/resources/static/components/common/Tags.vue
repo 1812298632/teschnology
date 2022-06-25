@@ -68,9 +68,23 @@ module.exports = {
     setTags(route) {
       console.log("setTags ....");
       console.log(route);
+
+    /*  this.tagsList.push({
+        title: '沃尔沃数据导出',
+        path: '/wrwdownload',
+        //   name: route.matched[1].components.default.name,
+        name: null
+      });*/
+
+/*
+      alert(route.fullPath)
+*/
       const isExist = this.tagsList.some((item) => {
         return item.path === route.fullPath;
       });
+
+
+
       console.log('exist::' + isExist)
       if (!isExist) {
         if (this.tagsList.length >= 8) {

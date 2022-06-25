@@ -1,6 +1,7 @@
 <template>
   <div class="sidebar">
     <el-scrollbar>
+<!--      router	是否使用 vue-router 的模式，启用该模式会在激活导航时以 index 作为 path 进行路由跳转-->
       <el-menu
           router
           :default-active="onRoutes"
@@ -39,10 +40,6 @@
           </el-submenu>
         </el-submenu>
 -->
-
-
-
-
 <!--        <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-location"></i>

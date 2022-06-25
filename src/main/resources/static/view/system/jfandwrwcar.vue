@@ -6,6 +6,7 @@
           :data="tableData"
           height="100%"
           style="width: 100%"
+
           border
           stripe
           >
@@ -71,7 +72,7 @@
           <el-select v-model="form.type" placeholder="选择沃尔沃或解放">
             <el-option label="全部" value=""></el-option>
 
-            <el-option v-for ="type in cartypeSelData" :label="type.value"  :key="type.key" :value="type.key"></el-option>
+            <el-option v-for ="(type,index) in cartypeSelData" :label="type.value"  :key="type.key" :value="type.key"></el-option>
 
           </el-select>
         </el-form-item>
@@ -79,7 +80,7 @@
           <el-select v-model="form.startcity" placeholder="城市">
             <el-option label="全部" value=""></el-option>
 
-            <el-option v-for ="city in startCitySelData" :label="city.value"  :key="city.key" :value="city.key"></el-option>
+            <el-option v-for ="(city,index) in startCitySelData" :label="city.value"  :key="city.key" :value="city.key"></el-option>
 
           </el-select>
         </el-form-item>
@@ -87,7 +88,7 @@
         <el-form-item label="终点">
           <el-select v-model="form.endcity" placeholder="城市">
             <el-option label="全部" value=""></el-option>
-            <el-option v-for ="city in endCitySelData" :label="city.value"  :key="city.key" :value="city.key"></el-option>
+            <el-option v-for ="(city,index) in endCitySelData" :label="city.value"  :key="city.key" :value="city.key"></el-option>
 
           </el-select>
         </el-form-item>
@@ -96,7 +97,7 @@
           <el-select v-model="form.month" placeholder="月份">
             <el-option label="全部" value=""></el-option>
 
-            <el-option v-for ="month in monthselData" :label="month.value"  :key="month.key" :value="month.key"></el-option>
+            <el-option v-for ="(month,index) in monthselData" :label="month.value"  :key="month.key" :value="month.key"></el-option>
 
           </el-select>
         </el-form-item>
@@ -118,7 +119,7 @@
 module.exports = {
   data() {
     return {
-      loading: false,
+      loading: true,
       tagsList: [],
       isCollapse: true,
       size:0,
@@ -137,6 +138,8 @@ module.exports = {
   },
 
   created() {
+
+
     // 只有在标签页列表里的页面才使用keep-alive，即关闭标签之后就不保存到内存中了。
     bus.$on("tags", (msg) => {
       console.log("home....bus...on");
@@ -147,7 +150,6 @@ module.exports = {
       }
       this.tagsList = arr;
     });
-
 
     fetch("http://localhost:9080/queryCitySelect", {
       method: 'POST', // 请求方法还可以是 put
@@ -194,7 +196,7 @@ module.exports = {
         .then(response => {
           this.cartypeSelData = response.resList
         });
-    this.loading = true
+
     fetch("http://localhost:9080/queryDeaprtList", {
       method: 'POST', // 请求方法还可以是 put
       body: '',
@@ -205,9 +207,10 @@ module.exports = {
         .then(response => {
           this.tableData = response.resList
           this.size = response.resList.length
+          this.loading = false
         });
 
-    this.loading = false
+
   },
   methods: {
 

@@ -78,6 +78,8 @@ public class ConstantUtil {
     public static final String sumkilo = "总里程";
     public static final String avg = "平均里程";
     public static final String money = "月度总费用";
+    public static final String avgonway="平均单程费用";
+    public static final String cost="每公里成本";
 
     public static LinkedList makeToolsTitle() {
         LinkedList<String> toolsTitleList = new LinkedList();
@@ -86,6 +88,8 @@ public class ConstantUtil {
         toolsTitleList.add(sumkilo);
         toolsTitleList.add(avg);
         toolsTitleList.add(money);
+        toolsTitleList.add(avgonway);
+        toolsTitleList.add(cost);
 
         return toolsTitleList;
     }
@@ -103,6 +107,10 @@ public class ConstantUtil {
     public static final String repair = "维修费";
     public static final String other = "其他";
     public static final String totalcost = "总成本";
+    public static final String kilocost = "公里成本费用";
+    public static final String gross = "毛利";
+    public static final String grossrate = "毛利率";
+    public static final String grossonway = "单程毛利";
 
 
     public static LinkedList makeGrossTitle() {
@@ -119,6 +127,10 @@ public class ConstantUtil {
         titleList.add(repair);
         titleList.add(other);
         titleList.add(totalcost);
+        titleList.add(kilocost);
+        titleList.add(gross);
+        titleList.add(grossrate);
+        titleList.add(grossonway);
 
         return titleList;
     }

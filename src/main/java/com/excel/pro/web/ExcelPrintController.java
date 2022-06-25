@@ -6,9 +6,10 @@ import com.excel.pro.service.DepartService;
 import com.excel.pro.service.IncomeStatementService;
 import com.excel.pro.util.ConstantUtil;
 import com.excel.pro.util.RequestUtil;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -161,14 +163,19 @@ public class ExcelPrintController {
 
             for (int j = 0; j < countListArray.length; j++) {
                 //将内容按顺序赋给对应的列对象
-                row.createCell((short) j).setCellValue(countListArray[j]);
+                if (j == 0) {
+                    row.createCell((short) j).setCellValue(countListArray[j]);
+
+                } else {
+                    row.createCell((short) j).setCellValue(Integer.parseInt(countListArray[j]));
+                }
             }
         }
 
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\解放车发车次数.xlsx");
+            fileOutputStream = new FileOutputStream("E:\\解放车发车明细.xlsx");
 
             wb.write(fileOutputStream);
             fileOutputStream.flush();
@@ -187,6 +194,131 @@ public class ExcelPrintController {
             }
         }
 
+
+        if (responseEntity.getRes().equals(ConstantUtil.RESPONSE_SUCCESS)) {
+            File f1 = new File("E:\\");
+            Desktop.getDesktop().open(f1);
+        }
+
+
+        return responseEntity;
+    }
+
+
+    /**
+     * 导出 解放车/沃尔沃 过路费 油费  罚款 停车费 轮胎费 维修费
+     *
+     * @return
+     */
+    @RequestMapping("/exportIncomeData")
+    public ResponseEntity exportIncomeData(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        String requestParam = RequestUtil.getJsonObjectData(request);
+        String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
+        String columnname = RequestUtil.getObjectValue(requestParam, "columnname");
+
+        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome(cartype);
+
+
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+
+        responseEntity.setResMessage("文件生成成功,生成文件名称为[" + cartype + columnname.trim() + "]");
+
+        List<Incomestatement> monthMoneyList = incomeStatementService.queryMonthMoney(cartype);
+
+        Incomestatement monthMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(columnname)).collect(Collectors.toList()).get(0);
+
+        HashMap<Object, Object> hashMap = new HashMap<>();
+        hashMap.put("1", monthMoney.getOnemonth());
+        hashMap.put("2", monthMoney.getTwomonth());
+        hashMap.put("3", monthMoney.getThreemonth());
+        hashMap.put("4", monthMoney.getFourmonth());
+        hashMap.put("5", monthMoney.getFivemonth());
+        hashMap.put("6", monthMoney.getSixmonth());
+        hashMap.put("7", monthMoney.getSevenmonth());
+        hashMap.put("8", monthMoney.getEightmonth());
+        hashMap.put("9", monthMoney.getNinemonth());
+        hashMap.put("10", monthMoney.getTenmonth());
+        hashMap.put("11", monthMoney.getEleventmonth());
+        hashMap.put("12", monthMoney.getTwelvemonth());
+
+        exportEntityList.forEach(x -> {
+            x.setMoney(Double.parseDouble(hashMap.get(x.getMonth()).toString()));
+        });
+
+
+        exportEntityList.forEach(x -> {
+            BigDecimal runcount = new BigDecimal(Double.toString(x.getRuncount()));
+            BigDecimal kilosum = new BigDecimal(x.getKilosum());
+            BigDecimal runcountmoney = new BigDecimal(Double.toString(x.getMoney()));
+            BigDecimal kilosummoney = new BigDecimal(Double.toString(x.getMoney() * 10000));
+
+            x.setAvgonway(runcountmoney.divide(runcount, 2, BigDecimal.ROUND_HALF_UP).doubleValue());
+            x.setCost(kilosummoney.divide(kilosum, 2, BigDecimal.ROUND_HALF_UP).doubleValue());
+        });
+
+
+        LinkedList<String> titleList = ConstantUtil.makeToolsTitle();
+
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+
+        HSSFSheet sheet = wb.createSheet(cartype + columnname.trim());
+
+        HSSFRow row = sheet.createRow(0);
+        for (int i = 0; i < titleList.size(); i++) {
+            //表头
+            row.createCell((short) i).setCellValue(titleList.get(i));
+        }
+
+        //CellStyle cellStyle = wb.createCellStyle();
+        //cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00"));
+
+
+        for (int i = 0; i < exportEntityList.size(); i++) {
+            row = sheet.createRow(i + 1);
+            IncomeExportEntity exportEntity = exportEntityList.get(i);
+
+            String[] countListArray = {exportEntity.getMonth(), exportEntity.getRuncount().toString(), exportEntity.getKilosum(),
+                    exportEntity.getAvg().toString(), exportEntity.getMoney().toString(), exportEntity.getAvgonway().toString(), exportEntity.getCost().toString()};
+
+            for (int j = 0; j < countListArray.length; j++) {
+                //将内容按顺序赋给对应的列对象
+                HSSFCell cell = row.createCell((short) j);
+                if (j <= 2) {
+
+                    cell.setCellValue(Long.parseLong(countListArray[j]));
+
+                } else {
+                    //cell.setCellStyle(cellStyle);
+                    cell.setCellValue(Double.parseDouble(countListArray[j]));
+
+                }
+
+            }
+        }
+
+
+        //生成excel
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream("E:\\" + cartype + columnname.trim() + ".xlsx");
+            wb.write(fileOutputStream);
+            fileOutputStream.flush();
+        } catch (Exception e) {
+            responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
+            responseEntity.setResMessage(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
         if (responseEntity.getRes().equals(ConstantUtil.RESPONSE_SUCCESS)) {
             File f1 = new File("E:\\");
@@ -267,7 +399,7 @@ public class ExcelPrintController {
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\"+cartype+"过路费.xlsx");
+            fileOutputStream = new FileOutputStream("E:\\" + cartype + "过路费.xlsx");
             wb.write(fileOutputStream);
             fileOutputStream.flush();
         } catch (Exception e) {
@@ -363,14 +495,14 @@ public class ExcelPrintController {
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\"+cartype+"燃油费.xlsx");
+            fileOutputStream = new FileOutputStream("E:\\" + cartype + "燃油费.xlsx");
             wb.write(fileOutputStream);
             fileOutputStream.flush();
         } catch (Exception e) {
             responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
             responseEntity.setResMessage(e.getMessage());
             e.printStackTrace();
-        }  finally {
+        } finally {
             if (fileOutputStream != null) {
                 try {
                     fileOutputStream.close();
@@ -436,7 +568,7 @@ public class ExcelPrintController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
 
-        HSSFSheet sheet = wb.createSheet( cartype + "罚款");
+        HSSFSheet sheet = wb.createSheet(cartype + "罚款");
 
         HSSFRow row = sheet.createRow(0);
         for (int i = 0; i < titleList.size(); i++) {
@@ -459,7 +591,7 @@ public class ExcelPrintController {
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\"+cartype+"罚款.xlsx");
+            fileOutputStream = new FileOutputStream("E:\\" + cartype + "罚款.xlsx");
             wb.write(fileOutputStream);
             fileOutputStream.flush();
         } catch (Exception e) {
@@ -551,7 +683,7 @@ public class ExcelPrintController {
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\"+cartype+"停车费.xlsx");
+            fileOutputStream = new FileOutputStream("E:\\" + cartype + "停车费.xlsx");
             wb.write(fileOutputStream);
             fileOutputStream.flush();
         } catch (Exception e) {
@@ -621,7 +753,7 @@ public class ExcelPrintController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
 
-        HSSFSheet sheet = wb.createSheet( cartype + "轮胎费");
+        HSSFSheet sheet = wb.createSheet(cartype + "轮胎费");
 
         HSSFRow row = sheet.createRow(0);
         for (int i = 0; i < titleList.size(); i++) {
@@ -644,10 +776,10 @@ public class ExcelPrintController {
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\"+cartype+"轮胎费.xlsx");
+            fileOutputStream = new FileOutputStream("E:\\" + cartype + "轮胎费.xlsx");
             wb.write(fileOutputStream);
             fileOutputStream.flush();
-        }  catch (Exception e) {
+        } catch (Exception e) {
             responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
             responseEntity.setResMessage(e.getMessage());
             e.printStackTrace();
@@ -714,7 +846,7 @@ public class ExcelPrintController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
 
-        HSSFSheet sheet = wb.createSheet( cartype + "维修费");
+        HSSFSheet sheet = wb.createSheet(cartype + "维修费");
 
         HSSFRow row = sheet.createRow(0);
         for (int i = 0; i < titleList.size(); i++) {
@@ -737,10 +869,10 @@ public class ExcelPrintController {
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\"+cartype+"维修费.xlsx");
+            fileOutputStream = new FileOutputStream("E:\\" + cartype + "维修费.xlsx");
             wb.write(fileOutputStream);
             fileOutputStream.flush();
-        }  catch (Exception e) {
+        } catch (Exception e) {
             responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
             responseEntity.setResMessage(e.getMessage());
             e.printStackTrace();
@@ -770,12 +902,16 @@ public class ExcelPrintController {
      * @return
      */
     @RequestMapping("/exportIncomeGross")
-    public String exportIncomeGross(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity exportIncomeGross(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ResponseEntity responseEntity = new ResponseEntity();
+
         String requestParam = RequestUtil.getJsonObjectData(request);
         String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
         List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome(cartype);
 
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
 
+        responseEntity.setResMessage("文件生成成功,生成文件名称为[" + cartype + "毛利]");
         List<Incomestatement> monthMoneyList = incomeStatementService.queryMonthMoney(cartype);
 
         //毛利表中 车队收入列
@@ -1015,6 +1151,30 @@ public class ExcelPrintController {
         });*/
 
 
+        exportEntityList.forEach(x -> {
+            BigDecimal totalcsot = new BigDecimal(Double.toString(x.getTotalcostmoney()));//总成本
+            BigDecimal Kilosum = new BigDecimal(x.getKilosum());//运行总里程
+            BigDecimal totalincomemoney = new BigDecimal(Double.toString(x.getTotalincomemoney()));//总收入
+            BigDecimal runcount = new BigDecimal(Double.toString(x.getRuncount()));//单程
+
+            //计算公里成本费用
+            BigDecimal kilocost = totalcsot.multiply(new BigDecimal(10000)).divide(Kilosum, BigDecimal.ROUND_HALF_UP);
+            x.setKilocost(kilocost.doubleValue());
+
+            //计算毛利
+            BigDecimal gross = totalincomemoney.subtract(totalcsot);
+            x.setGross(gross.doubleValue());
+
+            //计算毛利率
+            BigDecimal grossrate = gross.divide(totalincomemoney, BigDecimal.ROUND_HALF_UP);
+            x.setGrossrate(grossrate.doubleValue());
+
+            //计算单程毛利
+            BigDecimal grossonway = gross.divide(runcount, BigDecimal.ROUND_HALF_UP);
+            x.setGrossonway(grossonway.doubleValue());
+        });
+
+
         LinkedList<String> titleList = ConstantUtil.makeGrossTitle();
 
 
@@ -1034,23 +1194,34 @@ public class ExcelPrintController {
 
             String[] countListArray = {exportEntity.getMonth(), exportEntity.getRuncount().toString(), exportEntity.getKilosum(),
                     exportEntity.getTotalincomemoney().toString(), exportEntity.getTollsmoney().toString(), exportEntity.getFuelmoney().toString(), exportEntity.getFinesmoney().toString(),
-                    exportEntity.getParkingmoney().toString(), exportEntity.getTiremoney().toString(), exportEntity.getRepairmoney().toString(), exportEntity.getOthermoney().toString(), exportEntity.getTotalcostmoney().toString()};
+                    exportEntity.getParkingmoney().toString(), exportEntity.getTiremoney().toString(), exportEntity.getRepairmoney().toString(), exportEntity.getOthermoney().toString(),
+                    exportEntity.getTotalcostmoney().toString(), exportEntity.getKilocost().toString(), exportEntity.getGross().toString(), exportEntity.getGrossrate().toString(),
+                    exportEntity.getGrossonway().toString()};
 
             for (int j = 0; j < countListArray.length; j++) {
                 //将内容按顺序赋给对应的列对象
-                row.createCell((short) j).setCellValue(countListArray[j]);
+                HSSFCell cell = row.createCell((short) j);
+                if (j <= 2) {
+
+                    cell.setCellValue(Long.parseLong(countListArray[j]));
+
+                } else {
+                    //cell.setCellStyle(cellStyle);
+                    cell.setCellValue(Double.parseDouble(countListArray[j]));
+
+                }
             }
         }
 
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\解放车毛利.xls");
+            fileOutputStream = new FileOutputStream("E:\\" + cartype + "毛利.xlsx");
             wb.write(fileOutputStream);
             fileOutputStream.flush();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
+            responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
+            responseEntity.setResMessage(e.getMessage());
             e.printStackTrace();
         } finally {
             if (fileOutputStream != null) {
@@ -1062,6 +1233,12 @@ public class ExcelPrintController {
             }
         }
 
-        return "success";
+
+        if (responseEntity.getRes().equals(ConstantUtil.RESPONSE_SUCCESS)) {
+            File f1 = new File("E:\\");
+            Desktop.getDesktop().open(f1);
+        }
+
+        return responseEntity;
     }
 }

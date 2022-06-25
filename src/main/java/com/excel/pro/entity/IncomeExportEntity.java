@@ -11,7 +11,8 @@ public class IncomeExportEntity {
     private Double avg;
     private Double money;
 
-
+    private Double avgonway;//平均单程费用
+    private Double cost;//每公里成本
 
 
     //毛利
@@ -26,4 +27,8 @@ public class IncomeExportEntity {
     private Double totalcostmoney;//总成本
 
 
+    private Double kilocost;//公里成本费用
+    private Double gross;//毛利
+    private Double grossrate;//毛利率
+    private Double grossonway;//单程毛利
 }

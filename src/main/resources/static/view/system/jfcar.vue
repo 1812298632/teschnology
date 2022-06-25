@@ -71,7 +71,7 @@
           <el-select v-model="form.startcity" placeholder="城市">
             <el-option label="全部" value=""></el-option>
 
-            <el-option v-for ="tmp in startCitySelData" :label="tmp.value"  :key="tmp.key" :value="tmp.key"></el-option>
+            <el-option v-for ="(tmp,index) in startCitySelData" :label="tmp.value"  :key="tmp.key" :value="tmp.key"></el-option>
 
           </el-select>
         </el-form-item>
@@ -79,7 +79,7 @@
         <el-form-item label="终点">
           <el-select v-model="form.endcity" placeholder="城市">
             <el-option label="全部" value=""></el-option>
-            <el-option v-for ="tmp in endCitySelData" :label="tmp.value"  :key="tmp.key" :value="tmp.key"></el-option>
+            <el-option v-for ="(tmp,index) in endCitySelData" :label="tmp.value"  :key="tmp.key" :value="tmp.key"></el-option>
 
           </el-select>
         </el-form-item>
@@ -88,7 +88,7 @@
           <el-select v-model="form.month" placeholder="月份">
             <el-option label="全部" value=""></el-option>
 
-            <el-option v-for ="tmp in monthselData" :label="tmp.value"  :key="tmp.key" :value="tmp.key"></el-option>
+            <el-option v-for ="(tmp,index) in monthselData" :label="tmp.value"  :key="tmp.key" :value="tmp.key"></el-option>
 
           </el-select>
         </el-form-item>
@@ -111,7 +111,7 @@
 module.exports = {
   data() {
     return {
-      loading: false,
+      loading: true,
       tagsList: [],
       size:0,
       isCollapse: true,
@@ -191,6 +191,17 @@ module.exports = {
   },
   methods: {
 
+    tableRowClassName({row, rowIndex}) {
+
+      if (rowIndex === 1) {
+        return 'warning-row';
+      } else if (rowIndex === 3) {
+        return 'success-row';
+      }
+      return '';
+    }
+  ,
+
     submit() {
       let formData = new FormData();
       this.loading = true
@@ -251,6 +262,14 @@ module.exports = {
 .row-bg {
   padding: 10px 0;
   background-color: #f9fafc;
+}
+
+.el-table .warning-row {
+  background: red;
+}
+
+.el-table .success-row {
+  background: #f0f9eb;
 }
 
 </style>
