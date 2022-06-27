@@ -486,7 +486,29 @@ module.exports = {
           type: response.res
         });
       });
-    }
+    },
+
+
+    createJfml() {
+      this.form.cartype = '沃尔沃'
+      this.form.columnname = this.flList[0].columnname
+      fetch("http://localhost:9080/exportIncomeGross", {
+        method: 'POST', // 请求方法还可以是 put
+        body: JSON.stringify(this.form),
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        })
+      }).then(res => res.json()).then(response => {
+        this.$message({
+          showClose: true,
+          message: response.resMessage,
+          center: true,
+          offset: 150,
+          type: response.res
+        });
+      });
+    },
+
 
 
   },

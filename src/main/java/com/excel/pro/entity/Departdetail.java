@@ -17,5 +17,6 @@ public class Departdetail {
     private Long month;//月份
     private String fromno;//中卡物流车辆作业台账 excel中的表单号列
     private String excelname;//数据来自哪个excel中
-
+    private String ismonthcount;
+    private String iskilosum;
 }

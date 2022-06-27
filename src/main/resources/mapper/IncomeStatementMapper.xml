@@ -12,7 +12,7 @@
                         count(SHEETID)                       runcount,
                         round(sum(kilo) / count(SHEETID), 2) avg
                  from DEPARTDETAIL D
-                 where CARTYPE =#{carType}
+                 where CARTYPE =#{carType}  and d.ISMONTHCOUNT =1 and d.ISKILOSUM =1
                  group by month, CARTYPE
              ) a
         order by month

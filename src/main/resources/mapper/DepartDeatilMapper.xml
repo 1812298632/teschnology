@@ -63,7 +63,7 @@
     <select id="queryJfCount" resultType="com.excel.pro.entity.SelectEntity">
         select month key, count(STARTCITY) value
         from DEPARTDETAIL
-        where CARTYPE = #{cartype}
+        where CARTYPE = #{cartype} and ISMONTHCOUNT =1
         group by month
         order by month
     </select>
@@ -89,14 +89,14 @@
     </select>
     <select id="selectCountGroupByMonth" resultType="com.excel.pro.entity.IndexPageEntity">
         select cartype, listagg(distinct MONTH, ',') within group ( order by MONTH) month
-        from DEPARTDETAIL
+        from DEPARTDETAIL where ISMONTHCOUNT =1
         group by cartype
         order by CARTYPE
     </select>
     <select id="selectCountClassify" resultType="com.excel.pro.entity.IndexPageEntity">
         select CARTYPE, listagg(runcount, ',') within group ( order by MONTH) runcount
         from (select cartype, month, month || '月份发车次数' || count(SHEETID) || '次' runcount
-              from DEPARTDETAIL
+              from DEPARTDETAIL where ISMONTHCOUNT =1
               group by cartype, month
               order by CARTYPE, MONTH
              )

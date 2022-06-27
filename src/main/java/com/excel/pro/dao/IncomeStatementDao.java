@@ -1,10 +1,8 @@
 package com.excel.pro.dao;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.excel.pro.entity.IncomeExportEntity;
-import com.excel.pro.entity.Incomestatement;
-import com.excel.pro.entity.IndexPageEntity;
-import com.excel.pro.entity.SelectEntity;
+import com.excel.pro.entity.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
@@ -26,4 +24,7 @@ public interface IncomeStatementDao extends BaseMapper<Incomestatement> {
     List<IndexPageEntity> queryincomeIndex();
 
     List<IndexPageEntity> queryIncomeWarning();
+
+    int update(Incomestatement incomestatement, UpdateWrapper<Incomestatement> updateWrapper, ResponseEntity responseEntity);
+
 }

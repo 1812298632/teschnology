@@ -1165,13 +1165,23 @@ public class ExcelPrintController {
             BigDecimal gross = totalincomemoney.subtract(totalcsot);
             x.setGross(gross.doubleValue());
 
-            //计算毛利率
-            BigDecimal grossrate = gross.divide(totalincomemoney, BigDecimal.ROUND_HALF_UP);
-            x.setGrossrate(grossrate.doubleValue());
+            if (gross.compareTo(BigDecimal.ZERO) != 0) {
+                if (totalincomemoney.compareTo(BigDecimal.ZERO) != 0) {
+                    //计算毛利率
+                    BigDecimal grossrate = gross.divide(totalincomemoney, BigDecimal.ROUND_HALF_UP);
+                    x.setGrossrate(grossrate.doubleValue());
+                }else{
+                    x.setGrossrate(0.00);
+                }
 
-            //计算单程毛利
-            BigDecimal grossonway = gross.divide(runcount, BigDecimal.ROUND_HALF_UP);
-            x.setGrossonway(grossonway.doubleValue());
+                if (runcount.compareTo(BigDecimal.ZERO) != 0) {
+                    //计算单程毛利
+                    BigDecimal grossonway = gross.divide(runcount, BigDecimal.ROUND_HALF_UP);
+                    x.setGrossonway(grossonway.doubleValue());
+                }else{
+                    x.setGrossonway(0.00);
+                }
+            }
         });
 
 

@@ -94,7 +94,6 @@ module.exports = {
     });
 */
 
-    alert(111)
 
 
     fetch("http://localhost:9080/queryDepartIndex", {

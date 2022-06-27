@@ -46,7 +46,8 @@ module.exports = {
       console.log("Header...isC");
       this.isCollapse = !this.isCollapse;
       //触发事件   ture false
-      bus.c('collapse', this.isCollapse);
+      //触发事件
+      bus.$emit('collapse', this.isCollapse);
     },
   },
 };

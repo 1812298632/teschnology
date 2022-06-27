@@ -215,6 +215,7 @@ public class UploadContrtoller {
         LambdaQueryWrapper<Departdetail> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Departdetail::getMonth, ConstantUtil.departUploadEntity.getMonth())
                 .eq(Departdetail::getSheet, ConstantUtil.departUploadEntity.getSheetname())
+                .eq(Departdetail::getCartype,ConstantUtil.departUploadEntity.getCartype())
                 .eq(Departdetail::getExcelname, ConstantUtil.departUploadEntity.getExcelname()).orderByAsc(Departdetail::getSheetid);
 
         List<Departdetail> departdetails = departDetailDao.selectList(queryWrapper);

@@ -1,8 +1,11 @@
 package com.excel.pro.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.excel.pro.dao.IncomeStatementDao;
 import com.excel.pro.entity.IncomeExportEntity;
 import com.excel.pro.entity.Incomestatement;
+import com.excel.pro.entity.ResponseEntity;
 import com.excel.pro.service.IncomeStatementService;
 import com.excel.pro.util.ConstantUtil;
 import org.apache.poi.ss.usermodel.Cell;
@@ -13,6 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -298,6 +302,41 @@ public class IncomeStatementServiceImpl implements IncomeStatementService {
                 }
 
             }
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void update(Incomestatement incomestatement, UpdateWrapper<Incomestatement> updateWrapper, ResponseEntity responseEntity) {
+
+        int update = incomeStatementDao.update(incomestatement, updateWrapper);
+
+        if (update != 1) {
+            responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
+            responseEntity.setResMessage("未达到预期修改效果");
+            //未修改到想要数据 抛出异常，并回滚
+            throw new RuntimeException("未达到预期修改效果");
+        }else{
+            responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+            responseEntity.setResMessage("修改成功"+update+"条数据");
+
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(LambdaQueryWrapper<Incomestatement> queryWrapper, ResponseEntity responseEntity) {
+        int delete = incomeStatementDao.delete(queryWrapper);
+
+        if (delete != 1) {
+            responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
+            responseEntity.setResMessage("未达到预期删除效果");
+            //未修改到想要数据 抛出异常，并回滚
+            throw new RuntimeException("未达到预期删除效果");
+        }else{
+            responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+            responseEntity.setResMessage("删除成功"+delete+"条数据");
+
         }
     }
 }
