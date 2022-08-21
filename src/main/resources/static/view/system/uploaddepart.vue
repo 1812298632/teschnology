@@ -1,52 +1,83 @@
 <template>
   <div class="home">
     <el-container style="height: 20%">
-      <el-steps :active="active"  finish-status="success" style="width: 100%" align-center>
+      <el-steps :active="active" finish-status="success" style="width: 100%" align-center>
         <el-step title="选择数据" icon="el-icon-edit" description="选择完成之后，下一步"></el-step>
         <el-step title="上传文件" icon="el-icon-upload" description="上传成功将自动跳到下一步，如果失败可以点击重新导入，重新选择数据"></el-step>
         <el-step title="查看数据" icon="el-icon-view" description="查看导入的数据,查看无误 下一步，可以再次导入新的数据"></el-step>
       </el-steps>
     </el-container>
-    <el-container style="height: 75%" >
-      <div  style="width: 100%" v-show="showone">
-        <el-form   style="margin:0 auto;" :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" >
-          <el-form-item label="车辆" prop="cartype" placeholder="请选择沃尔沃或解放车" >
-            <el-select v-model="ruleForm.cartype">
-              <el-option label="沃尔沃" value="沃尔沃"></el-option>
-              <el-option label="解放车" value="解放车"></el-option>
-            </el-select>
-          </el-form-item>
+    <el-container style="height: 75%">
+      <div v-show="showone">
+        <el-form :inline="true" :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px">
+          <el-col :span="8">
+            <el-form-item label="年份" prop="year" placeholder="请选择导入年份">
+              <el-select v-model="ruleForm.year">
+                <el-option label="2021" value="2021"></el-option>
+                <el-option label="2022" value="2022"></el-option>
+                <el-option label="2023" value="2023"></el-option>
 
-          <el-form-item label="导入名称" prop="type">
-            <el-select v-model="ruleForm.type">
-              <!--              <el-option label="损益表" value="损益"></el-option>-->
-              <el-option label="中卡物流车辆作业台账" value="台账"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="月份" prop="month">
-            <el-select placeholder="请选择月份" v-model="ruleForm.month">
-              <el-option label="1月" value="1"></el-option>
-              <el-option label="2月" value="2"></el-option>
-              <el-option label="3月" value="3"></el-option>
-              <el-option label="4月" value="4"></el-option>
-              <el-option label="5月" value="5"></el-option>
-              <el-option label="6月" value="6"></el-option>
-              <el-option label="7月" value="7"></el-option>
-              <el-option label="8月" value="8"></el-option>
-              <el-option label="9月" value="9"></el-option>
-              <el-option label="10月" value="10"></el-option>
-              <el-option label="11月" value="11"></el-option>
-              <el-option label="12月" value="12"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="sheet名称" prop="sheetname" >
-            <el-input v-model="ruleForm.sheetname" placeholder="excel对应的sheet名字"></el-input>
-          </el-form-item>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="车辆" prop="cartype" placeholder="请选择沃尔沃或解放车">
+              <el-select v-model="ruleForm.cartype">
+                <el-option label="沃尔沃" value="沃尔沃"></el-option>
+                <el-option label="解放车" value="解放车"></el-option>
+              </el-select>
+            </el-form-item>
 
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="导入名称" prop="type">
+              <el-select v-model="ruleForm.type">
+                <el-option label="中卡物流车辆作业台账" value="台账"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="月份" prop="month">
+              <el-select placeholder="请选择月份" v-model="ruleForm.month" allow-create filterable>
+                <el-option label="1月" value="1"></el-option>
+                <el-option label="2月" value="2"></el-option>
+                <el-option label="3月" value="3"></el-option>
+                <el-option label="4月" value="4"></el-option>
+                <el-option label="5月" value="5"></el-option>
+                <el-option label="6月" value="6"></el-option>
+                <el-option label="7月" value="7"></el-option>
+                <el-option label="8月" value="8"></el-option>
+                <el-option label="9月" value="9"></el-option>
+                <el-option label="10月" value="10"></el-option>
+                <el-option label="11月" value="11"></el-option>
+                <el-option label="12月" value="12"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="8">
+
+            <el-form-item label="sheet名称" prop="sheetname">
+              <el-select placeholder="请选择或输入" v-model="ruleForm.sheetname" allow-create filterable>
+                <el-option-group
+                    label="以下属于沃尔沃">
+                  <el-option label="解放车明细" value="解放车明细"></el-option>
+                </el-option-group>
+                <el-option-group
+                    label="以下属于解放车">
+                  <el-option label="沃尔沃明细" value="沃尔沃明细"></el-option>
+                </el-option-group>
+              </el-select>
+            </el-form-item>
+
+            <!--            <el-form-item label="sheet名称" prop="sheetname" >
+                          <el-input  v-model="ruleForm.sheetname" placeholder="excel对应的sheet名字"></el-input>
+                        </el-form-item>-->
+          </el-col>
         </el-form>
       </div>
 
-      <div style="width: 360px;margin:0 auto;" v-show="showtwo"  >
+      <div style="width: 360px;margin:0 auto;" v-show="showtwo">
         <el-upload
             class="upload-demo"
             drag
@@ -56,8 +87,8 @@
             action="http://localhost:9080/upload"
             multiple>
           <i class="el-icon-upload"></i>
-          <div  class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-          <div   class="el-upload__tip" slot="tip">支持上传xlsx文件</div>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+          <div class="el-upload__tip" slot="tip">支持上传xlsx文件</div>
         </el-upload>
       </div>
 
@@ -155,12 +186,16 @@ module.exports = {
       active: 0,
       isCollapse: true,
       ruleForm: {
+        year: '',
         type: '',
         cartype: '',
         month: '',
         sheetname: '',
       },
       rules: {
+        year: [
+          {required: true, message: '请选择年份', trigger: 'change'},
+        ],
         cartype: [
           {required: true, message: '请选择车辆', trigger: 'change'},
         ],
@@ -171,7 +206,7 @@ module.exports = {
           {required: true, message: '请选择月份', trigger: 'change'}
         ],
         sheetname: [
-          {required: true, message: '请选择sheet名称', trigger: 'change'}
+          {required: true, message: '请输入或选择sheet名称', trigger: 'change'}
         ]
       }
     };
@@ -191,6 +226,9 @@ module.exports = {
       }
       this.tagsList = arr;
     });
+
+    this.ruleForm.year = '2022'
+    this.ruleForm.type = '台账'
   },
   methods: {
     uploadSuccess(response, file, fileList) {
@@ -364,9 +402,9 @@ module.exports = {
 
       }
 
-      if(vali){
+      if (vali) {
 
-      if (this.active++ > 2) this.active = 0;
+        if (this.active++ > 2) this.active = 0;
       }
 
 

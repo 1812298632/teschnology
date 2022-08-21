@@ -12,6 +12,38 @@ import java.util.LinkedList;
 
 public class ConstantUtil {
 
+
+    //要导入哪些sheet的数据
+    public static final String abb01 = "序号";
+    public static final String abb02 = "派车类型";
+    public static final String abb03 = "票数";
+    public static final String abb04 = "核算收入";
+
+
+    public static final String s99701 = "序号";
+    public static final String s99702 = "派车类型";
+    public static final String s99703 = "货物名称";
+    public static final String s99704 = "核算收入";
+
+    public static ArrayList<String> makeDepartOtherList(){
+        ArrayList<String> departOtherColumnNameList = new ArrayList<>();
+
+        departOtherColumnNameList.add(ConstantUtil.abb01);
+        departOtherColumnNameList.add(ConstantUtil.abb02);
+        departOtherColumnNameList.add(ConstantUtil.abb03);
+        departOtherColumnNameList.add(ConstantUtil.abb04);
+
+
+      /*  departOtherColumnNameList.add(ConstantUtil.s99701);
+        departOtherColumnNameList.add(ConstantUtil.s99702);
+        departOtherColumnNameList.add(ConstantUtil.s99703);
+        departOtherColumnNameList.add(ConstantUtil.s99704);
+*/
+
+        return departOtherColumnNameList;
+    }
+
+
     //要导入哪些sheet的数据
     public static final String sheetName1 = "解放车1";
     public static final String sheetName2 = "解放车2";
@@ -45,6 +77,36 @@ public class ConstantUtil {
     }
 
 
+
+    public static LinkedList<String> makeSheetNameOthrList() {
+        LinkedList<String> sheetNameList = new LinkedList();
+        /*sheetNameList.add("辽ABB872收入1");
+        sheetNameList.add("辽ABB872收入2");*/
+        sheetNameList.add("辽ABB872收入3");
+        sheetNameList.add("辽ABB872收入4");
+        sheetNameList.add("辽ABB872收入5");
+       /* sheetNameList.add("辽ABB872收入6");
+        sheetNameList.add("辽ABB872收入7");
+        sheetNameList.add("辽ABB872收入8");
+        sheetNameList.add("辽ABB872收入9");
+        sheetNameList.add("辽ABB872收入10");
+        sheetNameList.add("辽ABB872收入11");
+        sheetNameList.add("辽ABB872收入12");
+        */
+        /*sheetNameList.add("短途车辆收入统计表3");
+        sheetNameList.add("短途车辆收入统计表4");
+        sheetNameList.add("短途车辆收入统计表5");
+        sheetNameList.add("短途车辆收入统计表6");
+        sheetNameList.add("短途车辆收入统计表7");
+        sheetNameList.add("短途车辆收入统计表8");
+        sheetNameList.add("短途车辆收入统计表9");
+        sheetNameList.add("短途车辆收入统计表10");
+        sheetNameList.add("短途车辆收入统计表11");
+        sheetNameList.add("短途车辆收入统计表12");*/
+        return sheetNameList;
+    }
+
+
     //导入发车明细中的哪些列title数据  作业台帐
     public static final String carnum = "派车单号";
     public static final String startcity = "起点";
@@ -56,7 +118,28 @@ public class ConstantUtil {
     public static final String fromno = "表单号";
 
 
+
+    public static final String data = "日期";
+    public static final String type = "怕日车";
+
+
     public static ArrayList<String> makeDepartColumnNameList() {
+        ArrayList<String> departColumnNameList = new ArrayList<>();
+
+        departColumnNameList.add(ConstantUtil.carnum);
+        departColumnNameList.add(ConstantUtil.startcity);
+        departColumnNameList.add(ConstantUtil.endcity);
+        departColumnNameList.add(ConstantUtil.startkilo);
+        departColumnNameList.add(ConstantUtil.endkilo);
+        departColumnNameList.add(ConstantUtil.kilo);
+        departColumnNameList.add(ConstantUtil.id);
+        departColumnNameList.add(ConstantUtil.fromno);
+
+        return departColumnNameList;
+    }
+
+
+    public static ArrayList<String> makeDepartColumnNameList98997() {
         ArrayList<String> departColumnNameList = new ArrayList<>();
 
         departColumnNameList.add(ConstantUtil.carnum);
@@ -240,8 +323,72 @@ public class ConstantUtil {
     public static final String title13 = "       伙食费";
     public static final String title14 = "   车队成本";
     public static final String title15 = "         物料消耗";
+    public static final String title16 = "一、营业收入总额";
+    public static final String title17 = "  （一） 主营业务收入";
+    public static final String title18 = "二、营业成本总额";
+    public static final String title19 = "   车队成本";
+    public static final String title20 = "     2.人工成本";
+    public static final String title21 = "七、净利润";
+    public static final String title22 = "  1.加油成本率";
+    public static final String title23 = "  2.路桥成本率";
+    public static final String title24 = "  3.人工成本率";
 
     public static ArrayList<String> makeIncomeImportRowTitle() {
+        ArrayList<String> incomeImportRowTitleList = new ArrayList<>();
+
+        incomeImportRowTitleList.add(title1);
+        incomeImportRowTitleList.add(title2);
+        incomeImportRowTitleList.add(title3);
+        incomeImportRowTitleList.add(title4);
+        incomeImportRowTitleList.add(title5);
+        incomeImportRowTitleList.add(title6);
+        incomeImportRowTitleList.add(title7);
+        incomeImportRowTitleList.add(title8);
+        incomeImportRowTitleList.add(title9);
+        incomeImportRowTitleList.add(title10);
+        incomeImportRowTitleList.add(title11);
+        incomeImportRowTitleList.add(title12);
+        incomeImportRowTitleList.add(title13);
+        incomeImportRowTitleList.add(title18);
+        incomeImportRowTitleList.add(title15);
+        incomeImportRowTitleList.add(title19);
+        incomeImportRowTitleList.add(title20);
+        incomeImportRowTitleList.add(title21);
+        //incomeImportRowTitleList.add(title22);
+        //incomeImportRowTitleList.add(title23);
+        //incomeImportRowTitleList.add(title24);
+
+
+        return incomeImportRowTitleList;
+    }
+
+
+    public static ArrayList<String> makeIncomeImportRowTitle2022() {
+        ArrayList<String> incomeImportRowTitleList = new ArrayList<>();
+
+        incomeImportRowTitleList.add(title16);
+        incomeImportRowTitleList.add(title17);
+        incomeImportRowTitleList.add(title3);
+        incomeImportRowTitleList.add(title4);
+        incomeImportRowTitleList.add(title5);
+        incomeImportRowTitleList.add(title6);
+        incomeImportRowTitleList.add(title7);
+        incomeImportRowTitleList.add(title8);
+        incomeImportRowTitleList.add(title9);
+        incomeImportRowTitleList.add(title10);
+        incomeImportRowTitleList.add(title11);
+        incomeImportRowTitleList.add(title12);
+        incomeImportRowTitleList.add(title13);
+        incomeImportRowTitleList.add(title14);
+        incomeImportRowTitleList.add(title15);
+        incomeImportRowTitleList.add(title20);
+
+
+        return incomeImportRowTitleList;
+    }
+
+
+    public static ArrayList<String> makeIncomeImportRowTitle2021() {
         ArrayList<String> incomeImportRowTitleList = new ArrayList<>();
 
         incomeImportRowTitleList.add(title1);

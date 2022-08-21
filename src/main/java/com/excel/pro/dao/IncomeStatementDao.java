@@ -13,7 +13,10 @@ public interface IncomeStatementDao extends BaseMapper<Incomestatement> {
 
     List<Incomestatement> queryMonthMoney(@Param("carType") String carType);
 
-    Incomestatement queryMonthMoneyOther(@Param("carType")String cartype, @Param("otherRowTitleList")ArrayList<String> otherRowTitleList);
+    Incomestatement queryMonthMoneyOther(@Param("carType")String cartype,@Param("year")String year, @Param("otherRowTitleList")ArrayList<String> otherRowTitleList);
+
+    Incomestatement queryMonthMoneyOther1(@Param("carType")String cartype, @Param("otherRowTitleList")ArrayList<String> otherRowTitleList);
+
 
     List<SelectEntity> querycarid();
 
@@ -26,5 +29,7 @@ public interface IncomeStatementDao extends BaseMapper<Incomestatement> {
     List<IndexPageEntity> queryIncomeWarning();
 
     int update(Incomestatement incomestatement, UpdateWrapper<Incomestatement> updateWrapper, ResponseEntity responseEntity);
+
+    List<Incomestatement> querySumByColumn(@Param("cartype")String cartype);
 
 }

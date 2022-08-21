@@ -58,15 +58,32 @@
             <el-menu-item index="1-4-1">选项1</el-menu-item>
           </el-submenu>
         </el-submenu>-->
-        <el-menu-item index="/uploaddepart">
+<!--        <el-menu-item index="/uploaddepart">
           <i class="el-icon-upload"></i>
           <span slot="title">台账上传</span>
         </el-menu-item>
         <el-menu-item index="/uploadincome">
           <i class="el-icon-upload"></i>
           <span slot="title">损益表上传</span>
-        </el-menu-item>
+        </el-menu-item>-->
 
+        <el-submenu index="2">
+          <template slot="title">
+            <i class="el-icon-upload"></i>
+            <span slot="title">数据上传</span>
+          </template>
+          <el-menu-item-group>
+            <span slot="title">台账</span>
+            <el-menu-item index="/uploaddepart">台账上传</el-menu-item>
+
+            <!--            <el-menu-item index="/wrwcar">沃尔沃</el-menu-item>
+                        <el-menu-item index="/jfcar">解放车</el-menu-item>-->
+          </el-menu-item-group>
+          <el-menu-item-group title="损益表">
+            <el-menu-item index="/uploadincome">损益表上传</el-menu-item>
+          </el-menu-item-group>
+
+        </el-submenu>
 
         <el-submenu index="1">
           <template slot="title">
@@ -77,8 +94,8 @@
             <span slot="title">台账</span>
             <el-menu-item index="/jfandwrwcar">台账综合查询</el-menu-item>
 
-            <el-menu-item index="/wrwcar">沃尔沃</el-menu-item>
-            <el-menu-item index="/jfcar">解放车</el-menu-item>
+<!--            <el-menu-item index="/wrwcar">沃尔沃</el-menu-item>
+            <el-menu-item index="/jfcar">解放车</el-menu-item>-->
           </el-menu-item-group>
           <el-menu-item-group title="损益表">
             <el-menu-item index="/incomequery">损益表综合查询</el-menu-item>
@@ -119,12 +136,12 @@
         </el-menu-item>-->
         <el-menu-item index="/wrwdownload">
           <i class="el-icon-download"></i>
-          <span slot="title">沃尔沃数据导出</span>
+          <span slot="title">数据导出</span>
         </el-menu-item>
-        <el-menu-item index="/jfdownload">
+<!--        <el-menu-item index="/jfdownload">
           <i class="el-icon-download"></i>
           <span slot="title">解放车数据导出</span>
-        </el-menu-item>
+        </el-menu-item>-->
 
       </el-menu>
     </el-scrollbar>
@@ -169,7 +186,8 @@ module.exports = {
   left: 10px;
   top: 70px;
   bottom: 0;
-  overflow-y: scroll;
+/*  overflow-y: scroll;*/
+
   background-color: rgb(50, 65, 87);
 }
 

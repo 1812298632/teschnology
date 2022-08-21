@@ -87,15 +87,15 @@ const routes = [
                 component: incomequery,
                 meta: {title: '损益表综合查询'}
             },
-            {
+          /*  {
                 path: "/jfdownload",
                 component: jfdownload,
                 meta: {title: '解放车数据导出'}
-            },
+            },*/
             {
                 path: "/wrwdownload",
                 component: wrwdownload,
-                meta: {title: '沃尔沃数据导出'}
+                meta: {title: '数据导出'}
             },
         ]
     },];

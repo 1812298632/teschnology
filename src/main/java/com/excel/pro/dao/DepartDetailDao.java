@@ -15,13 +15,13 @@ public interface DepartDetailDao extends BaseMapper<Departdetail> {
 
     List<SelectEntity> queryEndCitySelect();
 
-    List<SelectEntity> queryJFMonthSelect();
+    List<SelectEntity> queryMonthSelect();
 
     List<SelectEntity> queryCarTypeByDepart();
 
-    List<SelectEntity> queryJfCount(@Param("cartype")String cartype);
+    List<SelectEntity> queryRunCount(@Param("cartype")String cartype,@Param("year")String year);
 
-    List<Incomestatement> queryjfmoney(@Param("cartype")String cartype);
+    List<Incomestatement> queryIncomeMoney(@Param("cartype")String cartype,@Param("year")String year);
 
     List<IndexPageEntity> selectCountGroupByMonth();
 
@@ -31,5 +31,7 @@ public interface DepartDetailDao extends BaseMapper<Departdetail> {
     List<IndexPageEntity> queryDepartWarring();
 
     List<IndexPageEntity> queryincomeIndex();
+
+    List<SelectEntity> queryYearSelect();
 
 }

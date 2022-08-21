@@ -16,7 +16,7 @@
         <my-tags></my-tags>
         <!-- <my-tag></my-tag> -->
         <!--主页面-->
-        <el-main style="height: 90%">
+        <el-main style="height: 90%;width: 100%">
           <router-view>
 
 

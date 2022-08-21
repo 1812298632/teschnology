@@ -7,7 +7,7 @@ public class IncomeExportEntity {
     private String sheet;
     private String month;
     private String kilosum;
-    private Long  runcount;
+    private Double  runcount;
     private Double avg;
     private Double money;
 

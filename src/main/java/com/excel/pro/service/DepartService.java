@@ -22,4 +22,7 @@ public interface DepartService {
     void update(Departdetail departdetail, UpdateWrapper<Departdetail> updateWrapper, ResponseEntity responseEntity);
 
     void delete(LambdaQueryWrapper<Departdetail> queryWrapper, ResponseEntity responseEntity);
+
+    void insertDepartother(String sheetname, int month) throws FileNotFoundException;
+
 }

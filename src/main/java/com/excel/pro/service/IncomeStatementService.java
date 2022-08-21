@@ -25,4 +25,6 @@ public interface IncomeStatementService {
     void update(Incomestatement incomestatement, UpdateWrapper<Incomestatement> updateWrapper, ResponseEntity responseEntity);
 
     void delete( LambdaQueryWrapper<Incomestatement> queryWrapper, ResponseEntity responseEntity);
+
+    List<Incomestatement> querySumByColumn(String cartype );
 }

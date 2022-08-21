@@ -61,11 +61,26 @@ public class QueryController {
      * @param request
      * @return
      */
-    @RequestMapping("/queryJFMonthSelect")
-    public ResponseEntity queryJFMonthSelect(HttpServletRequest request) {
+    @RequestMapping("/queryMonthSelect")
+    public ResponseEntity queryMonthSelect(HttpServletRequest request) {
         ResponseEntity responseEntity = new ResponseEntity();
 
-        List<SelectEntity> selectEntityList = departDetailDao.queryJFMonthSelect();
+        List<SelectEntity> selectEntityList = departDetailDao.queryMonthSelect();
+
+        responseEntity.setResList(selectEntityList);
+        return responseEntity;
+    }
+
+    /**
+     * 台账数据查询中，年份下拉框
+     * @param request
+     * @return
+     */
+    @RequestMapping("/queryYearSelect")
+    public ResponseEntity queryYearSelect(HttpServletRequest request) {
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        List<SelectEntity> selectEntityList = departDetailDao.queryYearSelect();
 
         responseEntity.setResList(selectEntityList);
         return responseEntity;
@@ -151,6 +166,7 @@ public class QueryController {
             String startcity = RequestUtil.getObjectValue(requestParam, "startcity");
             String endcity = RequestUtil.getObjectValue(requestParam, "endcity");
             String month = RequestUtil.getObjectValue(requestParam, "month");
+            String year = RequestUtil.getObjectValue(requestParam, "year");
             if(!type.equals("")){
                 queryWrapper.lambda().eq(Departdetail::getCartype,type);
             }
@@ -162,6 +178,9 @@ public class QueryController {
             }
             if(!month.equals("")){
                 queryWrapper.lambda().eq(Departdetail::getMonth,month);
+            }
+            if(!year.equals("")){
+                queryWrapper.lambda().eq(Departdetail::getYear,year);
             }
         }
 
@@ -217,12 +236,13 @@ public class QueryController {
         return responseEntity;
     }
 
-    @RequestMapping("/queryJfCount")
-    public ResponseEntity queryJfCount(HttpServletRequest request) {
+    @RequestMapping("/queryRunCount")
+    public ResponseEntity queryRunCount(HttpServletRequest request) {
         ResponseEntity responseEntity = new ResponseEntity();
         String requestParam = RequestUtil.getJsonObjectData(request);
         String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
-        List<SelectEntity> selectEntityList = departDetailDao.queryJfCount(cartype);
+        String year = RequestUtil.getObjectValue(requestParam, "year");
+        List<SelectEntity> selectEntityList = departDetailDao.queryRunCount(cartype,year);
 
         responseEntity.setResList(selectEntityList);
         return responseEntity;
@@ -234,12 +254,13 @@ public class QueryController {
      * @param request
      * @return
      */
-    @RequestMapping("/queryjfmoney")
+    @RequestMapping("/queryIncomeMoney")
     public ResponseEntity queryjfmoney(HttpServletRequest request) {
         ResponseEntity responseEntity = new ResponseEntity();
         String requestParam = RequestUtil.getJsonObjectData(request);
         String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
-        List<Incomestatement> incomestatements = departDetailDao.queryjfmoney(cartype);
+        String year = RequestUtil.getObjectValue(requestParam, "year");
+        List<Incomestatement> incomestatements = departDetailDao.queryIncomeMoney(cartype,year);
 
 
         responseEntity.setResList(incomestatements);
@@ -258,6 +279,7 @@ public class QueryController {
         ResponseEntity responseEntity = new ResponseEntity();
         String requestParam = RequestUtil.getJsonObjectData(request);
         String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
+        String year = RequestUtil.getObjectValue(requestParam, "year");
         List<Incomestatement> incomestatements = new ArrayList<>();
 
 
@@ -266,9 +288,13 @@ public class QueryController {
         otherRowTitleList.add(ConstantUtil.title13);
         otherRowTitleList.add(ConstantUtil.title11);
 
-        Incomestatement otherMoney = incomeStatementService.queryMonthMoneyOther(cartype, otherRowTitleList);
+        Incomestatement otherMoney = incomeStatementDao.queryMonthMoneyOther(cartype,year, otherRowTitleList);
 
-        incomestatements.add(otherMoney);
+
+        if(otherMoney != null){
+            incomestatements.add(otherMoney);
+
+        }
 
         responseEntity.setResList(incomestatements);
         responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);

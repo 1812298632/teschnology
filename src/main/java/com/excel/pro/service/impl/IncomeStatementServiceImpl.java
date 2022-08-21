@@ -216,7 +216,7 @@ public class IncomeStatementServiceImpl implements IncomeStatementService {
 
     @Override
     public Incomestatement queryMonthMoneyOther(String cartype, ArrayList<String> otherRowTitleList) {
-        return incomeStatementDao.queryMonthMoneyOther(cartype, otherRowTitleList);
+        return incomeStatementDao.queryMonthMoneyOther1(cartype, otherRowTitleList);
     }
 
     @Override
@@ -246,8 +246,17 @@ public class IncomeStatementServiceImpl implements IncomeStatementService {
             }
         }
 
+        ArrayList<String> rowNameList = new ArrayList<>();
 
-        ArrayList<String> rowNameList = ConstantUtil.makeIncomeImportRowTitle();
+        //表头可能会发生改变 根据年份来选择不同表头
+        if (ConstantUtil.incomeUploadEntity.getYear().equals("2022")) {
+            rowNameList = ConstantUtil.makeIncomeImportRowTitle2022();
+        } else if (ConstantUtil.incomeUploadEntity.getYear().equals("2021")) {
+            rowNameList = ConstantUtil.makeIncomeImportRowTitle();
+        } else {
+            rowNameList = ConstantUtil.makeIncomeImportRowTitle2022();
+        }
+
 
         String sheetName = ConstantUtil.incomeUploadEntity.getSheetname();
 
@@ -266,6 +275,7 @@ public class IncomeStatementServiceImpl implements IncomeStatementService {
                         String subjectCode = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(0)).toString())));
                         incomestatement.setSubjectcode(subjectCode);
 
+                        int i = Integer.parseInt(titleColumnMap.get(columnNameList.get(1)).toString());
                         double mon1 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(1)).toString())).getNumericCellValue();
                         double mon2 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(2)).toString())).getNumericCellValue();
                         double mon3 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(3)).toString())).getNumericCellValue();
@@ -280,19 +290,20 @@ public class IncomeStatementServiceImpl implements IncomeStatementService {
                         double mon12 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(12)).toString())).getNumericCellValue();
 
 
-                        incomestatement.setOnemonth(new BigDecimal(mon1).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue());
-                        incomestatement.setTwomonth(new BigDecimal(mon2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-                        incomestatement.setThreemonth(new BigDecimal(mon3).setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue());
-                        incomestatement.setFourmonth(new BigDecimal(mon4).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue());
-                        incomestatement.setFivemonth(new BigDecimal(mon5).setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue());
-                        incomestatement.setSixmonth(new BigDecimal(mon6).setScale(6, BigDecimal.ROUND_HALF_UP).doubleValue());
-                        incomestatement.setSevenmonth(new BigDecimal(mon7).setScale(7, BigDecimal.ROUND_HALF_UP).doubleValue());
-                        incomestatement.setEightmonth(new BigDecimal(mon8).setScale(8, BigDecimal.ROUND_HALF_UP).doubleValue());
-                        incomestatement.setNinemonth(new BigDecimal(mon9).setScale(9, BigDecimal.ROUND_HALF_UP).doubleValue());
-                        incomestatement.setTenmonth(new BigDecimal(mon10).setScale(10, BigDecimal.ROUND_HALF_UP).doubleValue());
-                        incomestatement.setEleventmonth(new BigDecimal(mon11).setScale(11, BigDecimal.ROUND_HALF_UP).doubleValue());
-                        incomestatement.setTwelvemonth(new BigDecimal(mon12).setScale(12, BigDecimal.ROUND_HALF_UP).doubleValue());
+                        incomestatement.setOnemonth(new BigDecimal(mon1).doubleValue());
+                        incomestatement.setTwomonth(new BigDecimal(mon2).doubleValue());
+                        incomestatement.setThreemonth(new BigDecimal(mon3).doubleValue());
+                        incomestatement.setFourmonth(new BigDecimal(mon4).doubleValue());
+                        incomestatement.setFivemonth(new BigDecimal(mon5).doubleValue());
+                        incomestatement.setSixmonth(new BigDecimal(mon6).doubleValue());
+                        incomestatement.setSevenmonth(new BigDecimal(mon7).doubleValue());
+                        incomestatement.setEightmonth(new BigDecimal(mon8).doubleValue());
+                        incomestatement.setNinemonth(new BigDecimal(mon9).doubleValue());
+                        incomestatement.setTenmonth(new BigDecimal(mon10).doubleValue());
+                        incomestatement.setEleventmonth(new BigDecimal(mon11).doubleValue());
+                        incomestatement.setTwelvemonth(new BigDecimal(mon12).doubleValue());
                         incomestatement.setExcelname(ConstantUtil.incomeUploadEntity.getExcelname());
+                        incomestatement.setYear(Long.parseLong(ConstantUtil.incomeUploadEntity.getYear()));
 
                         logger.info("开始插入车牌号" + sheetName + "title为" + rowName + "的数据");
                         incomeStatementDao.insert(incomestatement);
@@ -316,9 +327,9 @@ public class IncomeStatementServiceImpl implements IncomeStatementService {
             responseEntity.setResMessage("未达到预期修改效果");
             //未修改到想要数据 抛出异常，并回滚
             throw new RuntimeException("未达到预期修改效果");
-        }else{
+        } else {
             responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
-            responseEntity.setResMessage("修改成功"+update+"条数据");
+            responseEntity.setResMessage("修改成功" + update + "条数据");
 
         }
     }
@@ -333,10 +344,15 @@ public class IncomeStatementServiceImpl implements IncomeStatementService {
             responseEntity.setResMessage("未达到预期删除效果");
             //未修改到想要数据 抛出异常，并回滚
             throw new RuntimeException("未达到预期删除效果");
-        }else{
+        } else {
             responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
-            responseEntity.setResMessage("删除成功"+delete+"条数据");
+            responseEntity.setResMessage("删除成功" + delete + "条数据");
 
         }
+    }
+
+    @Override
+    public List<Incomestatement> querySumByColumn(String cartype) {
+        return incomeStatementDao.querySumByColumn(cartype);
     }
 }

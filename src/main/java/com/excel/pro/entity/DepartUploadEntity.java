@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class DepartUploadEntity {
+    private String year;
     private String type;
     private String cartype;
     private String month;

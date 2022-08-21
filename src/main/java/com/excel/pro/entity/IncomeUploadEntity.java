@@ -8,4 +8,5 @@ public class IncomeUploadEntity {
     private String cartype;
     private String sheetname;
     private String excelname;
+    private String year;
 }

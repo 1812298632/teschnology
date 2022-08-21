@@ -9,7 +9,6 @@
           ref="tableData"
           :data="tableData"
           height="100%"
-          style="width:880px;"
           border
           show-summary
           stripe
@@ -113,7 +112,7 @@
       </el-table>
     </el-container>
     <el-container style="height: 10%; margin-top: 30px">
-      <el-form :inline="true" ref="form" :model="form">
+      <el-form :inline="true" ref="form" :model="form" size="small " >
         <el-form-item label="车辆类型">
           <el-select v-model="form.cartype" placeholder="选择沃尔沃或解放">
             <el-option label="全部" value=""></el-option>
@@ -132,7 +131,15 @@
 
           </el-select>
         </el-form-item>
+        <el-form-item label="年份">
+          <el-select v-model="form.year">
+            <el-option label="全部" value=""></el-option>
 
+            <el-option v-for="(year,index) in yearselData" :label="year.value" :key="year.key"
+                       :value="year.key"></el-option>
+
+          </el-select>
+        </el-form-item>
         <el-form-item label="项目">
           <el-select v-model="form.columnname" placeholder="项目">
             <el-option label="全部" value=""></el-option>
@@ -313,9 +320,11 @@ module.exports = {
       isCollapse: true,
       tableData: [],
       caridSelData: [],
+      yearselData:[],
       cartypeSelData: [],
       columnnameSelData: [],
       form: {
+        year:'',
         carid: '',
         columnname: '',
         cartype: '',
@@ -355,7 +364,15 @@ module.exports = {
       }
       this.tagsList = arr;
     });
-
+    fetch("http://localhost:9080/queryYearSelect", {
+      method: 'POST', // 请求方法还可以是 put
+      body: '',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    }).then(res => res.json()).then(response => {
+      this.yearselData = response.resList
+    });
 
     fetch("http://localhost:9080/queryCitySelect", {
       method: 'POST', // 请求方法还可以是 put

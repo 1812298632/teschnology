@@ -13,6 +13,7 @@ public class Departdetail {
     private Long endkilo;
     private Long kilo;
     private String sheet;//sheet名称
+    private Long year;//年份
     private Long sheetid;//sheet中的序列
     private Long month;//月份
     private String fromno;//中卡物流车辆作业台账 excel中的表单号列

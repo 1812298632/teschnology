@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class Incomestatement {
+    private Long year;
     private String cartype;
     private String carid;
     private String columnname;

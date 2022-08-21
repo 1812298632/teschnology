@@ -47,7 +47,7 @@
           and ENDCITY is not null
     </select>
 
-    <select id="queryJFMonthSelect" resultType="com.excel.pro.entity.SelectEntity">
+    <select id="queryMonthSelect" resultType="com.excel.pro.entity.SelectEntity">
         select distinct month as key, month as value
         from DEPARTDETAIL
         where month is not null
@@ -60,43 +60,54 @@
         from DEPARTDETAIL
     </select>
 
-    <select id="queryJfCount" resultType="com.excel.pro.entity.SelectEntity">
+    <select id="queryRunCount" resultType="com.excel.pro.entity.SelectEntity">
         select month key, count(STARTCITY) value
         from DEPARTDETAIL
-        where CARTYPE = #{cartype} and ISMONTHCOUNT =1
+        where year = #{year}
+        <if test='cartype != "总损益表"'>
+            and CARTYPE = #{cartype}
+        </if>
+        and ISMONTHCOUNT = 1
         group by month
         order by month
     </select>
 
-    <select id="queryjfmoney" resultType="com.excel.pro.entity.Incomestatement">
+    <select id="queryIncomeMoney" resultType="com.excel.pro.entity.Incomestatement">
         select listagg(distinct CARID, ',') within group ( order by CARID desc) CARID,
-               COLUMNNAME,
-               round(sum(onemonth) / 10000, 2)                                  onemonth,
-               round(sum(twomonth) / 10000, 2)                                  twomonth,
-               round(sum(threemonth) / 10000, 2)                                threemonth,
-               round(sum(fourmonth) / 10000, 2)                                 fourmonth,
-               round(sum(fivemonth) / 10000, 2)                                 fivemonth,
-               round(sum(sixmonth) / 10000, 2)                                  sixmonth,
-               round(sum(sevenmonth) / 10000, 2)                                sevenmonth,
-               round(sum(eightmonth) / 10000, 2)                                eightmonth,
-               round(sum(ninemonth) / 10000, 2)                                 ninemonth,
-               round(sum(tenmonth) / 10000, 2)                                  tenmonth,
-               round(sum(eleventmonth) / 10000, 2)                              eleventmonth,
-               round(sum(twelvemonth) / 10000, 2)                               twelvemonth
+        COLUMNNAME,
+        round(sum(onemonth), 2) onemonth,
+        round(sum(twomonth), 2) twomonth,
+        round(sum(threemonth), 2) threemonth,
+        round(sum(fourmonth), 2) fourmonth,
+        round(sum(fivemonth), 2) fivemonth,
+        round(sum(sixmonth), 2) sixmonth,
+        round(sum(sevenmonth), 2) sevenmonth,
+        round(sum(eightmonth), 2) eightmonth,
+        round(sum(ninemonth), 2) ninemonth,
+        round(sum(tenmonth), 2) tenmonth,
+        round(sum(eleventmonth), 2) eleventmonth,
+        round(sum(twelvemonth), 2) twelvemonth
         from INCOMESTATEMENT I
-        where I.CARTYPE = #{cartype}
+        where
+        year = #{year}
+
+        <if test='cartype != "总损益表"'>
+            and I.CARTYPE = #{cartype}
+        </if>
         group by COLUMNNAME
     </select>
     <select id="selectCountGroupByMonth" resultType="com.excel.pro.entity.IndexPageEntity">
         select cartype, listagg(distinct MONTH, ',') within group ( order by MONTH) month
-        from DEPARTDETAIL where ISMONTHCOUNT =1
+        from DEPARTDETAIL
+        where ISMONTHCOUNT = 1
         group by cartype
         order by CARTYPE
     </select>
     <select id="selectCountClassify" resultType="com.excel.pro.entity.IndexPageEntity">
         select CARTYPE, listagg(runcount, ',') within group ( order by MONTH) runcount
         from (select cartype, month, month || '月份发车次数' || count(SHEETID) || '次' runcount
-              from DEPARTDETAIL where ISMONTHCOUNT =1
+              from DEPARTDETAIL
+              where ISMONTHCOUNT = 1
               group by cartype, month
               order by CARTYPE, MONTH
              )
@@ -118,6 +129,12 @@
     </select>
     <select id="queryincomeIndex" resultType="com.excel.pro.entity.IndexPageEntity">
 
+    </select>
+    <select id="queryYearSelect" resultType="com.excel.pro.entity.SelectEntity">
+        select distinct YEAR as key, YEAR as value
+        from DEPARTDETAIL
+        where YEAR is not null
+        order by YEAR
     </select>
 
 

@@ -21,6 +21,11 @@
             width="89">
         </el-table-column>
         <el-table-column
+            prop="year"
+            label="年份"
+            width="60">
+        </el-table-column>
+        <el-table-column
             prop="month"
             label="月份" width="60">
         </el-table-column>
@@ -62,8 +67,6 @@
         <!--        <el-table-column
                     prop="excelname"
                     label="来源excel名称">
-
-
                 </el-table-column>-->
         <el-table-column
             label="操作"
@@ -74,47 +77,57 @@
           </template>
         </el-table-column>
       </el-table>
+
     </el-container>
     <el-container style="height: 10%; margin-top: 30px">
-      <el-form :inline="true" ref="form" :model="form">
-        <el-form-item label="车辆类型">
-          <el-select v-model="form.type" placeholder="选择沃尔沃或解放">
-            <el-option label="全部" value=""></el-option>
+      <el-form :inline="true" ref="form" :model="form" size="small " label-position="right">
+          <el-form-item label="车辆类型">
+            <el-select v-model="form.type" placeholder="选择沃尔沃或解放">
+              <el-option label="全部" value=""></el-option>
 
-            <el-option v-for="(type,index) in cartypeSelData" :label="type.value" :key="type.key"
-                       :value="type.key"></el-option>
+              <el-option v-for="(type,index) in cartypeSelData" :label="type.value" :key="type.key"
+                         :value="type.key"></el-option>
 
-          </el-select>
-        </el-form-item>
-        <el-form-item label="起点">
-          <el-select v-model="form.startcity" placeholder="城市">
-            <el-option label="全部" value=""></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="年份">
+            <el-select v-model="form.year">
+              <el-option label="全部" value=""></el-option>
 
-            <el-option v-for="(city,index) in startCitySelData" :label="city.value" :key="city.key"
-                       :value="city.key"></el-option>
+              <el-option v-for="(year,index) in yearselData" :label="year.value" :key="year.key"
+                         :value="year.key"></el-option>
 
-          </el-select>
-        </el-form-item>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="月份">
+            <el-select v-model="form.month" placeholder="月份">
+              <el-option label="全部" value=""></el-option>
 
-        <el-form-item label="终点">
-          <el-select v-model="form.endcity" placeholder="城市">
-            <el-option label="全部" value=""></el-option>
-            <el-option v-for="(city,index) in endCitySelData" :label="city.value" :key="city.key"
-                       :value="city.key"></el-option>
+              <el-option v-for="(month,index) in monthselData" :label="month.value" :key="month.key"
+                         :value="month.key"></el-option>
 
-          </el-select>
-        </el-form-item>
+            </el-select>
+          </el-form-item>
 
-        <el-form-item label="月份">
-          <el-select v-model="form.month" placeholder="月份">
-            <el-option label="全部" value=""></el-option>
+          <el-form-item label="起点">
+            <el-select v-model="form.startcity" placeholder="城市">
+              <el-option label="全部" value=""></el-option>
 
-            <el-option v-for="(month,index) in monthselData" :label="month.value" :key="month.key"
-                       :value="month.key"></el-option>
+              <el-option v-for="(city,index) in startCitySelData" :label="city.value" :key="city.key"
+                         :value="city.key"></el-option>
 
-          </el-select>
-        </el-form-item>
+            </el-select>
+          </el-form-item>
+<!--          <el-form-item label="终点">
+            <el-select v-model="form.endcity" placeholder="城市">
+              <el-option label="全部" value=""></el-option>
+              <el-option v-for="(city,index) in endCitySelData" :label="city.value" :key="city.key"
+                         :value="city.key"></el-option>
+
+            </el-select>
+          </el-form-item>-->
         <font size="2">共<font color="red">{{ size }}</font>条数据</font>
+
 
       </el-form>
 
@@ -164,11 +177,7 @@
           </el-col>
 
           <el-form :model="editform" style="margin-left: 15px">
-            <!--            <el-col :span="24" style="margin-top: 10px">
-                          <el-form-item align="left" label="月份" :label-width="formLabelWidth">
-                            <el-input v-model="editform.month" style="width: 80%"></el-input>
-                          </el-form-item>
-                        </el-col>-->
+
 
             <el-col :span="24" style="margin-top: 10px">
               <el-form-item align="left" label="起点" :label-width="formLabelWidth">
@@ -202,10 +211,13 @@
                 <el-input v-model="editform.kilo" style="width: 80%"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="6"><label> <el-tooltip class="item" effect="dark" content="此条数据在生成excel时，是否算作一次发车次数" placement="top-start"><font size="2">是否算做发车次数</font></el-tooltip></label>
+            <el-col :span="6"><label>
+              <el-tooltip class="item" effect="dark" content="此条数据在生成excel时，是否算作一次发车次数" placement="top-start"><font
+                  size="2">是否算做发车次数</font></el-tooltip>
+            </label>
             </el-col>
             <el-col :span="5">
-<!--  :content="editform.ismonthcount"             -->
+              <!--  :content="editform.ismonthcount"             -->
               <el-tooltip placement="top" content="此条数据在生成excel时，是否算作一次发车次数">
                 <el-switch
                     v-model="editform.ismonthcount"
@@ -217,9 +229,10 @@
             </el-col>
 
 
-
-
-            <el-col :span="6"><label> <el-tooltip class="item" effect="dark" content="此条数据在生成excel时，是否算在月度总里程中" placement="top-start"><font size="2">是否算做总里程</font></el-tooltip></label>
+            <el-col :span="6"><label>
+              <el-tooltip class="item" effect="dark" content="此条数据在生成excel时，是否算在月度总里程中" placement="top-start"><font
+                  size="2">是否算做总里程</font></el-tooltip>
+            </label>
             </el-col>
             <el-col :span="5">
               <!--  :content="editform.ismonthcount"             -->
@@ -247,7 +260,6 @@
 
     </el-container>
     <el-container style="height: 5%">
-
       <div style="margin-left: 92%;">
         <el-button type="primary" icon="el-icon-search" @click="submit()">查询</el-button>
       </div>
@@ -275,7 +287,9 @@ module.exports = {
       startCitySelData: [],
       endCitySelData: [],
       monthselData: [],
+      yearselData: [],
       form: {
+        year: '',
         type: '',
         startcity: '',
         endcity: '',
@@ -297,11 +311,7 @@ module.exports = {
       }
     };
   },
-  watch: {
-
-
-
-  },
+  watch: {},
   created() {
 
 
@@ -322,10 +332,9 @@ module.exports = {
       headers: new Headers({
         'Content-Type': 'application/json'
       })
-    }).then(res => res.json())
-        .then(response => {
-          this.startCitySelData = response.resList
-        });
+    }).then(res => res.json()).then(response => {
+      this.startCitySelData = response.resList
+    });
 
     fetch("http://localhost:9080/queryEndCitySelect", {
       method: 'POST', // 请求方法还可以是 put
@@ -333,22 +342,20 @@ module.exports = {
       headers: new Headers({
         'Content-Type': 'application/json'
       })
-    }).then(res => res.json())
-        .then(response => {
-          this.endCitySelData = response.resList
-        });
+    }).then(res => res.json()).then(response => {
+      this.endCitySelData = response.resList
+    });
 
 
-    fetch("http://localhost:9080/queryJFMonthSelect", {
+    fetch("http://localhost:9080/queryMonthSelect", {
       method: 'POST', // 请求方法还可以是 put
       body: '',
       headers: new Headers({
         'Content-Type': 'application/json'
       })
-    }).then(res => res.json())
-        .then(response => {
-          this.monthselData = response.resList
-        });
+    }).then(res => res.json()).then(response => {
+      this.monthselData = response.resList
+    });
 
 
     fetch("http://localhost:9080/queryCarTypeByDepart", {
@@ -357,10 +364,19 @@ module.exports = {
       headers: new Headers({
         'Content-Type': 'application/json'
       })
-    }).then(res => res.json())
-        .then(response => {
-          this.cartypeSelData = response.resList
-        });
+    }).then(res => res.json()).then(response => {
+      this.cartypeSelData = response.resList
+    });
+
+    fetch("http://localhost:9080/queryYearSelect", {
+      method: 'POST', // 请求方法还可以是 put
+      body: '',
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    }).then(res => res.json()).then(response => {
+      this.yearselData = response.resList
+    });
 
     fetch("http://localhost:9080/queryDeaprtList", {
       method: 'POST', // 请求方法还可以是 put
@@ -368,12 +384,11 @@ module.exports = {
       headers: new Headers({
         'Content-Type': 'application/json'
       })
-    }).then(res => res.json())
-        .then(response => {
-          this.tableData = response.resList
-          this.size = response.resList.length
-          this.loading = false
-        });
+    }).then(res => res.json()).then(response => {
+      this.tableData = response.resList
+      this.size = response.resList.length
+      this.loading = false
+    });
 
 
   },

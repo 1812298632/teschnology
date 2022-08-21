@@ -12,7 +12,9 @@
                         count(SHEETID)                       runcount,
                         round(sum(kilo) / count(SHEETID), 2) avg
                  from DEPARTDETAIL D
-                 where CARTYPE =#{carType}  and d.ISMONTHCOUNT =1 and d.ISKILOSUM =1
+                 where CARTYPE = #{carType}
+                   and d.ISMONTHCOUNT = 1
+                   and d.ISKILOSUM = 1
                  group by month, CARTYPE
              ) a
         order by month
@@ -22,25 +24,70 @@
         select max(CARTYPE)                                            cartype,
                columnname,
                listagg(CARID, ',') within group ( order by CARID desc) carid,
-               round(sum(THREEMONTH / 10000), 2)                       threemonth,
-               round(sum(FOURMONTH / 10000), 2)                        fourmonth,
-               round(sum(FIVEMONTH / 10000), 2)                        fivemonth,
-               round(sum(SIXMONTH / 10000), 2)                         sixmonth,
-               round(sum(SEVENMONTH / 10000), 2)                       sevenmonth,
-               round(sum(EIGHTMONTH / 10000), 2)                       eightmonth,
-               round(sum(NINEMONTH / 10000), 2)                        ninemonth,
-               round(sum(TENMONTH / 10000), 2)                         tenmonth,
-               round(sum(ELEVENTMONTH / 10000), 2)                     eleventmonth,
-               round(sum(TWELVEMONTH / 10000), 2)                      twelvemonth,
-               round(sum(ONEMONTH / 10000), 2)                         onemonth,
-               round(sum(TWOMONTH / 10000), 2)                         twomonth
+               sum(THREEMONTH)                                         threemonth,
+               sum(FOURMONTH)                                          fourmonth,
+               sum(FIVEMONTH)                                          fivemonth,
+               sum(SIXMONTH)                                           sixmonth,
+               sum(SEVENMONTH)                                         sevenmonth,
+               sum(EIGHTMONTH)                                         eightmonth,
+               sum(NINEMONTH)                                          ninemonth,
+               sum(TENMONTH)                                           tenmonth,
+               sum(ELEVENTMONTH)                                       eleventmonth,
+               sum(TWELVEMONTH)                                        twelvemonth,
+               sum(ONEMONTH)                                           onemonth,
+               sum(TWOMONTH)                                           twomonth
         from INCOMESTATEMENT I
-        where I.CARTYPE = #{carType}
         group by COLUMNNAME
     </select>
 
 
     <select id="queryMonthMoneyOther" resultType="com.excel.pro.entity.Incomestatement">
+        select max(CARTYPE) cartype,
+        carid,
+        listagg(columnname, ',') within group ( order by columnname desc) columnname,
+        sum(threemonth )threemonth,
+        sum(fourmonth )fourmonth,
+        sum(fivemonth) fivemonth,
+        sum(sixmonth) sixmonth,
+        sum(sevenmonth )sevenmonth,
+        sum(eightmonth) eightmonth,
+        sum(ninemonth) ninemonth,
+        sum(tenmonth )tenmonth,
+        sum(eleventmonth )eleventmonth,
+        sum(twelvemonth )twelvemonth,
+        sum(onemonth ) onemonth,
+        sum(twomonth) twomonth
+        from (
+        select max(CARTYPE) cartype,
+        columnname,
+        listagg(CARID, ',') within group ( order by CARID desc) carid,
+        sum(THREEMONTH) threemonth,
+        sum(FOURMONTH) fourmonth,
+        sum(FIVEMONTH) fivemonth,
+        sum(SIXMONTH) sixmonth,
+        sum(SEVENMONTH) sevenmonth,
+        sum(EIGHTMONTH) eightmonth,
+        sum(NINEMONTH) ninemonth,
+        sum(TENMONTH) tenmonth,
+        sum(ELEVENTMONTH) eleventmonth,
+        sum(TWELVEMONTH) twelvemonth,
+        sum(ONEMONTH) onemonth,
+        sum(TWOMONTH) twomonth
+        from INCOMESTATEMENT I
+        where I.year =#{year}
+        <if test='carType != "总损益表"'>
+            and I.CARTYPE = #{carType}
+        </if>
+        and COLUMNNAME in
+        <foreach item="item" index="index" collection="otherRowTitleList" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        group by COLUMNNAME
+        ) a
+        group by cartype, carid
+    </select>
+
+    <select id="queryMonthMoneyOther1" resultType="com.excel.pro.entity.Incomestatement">
         select max(CARTYPE) cartype,
         carid,
         listagg(columnname, ',') within group ( order by columnname desc) columnname,
@@ -73,7 +120,7 @@
         sum(ONEMONTH) onemonth,
         sum(TWOMONTH) twomonth
         from INCOMESTATEMENT I
-        where I.CARTYPE = #{carType}
+        where I.CARTYPE = #{carType} and I.year =#{year}
         and COLUMNNAME in
         <foreach item="item" index="index" collection="otherRowTitleList" open="(" close=")" separator=",">
             #{item}
@@ -82,6 +129,7 @@
         ) a
         group by cartype, carid
     </select>
+
 
     <select id="querycarid" resultType="com.excel.pro.entity.SelectEntity">
         select distinct CARID as key, CARID as value
@@ -107,20 +155,53 @@
     <select id="queryIncomeWarning" resultType="com.excel.pro.entity.IndexPageEntity">
 
         select cartype,
-        carid,
-        columnname
+               carid,
+               columnname
         from INCOMESTATEMENT
         where ONEMONTH &lt; 0
-        or TWOMONTH &lt; 0
-        or THREEMONTH &lt; 0
-        or FOURMONTH &lt; 0
-        or FIVEMONTH &lt; 0
-        or SIXMONTH &lt; 0
-        or SEVENMONTH &lt; 0
-        or EIGHTMONTH &lt; 0
-        or NINEMONTH &lt; 0
-        or TENMONTH &lt; 0
-        or ELEVENTMONTH &lt; 0
-        or TWELVEMONTH &lt; 0
+           or TWOMONTH &lt; 0
+           or THREEMONTH &lt; 0
+           or FOURMONTH &lt; 0
+           or FIVEMONTH &lt; 0
+           or SIXMONTH &lt; 0
+           or SEVENMONTH &lt; 0
+           or EIGHTMONTH &lt; 0
+           or NINEMONTH &lt; 0
+           or TENMONTH &lt; 0
+           or ELEVENTMONTH &lt; 0
+           or TWELVEMONTH &lt; 0
+    </select>
+    <select id="querySumByColumn" resultType="com.excel.pro.entity.Incomestatement">
+        select cartype,
+               carid,
+               columnname    columnname,
+               carid,
+               (threemonth + fourmonth + fivemonth + sixmonth + sevenmonth +
+                eightmonth +
+                ninemonth +
+                tenmonth +
+                eleventmonth +
+                twelvemonth +
+                onemonth +
+                twomonth) as subjectcode
+        FROM (
+                 select max(CARTYPE)                                            cartype,
+                        columnname,
+                        listagg(CARID, ',') within group ( order by CARID desc) carid,
+                        sum(THREEMONTH)                                         threemonth,
+                        sum(FOURMONTH)                                          fourmonth,
+                        sum(FIVEMONTH)                                          fivemonth,
+                        sum(SIXMONTH)                                           sixmonth,
+                        sum(SEVENMONTH)                                         sevenmonth,
+                        sum(EIGHTMONTH)                                         eightmonth,
+                        sum(NINEMONTH)                                          ninemonth,
+                        sum(TENMONTH)                                           tenmonth,
+                        sum(ELEVENTMONTH)                                       eleventmonth,
+                        sum(TWELVEMONTH)                                        twelvemonth,
+                        sum(ONEMONTH)                                           onemonth,
+                        sum(TWOMONTH)                                           twomonth
+                 from INCOMESTATEMENT I
+                 where I.CARTYPE = #{cartype}
+                 group by COLUMNNAME)
     </select>
 </mapper>

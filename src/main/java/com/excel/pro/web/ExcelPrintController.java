@@ -82,6 +82,37 @@ public class ExcelPrintController {
     }
 
 
+    @GetMapping("/departother")
+    public String departother(String cartype, String sheetname) throws IOException {
+       /* LinkedList<String> sheetNameList = new LinkedList<>();
+        sheetNameList.add("解放车3");
+        sheetNameList.add("解放车4");
+        sheetNameList.add("解放车5");
+        sheetNameList.add("解放车6");
+        sheetNameList.add("解放车7");
+        sheetNameList.add("解放车8");
+        sheetNameList.add("解放车9");
+        sheetNameList.add("解放车10");
+        sheetNameList.add("解放车11");
+        sheetNameList.add("解放车12");
+        sheetNameList.add("解放车1");
+        sheetNameList.add("解放车2");*/
+
+        //需要获取excel中sheet的数据，就将sheet名称放入到list中
+
+        //需要获取excel中sheet的数据，就将sheet名称放入到list中
+        LinkedList<String> sheetNameList = ConstantUtil.makeSheetNameOthrList();
+        int month = 2;
+        for (String s : sheetNameList) {
+            month++;
+            departService.insertDepartother(s, month);
+        }
+
+
+        return "123";
+    }
+
+
     /**
      * 导入损益表中的所有数据
      *
@@ -175,7 +206,7 @@ public class ExcelPrintController {
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\解放车发车明细.xlsx");
+            fileOutputStream = new FileOutputStream("E:\\ " + cartype + "发车明细.xlsx");
 
             wb.write(fileOutputStream);
             fileOutputStream.flush();
@@ -252,14 +283,61 @@ public class ExcelPrintController {
             BigDecimal runcount = new BigDecimal(Double.toString(x.getRuncount()));
             BigDecimal kilosum = new BigDecimal(x.getKilosum());
             BigDecimal runcountmoney = new BigDecimal(Double.toString(x.getMoney()));
-            BigDecimal kilosummoney = new BigDecimal(Double.toString(x.getMoney() * 10000));
+            BigDecimal kilosummoney = new BigDecimal(Double.toString(x.getMoney()));
 
-            x.setAvgonway(runcountmoney.divide(runcount, 2, BigDecimal.ROUND_HALF_UP).doubleValue());
-            x.setCost(kilosummoney.divide(kilosum, 2, BigDecimal.ROUND_HALF_UP).doubleValue());
+            x.setAvgonway(runcountmoney.divide(runcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+            x.setCost(kilosummoney.divide(kilosum, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
         });
 
 
         LinkedList<String> titleList = ConstantUtil.makeToolsTitle();
+        IncomeExportEntity incomeExportEntity = new IncomeExportEntity();
+
+        incomeExportEntity.setMonth("总和");
+
+        List<Incomestatement> incomestatement = incomeStatementService.querySumByColumn(cartype);
+
+        Incomestatement summoney = incomestatement.stream().filter(x -> x.getColumnname().equals(columnname)).collect(Collectors.toList()).get(0);
+
+        incomeExportEntity.setMoney(Double.parseDouble(summoney.getSubjectcode()));
+
+
+        Double kiloSum = 0.00;
+        Double cost = 0.00;
+        Double avg = 0.00;
+        Double runCount = 0.00;
+        Double avgonway = 0.00;
+
+
+        for (IncomeExportEntity x : exportEntityList) {
+            kiloSum = Double.parseDouble(x.getKilosum()) + kiloSum;
+            runCount = x.getRuncount() + runCount;
+            avg = x.getAvg() + avg;
+            avgonway = x.getAvgonway() + avgonway;
+            cost = x.getCost() + cost;
+        }
+
+        incomeExportEntity.setKilosum(kiloSum.toString());
+        incomeExportEntity.setRuncount(runCount);
+        incomeExportEntity.setAvg(avg);
+        incomeExportEntity.setAvgonway(avgonway);
+        incomeExportEntity.setCost(cost);
+
+
+        IncomeExportEntity incomeExportEntityAvg = new IncomeExportEntity();
+
+        incomeExportEntityAvg.setMonth("均值");
+        BigDecimal monthcount = new BigDecimal(exportEntityList.size());
+        incomeExportEntityAvg.setKilosum(new BigDecimal(incomeExportEntity.getKilosum()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).toString());
+        incomeExportEntityAvg.setRuncount(new BigDecimal(incomeExportEntity.getRuncount()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeExportEntityAvg.setAvg(new BigDecimal(incomeExportEntity.getAvg()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeExportEntityAvg.setMoney(new BigDecimal(incomeExportEntity.getMoney()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeExportEntityAvg.setAvgonway(new BigDecimal(incomeExportEntity.getAvgonway()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeExportEntityAvg.setCost(new BigDecimal(incomeExportEntity.getCost()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+
+
+        exportEntityList.add(incomeExportEntity);
+        exportEntityList.add(incomeExportEntityAvg);
 
 
         HSSFWorkbook wb = new HSSFWorkbook();
@@ -286,15 +364,25 @@ public class ExcelPrintController {
             for (int j = 0; j < countListArray.length; j++) {
                 //将内容按顺序赋给对应的列对象
                 HSSFCell cell = row.createCell((short) j);
-                if (j <= 2) {
-
-                    cell.setCellValue(Long.parseLong(countListArray[j]));
-
+                if (row.getRowNum() <= exportEntityList.size() - 2) {
+                    if (j <= 2) {
+                        cell.setCellValue(Double.parseDouble(countListArray[j]));
+                    } else {
+                        //cell.setCellStyle(cellStyle);
+                        cell.setCellValue(Double.parseDouble(countListArray[j]));
+                    }
                 } else {
-                    //cell.setCellStyle(cellStyle);
-                    cell.setCellValue(Double.parseDouble(countListArray[j]));
+                    if (j == 0) {
+                        cell.setCellValue(countListArray[j]);
+                    } else if (j <= 2 && j != 0) {
+                        cell.setCellValue(Double.parseDouble(countListArray[j]));
+                    } else {
+                        //cell.setCellStyle(cellStyle);
+                        cell.setCellValue(Double.parseDouble(countListArray[j]));
+                    }
 
                 }
+
 
             }
         }
@@ -916,6 +1004,7 @@ public class ExcelPrintController {
 
         //毛利表中 车队收入列
         Incomestatement totalincomeMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title1)).collect(Collectors.toList()).get(0);
+        //Incomestatement totalincomeMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title16)).collect(Collectors.toList()).get(0);
 
 
         HashMap<Object, Object> hashMap = new HashMap<>();
@@ -1170,7 +1259,7 @@ public class ExcelPrintController {
                     //计算毛利率
                     BigDecimal grossrate = gross.divide(totalincomemoney, BigDecimal.ROUND_HALF_UP);
                     x.setGrossrate(grossrate.doubleValue());
-                }else{
+                } else {
                     x.setGrossrate(0.00);
                 }
 
@@ -1178,7 +1267,7 @@ public class ExcelPrintController {
                     //计算单程毛利
                     BigDecimal grossonway = gross.divide(runcount, BigDecimal.ROUND_HALF_UP);
                     x.setGrossonway(grossonway.doubleValue());
-                }else{
+                } else {
                     x.setGrossonway(0.00);
                 }
             }
@@ -1190,7 +1279,7 @@ public class ExcelPrintController {
 
         HSSFWorkbook wb = new HSSFWorkbook();
 
-        HSSFSheet sheet = wb.createSheet("解放车毛利");
+        HSSFSheet sheet = wb.createSheet(cartype + "毛利");
 
         HSSFRow row = sheet.createRow(0);
         for (int i = 0; i < titleList.size(); i++) {
