@@ -432,9 +432,10 @@ module.exports = {
         .then(response => {
           this.tableData = response.resList
           this.size = response.resList.length
+          this.loading = false
         });
 
-    this.loading = false
+
   },
   methods: {
     editclick(row) {

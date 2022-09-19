@@ -14,11 +14,11 @@ import java.util.List;
 public interface IncomeStatementService {
     void insertIncomeStatement(String sheetName) throws FileNotFoundException;
 
-    List<IncomeExportEntity> exportIncome(String cartype);
+    List<IncomeExportEntity> exportIncome(String cartype,String year);
 
-    List<Incomestatement> queryMonthMoney(String catType);
+    List<Incomestatement> queryMonthMoney(String catType,String year);
 
-    Incomestatement queryMonthMoneyOther(String cartype, ArrayList<String> otherRowTitleList);
+    Incomestatement queryMonthMoneyOther(String cartype,String year, ArrayList<String> otherRowTitleList);
 
     void insertIncomeStatementByUpload(XSSFSheet sheet);
 
@@ -26,5 +26,5 @@ public interface IncomeStatementService {
 
     void delete( LambdaQueryWrapper<Incomestatement> queryWrapper, ResponseEntity responseEntity);
 
-    List<Incomestatement> querySumByColumn(String cartype );
+    List<Incomestatement> querySumByColumn(String cartype,String year );
 }

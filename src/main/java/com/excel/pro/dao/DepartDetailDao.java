@@ -9,7 +9,7 @@ import java.util.List;
 public interface DepartDetailDao extends BaseMapper<Departdetail> {
     public List<Departdetail> queryByid();
 
-    DepartExportEntity exportDepart(@Param("cityname") String cityname, @Param("cartype")String cartype);
+    DepartExportEntity exportDepart(@Param("cityname") String cityname, @Param("cartype")String cartype,@Param("year")String year);
 
     List<SelectEntity> queryCitySelect();
 

@@ -15,7 +15,7 @@ public interface DepartService {
 
     List<Departdetail> querybyid();
 
-    DepartExportEntity exportDepart(String cityname, String cartype);
+    DepartExportEntity exportDepart(String cityname, String cartype,String year);
 
     void insertDepartDeatilByUpload(XSSFSheet sheet);
 

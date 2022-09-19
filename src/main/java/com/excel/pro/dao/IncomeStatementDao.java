@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface IncomeStatementDao extends BaseMapper<Incomestatement> {
-    List<IncomeExportEntity> exportIncome(@Param("carType")String cartype);
+    List<IncomeExportEntity> exportIncome(@Param("carType")String cartype,@Param("year")String year);
 
-    List<Incomestatement> queryMonthMoney(@Param("carType") String carType);
+    List<Incomestatement> queryMonthMoney(@Param("carType") String carType,@Param("year")String year);
 
     Incomestatement queryMonthMoneyOther(@Param("carType")String cartype,@Param("year")String year, @Param("otherRowTitleList")ArrayList<String> otherRowTitleList);
 
-    Incomestatement queryMonthMoneyOther1(@Param("carType")String cartype, @Param("otherRowTitleList")ArrayList<String> otherRowTitleList);
+    Incomestatement queryMonthMoneyOther1(@Param("carType")String cartype,@Param("year")String year, @Param("otherRowTitleList")ArrayList<String> otherRowTitleList);
 
 
     List<SelectEntity> querycarid();
@@ -30,6 +30,6 @@ public interface IncomeStatementDao extends BaseMapper<Incomestatement> {
 
     int update(Incomestatement incomestatement, UpdateWrapper<Incomestatement> updateWrapper, ResponseEntity responseEntity);
 
-    List<Incomestatement> querySumByColumn(@Param("cartype")String cartype);
+    List<Incomestatement> querySumByColumn(@Param("cartype")String cartype,@Param("year")String year);
 
 }

@@ -36,7 +36,7 @@
           </el-button>
         </div>
         <div v-for="(list,index) in this.countList" :key="index" class="text item">
-          <font size="2">沃尔沃 <font size="2" color="#ff291a">{{ list.key }} </font>月份发车次数为
+          <font size="2"> <font size="2" color="#ff291a">{{ list.key }} </font>月份发车次数为
             <font size="2" color="#ff291a">{{ list.value }}</font></font>
 
 
@@ -235,7 +235,7 @@
           </el-button>
         </div>
         <div v-for="(list,index) in this.otherList" :key="index" class="text item">
-          <font size="3" color="#dda0dd">{{ list.carid }} 车牌属于沃尔沃</font><br/>
+          <font size="3" color="#dda0dd">{{ list.carid }} </font><br/>
           <font size="2">{{ list.columnname }}</font><br/>
           <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
           <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
@@ -278,6 +278,7 @@ module.exports = {
       form: {
         year: '',
         cartype: '',
+        columnname:''
       },
       isCollapse: true,
     };

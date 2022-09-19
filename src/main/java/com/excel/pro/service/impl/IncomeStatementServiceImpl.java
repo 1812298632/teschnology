@@ -205,18 +205,18 @@ public class IncomeStatementServiceImpl implements IncomeStatementService {
     }
 
     @Override
-    public List<IncomeExportEntity> exportIncome(String cartype) {
-        return incomeStatementDao.exportIncome(cartype);
+    public List<IncomeExportEntity> exportIncome(String cartype,String year) {
+        return incomeStatementDao.exportIncome(cartype,year);
     }
 
     @Override
-    public List<Incomestatement> queryMonthMoney(String carType) {
-        return incomeStatementDao.queryMonthMoney(carType);
+    public List<Incomestatement> queryMonthMoney(String carType,String year) {
+        return incomeStatementDao.queryMonthMoney(carType,year);
     }
 
     @Override
-    public Incomestatement queryMonthMoneyOther(String cartype, ArrayList<String> otherRowTitleList) {
-        return incomeStatementDao.queryMonthMoneyOther1(cartype, otherRowTitleList);
+    public Incomestatement queryMonthMoneyOther(String cartype, String year,ArrayList<String> otherRowTitleList) {
+        return incomeStatementDao.queryMonthMoneyOther1(cartype, year,otherRowTitleList);
     }
 
     @Override
@@ -352,7 +352,7 @@ public class IncomeStatementServiceImpl implements IncomeStatementService {
     }
 
     @Override
-    public List<Incomestatement> querySumByColumn(String cartype) {
-        return incomeStatementDao.querySumByColumn(cartype);
+    public List<Incomestatement> querySumByColumn(String cartype,String year) {
+        return incomeStatementDao.querySumByColumn(cartype,year);
     }
 }

@@ -28,6 +28,7 @@
                  from DEPARTDETAIL
                  where STARTCITY = #{cityname}
                    and CARTYPE = #{cartype}
+                   and year = #{year}
                  group by month
                  order by month
              )

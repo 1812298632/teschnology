@@ -17,6 +17,7 @@ public class IncomeExportEntity {
 
     //毛利
     private Double totalincomemoney;//总收入
+    private Double kiloincome;//每公里收入
     private Double tollsmoney;//过路费
     private Double fuelmoney;//燃油费
     private Double finesmoney;//罚款
@@ -24,6 +25,7 @@ public class IncomeExportEntity {
     private Double tiremoney;//轮胎费
     private Double repairmoney;//维修费
     private Double othermoney;//其他
+    private Double manmoney;//人工成本
     private Double totalcostmoney;//总成本
 
 

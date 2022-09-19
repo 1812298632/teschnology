@@ -7,12 +7,16 @@
         select *
         from (
                  select CARTYPE,
-                        month                                month,
-                        sum(kilo)                            kilosum,
-                        count(SHEETID)                       runcount,
-                        round(sum(kilo) / count(SHEETID), 2) avg
+                        month                                         month,
+                        sum(kilo) / 10000                             kilosum,
+                        count(SHEETID)                                runcount,
+                        round(sum(kilo) / count(SHEETID), 10) / 10000 avg
                  from DEPARTDETAIL D
-                 where CARTYPE = #{carType}
+                 where YEAR = #{year}
+                   <if test="carType != '总损益表'">
+                       and CARTYPE = #{carType}
+                   </if>
+
                    and d.ISMONTHCOUNT = 1
                    and d.ISKILOSUM = 1
                  group by month, CARTYPE
@@ -24,19 +28,25 @@
         select max(CARTYPE)                                            cartype,
                columnname,
                listagg(CARID, ',') within group ( order by CARID desc) carid,
-               sum(THREEMONTH)                                         threemonth,
-               sum(FOURMONTH)                                          fourmonth,
-               sum(FIVEMONTH)                                          fivemonth,
-               sum(SIXMONTH)                                           sixmonth,
-               sum(SEVENMONTH)                                         sevenmonth,
-               sum(EIGHTMONTH)                                         eightmonth,
-               sum(NINEMONTH)                                          ninemonth,
-               sum(TENMONTH)                                           tenmonth,
-               sum(ELEVENTMONTH)                                       eleventmonth,
-               sum(TWELVEMONTH)                                        twelvemonth,
-               sum(ONEMONTH)                                           onemonth,
-               sum(TWOMONTH)                                           twomonth
+               sum(THREEMONTH) / 10000                                 threemonth,
+               sum(FOURMONTH) / 10000                                  fourmonth,
+               sum(FIVEMONTH) / 10000                                  fivemonth,
+               sum(SIXMONTH) / 10000                                   sixmonth,
+               sum(SEVENMONTH) / 10000                                 sevenmonth,
+               sum(EIGHTMONTH) / 10000                                 eightmonth,
+               sum(NINEMONTH) / 10000                                  ninemonth,
+               sum(TENMONTH) / 10000                                   tenmonth,
+               sum(ELEVENTMONTH) / 10000                               eleventmonth,
+               sum(TWELVEMONTH) / 10000                                twelvemonth,
+               sum(ONEMONTH) / 10000                                   onemonth,
+               sum(TWOMONTH) / 10000                                   twomonth
         from INCOMESTATEMENT I
+        where year = #{year}
+
+        <if test="carType != '总损益表'">
+            and CARTYPE = #{carType}
+        </if>
+
         group by COLUMNNAME
     </select>
 
@@ -91,18 +101,18 @@
         select max(CARTYPE) cartype,
         carid,
         listagg(columnname, ',') within group ( order by columnname desc) columnname,
-        round(sum(threemonth/10000) , 2) threemonth,
-        round(sum(fourmonth/10000) , 2) fourmonth,
-        round(sum(fivemonth/10000) , 2) fivemonth,
-        round(sum(sixmonth/10000) , 2) sixmonth,
-        round(sum(sevenmonth/10000) , 2) sevenmonth,
-        round(sum(eightmonth/10000), 2) eightmonth,
-        round(sum(ninemonth/10000), 2) ninemonth,
-        round(sum(tenmonth/10000), 2) tenmonth,
-        round(sum(eleventmonth/10000), 2) eleventmonth,
-        round(sum(twelvemonth/10000), 2) twelvemonth,
-        round(sum(onemonth/10000) , 2) onemonth,
-        round(sum(twomonth/10000) , 2) twomonth
+        sum(threemonth/10000) threemonth,
+        sum(fourmonth/10000) fourmonth,
+        sum(fivemonth/10000) fivemonth,
+        sum(sixmonth/10000) sixmonth,
+        sum(sevenmonth/10000) sevenmonth,
+        sum(eightmonth/10000) eightmonth,
+        sum(ninemonth/10000) ninemonth,
+        sum(tenmonth/10000) tenmonth,
+        sum(eleventmonth/10000) eleventmonth,
+        sum(twelvemonth/10000) twelvemonth,
+        sum(onemonth/10000) onemonth,
+        sum(twomonth/10000) twomonth
         from (
         select max(CARTYPE) cartype,
         columnname,
@@ -120,7 +130,11 @@
         sum(ONEMONTH) onemonth,
         sum(TWOMONTH) twomonth
         from INCOMESTATEMENT I
-        where I.CARTYPE = #{carType} and I.year =#{year}
+        where  I.year =#{year}
+
+        <if test="carType != '总损益表'">
+            and CARTYPE = #{carType}
+        </if>
         and COLUMNNAME in
         <foreach item="item" index="index" collection="otherRowTitleList" open="(" close=")" separator=",">
             #{item}
@@ -174,7 +188,7 @@
     <select id="querySumByColumn" resultType="com.excel.pro.entity.Incomestatement">
         select cartype,
                carid,
-               columnname    columnname,
+               columnname            columnname,
                carid,
                (threemonth + fourmonth + fivemonth + sixmonth + sevenmonth +
                 eightmonth +
@@ -183,7 +197,7 @@
                 eleventmonth +
                 twelvemonth +
                 onemonth +
-                twomonth) as subjectcode
+                twomonth) / 10000 as subjectcode
         FROM (
                  select max(CARTYPE)                                            cartype,
                         columnname,
@@ -202,6 +216,7 @@
                         sum(TWOMONTH)                                           twomonth
                  from INCOMESTATEMENT I
                  where I.CARTYPE = #{cartype}
+                   and year = #{year}
                  group by COLUMNNAME)
     </select>
 </mapper>

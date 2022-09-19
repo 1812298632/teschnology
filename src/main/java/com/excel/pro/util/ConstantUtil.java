@@ -117,7 +117,9 @@ public class ConstantUtil {
     public static final String id = "序列号";
     public static final String fromno = "表单号";
 
+    public static final String carnum1 = "发车单号";
 
+    public static final String headplate = "车头牌号";
 
     public static final String data = "日期";
     public static final String type = "怕日车";
@@ -134,6 +136,23 @@ public class ConstantUtil {
         departColumnNameList.add(ConstantUtil.kilo);
         departColumnNameList.add(ConstantUtil.id);
         departColumnNameList.add(ConstantUtil.fromno);
+        departColumnNameList.add(ConstantUtil.headplate);
+
+        return departColumnNameList;
+    }
+
+    public static ArrayList<String> makeDepartColumnNameList1() {
+        ArrayList<String> departColumnNameList = new ArrayList<>();
+
+        departColumnNameList.add(ConstantUtil.carnum1);
+        departColumnNameList.add(ConstantUtil.startcity);
+        departColumnNameList.add(ConstantUtil.endcity);
+        departColumnNameList.add(ConstantUtil.startkilo);
+        departColumnNameList.add(ConstantUtil.endkilo);
+        departColumnNameList.add(ConstantUtil.kilo);
+        departColumnNameList.add(ConstantUtil.id);
+        departColumnNameList.add(ConstantUtil.fromno);
+        departColumnNameList.add(ConstantUtil.headplate);
 
         return departColumnNameList;
     }
@@ -182,12 +201,14 @@ public class ConstantUtil {
 
     //导出 毛利 表头名称
     public static final String totalincome = "总收入";
+    public static final String kilomoney = "每公里收入";
     public static final String tolls = "过路费";
     public static final String fuel = "燃油费";
     public static final String fines = "罚款";
     public static final String parking = "停车费";
     public static final String tire = "轮胎费";
     public static final String repair = "维修费";
+    public static final String man = "人工成本";
     public static final String other = "其他";
     public static final String totalcost = "总成本";
     public static final String kilocost = "公里成本费用";
@@ -202,12 +223,14 @@ public class ConstantUtil {
         titleList.add(runcount);
         titleList.add(sumkilo);
         titleList.add(totalincome);
+        titleList.add(kilomoney);
         titleList.add(tolls);
         titleList.add(fuel);
         titleList.add(fines);
         titleList.add(parking);
         titleList.add(tire);
         titleList.add(repair);
+        titleList.add(man);
         titleList.add(other);
         titleList.add(totalcost);
         titleList.add(kilocost);

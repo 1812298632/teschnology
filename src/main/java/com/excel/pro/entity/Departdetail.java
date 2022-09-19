@@ -20,4 +20,5 @@ public class Departdetail {
     private String excelname;//数据来自哪个excel中
     private String ismonthcount;
     private String iskilosum;
+    private String headplate;//车头牌号
 }

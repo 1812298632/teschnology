@@ -156,6 +156,7 @@ public class ExcelPrintController {
 
         String requestParam = RequestUtil.getJsonObjectData(request);
         String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
+        String year = RequestUtil.getObjectValue(requestParam, "year");
 
         responseEntity.setResMessage("文件生成成功,生成文件名称为[" + cartype + "发车明细]");
 
@@ -166,7 +167,7 @@ public class ExcelPrintController {
 
         for (String cityname : cityList) {
             //根据城市，查询出每个城市每个月份的发车次数
-            DepartExportEntity exportDepart = departService.exportDepart(cityname, cartype);
+            DepartExportEntity exportDepart = departService.exportDepart(cityname, cartype,year);
 
             countList.add(exportDepart);
         }
@@ -248,15 +249,16 @@ public class ExcelPrintController {
         String requestParam = RequestUtil.getJsonObjectData(request);
         String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
         String columnname = RequestUtil.getObjectValue(requestParam, "columnname");
+        String year = RequestUtil.getObjectValue(requestParam, "year");
 
-        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome(cartype);
+        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome(cartype, year);
 
 
         responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
 
         responseEntity.setResMessage("文件生成成功,生成文件名称为[" + cartype + columnname.trim() + "]");
 
-        List<Incomestatement> monthMoneyList = incomeStatementService.queryMonthMoney(cartype);
+        List<Incomestatement> monthMoneyList = incomeStatementService.queryMonthMoney(cartype, year);
 
         Incomestatement monthMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(columnname)).collect(Collectors.toList()).get(0);
 
@@ -295,7 +297,7 @@ public class ExcelPrintController {
 
         incomeExportEntity.setMonth("总和");
 
-        List<Incomestatement> incomestatement = incomeStatementService.querySumByColumn(cartype);
+        List<Incomestatement> incomestatement = incomeStatementService.querySumByColumn(cartype, year);
 
         Incomestatement summoney = incomestatement.stream().filter(x -> x.getColumnname().equals(columnname)).collect(Collectors.toList()).get(0);
 
@@ -423,7 +425,7 @@ public class ExcelPrintController {
      *
      * @return
      */
-    @RequestMapping("/exportIncomeTolls")
+   /* @RequestMapping("/exportIncomeTolls")
     public ResponseEntity exportIncomeTolls(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ResponseEntity responseEntity = new ResponseEntity();
 
@@ -514,11 +516,11 @@ public class ExcelPrintController {
     }
 
 
-    /**
+    *//**
      * 燃油费
      *
      * @return
-     */
+     *//*
     @RequestMapping("/exportIncomeFuel")
     public ResponseEntity exportIncomeFuel(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -611,11 +613,11 @@ public class ExcelPrintController {
     }
 
 
-    /**
+    *//**
      * 罚款
      *
      * @return
-     */
+     *//*
     @RequestMapping("/exportIncomeFine")
     public ResponseEntity exportIncomeFine(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -705,11 +707,11 @@ public class ExcelPrintController {
     }
 
 
-    /**
+    *//**
      * 停车费
      *
      * @return
-     */
+     *//*
     @RequestMapping("/exportIncomeParking")
     public ResponseEntity exportIncomeParking(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ResponseEntity responseEntity = new ResponseEntity();
@@ -797,11 +799,11 @@ public class ExcelPrintController {
     }
 
 
-    /**
+    *//**
      * 轮胎费
      *
      * @return
-     */
+     *//*
     @RequestMapping("/exportIncomeTire")
     public ResponseEntity exportIncomeTire(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ResponseEntity responseEntity = new ResponseEntity();
@@ -891,11 +893,11 @@ public class ExcelPrintController {
     }
 
 
-    /**
+    *//**
      * 维修费
      *
      * @return
-     */
+     *//*
     @RequestMapping("/exportIncomeRepair")
     public ResponseEntity exportIncomeRepair(HttpServletRequest request, HttpServletResponse response) throws IOException {
         ResponseEntity responseEntity = new ResponseEntity();
@@ -981,7 +983,7 @@ public class ExcelPrintController {
         }
 
         return responseEntity;
-    }
+    }*/
 
 
     /**
@@ -995,16 +997,26 @@ public class ExcelPrintController {
 
         String requestParam = RequestUtil.getJsonObjectData(request);
         String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
-        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome(cartype);
+        String year = RequestUtil.getObjectValue(requestParam, "year");
+        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome(cartype, year);
 
         responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
 
         responseEntity.setResMessage("文件生成成功,生成文件名称为[" + cartype + "毛利]");
-        List<Incomestatement> monthMoneyList = incomeStatementService.queryMonthMoney(cartype);
+        List<Incomestatement> monthMoneyList = incomeStatementService.queryMonthMoney(cartype, year);
+
+        Incomestatement totalincomeMoney = null;
 
         //毛利表中 车队收入列
-        Incomestatement totalincomeMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title1)).collect(Collectors.toList()).get(0);
-        //Incomestatement totalincomeMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title16)).collect(Collectors.toList()).get(0);
+        //2021
+        //Incomestatement totalincomeMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title1)).collect(Collectors.toList()).get(0);
+
+        //2022
+        if (year.equals("2022")) {
+            totalincomeMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title16)).collect(Collectors.toList()).get(0);
+        } else if (year.equals("2021")) {
+            totalincomeMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title1)).collect(Collectors.toList()).get(0);
+        }
 
 
         HashMap<Object, Object> hashMap = new HashMap<>();
@@ -1165,7 +1177,7 @@ public class ExcelPrintController {
         otherRowTitleList.add(ConstantUtil.title13);
         otherRowTitleList.add(ConstantUtil.title11);
 
-        Incomestatement otherMoney = incomeStatementService.queryMonthMoneyOther(cartype, otherRowTitleList);
+        Incomestatement otherMoney = incomeStatementService.queryMonthMoneyOther(cartype, year, otherRowTitleList);
 
         hashMap.clear();
         hashMap.put("1", otherMoney.getOnemonth());
@@ -1186,6 +1198,33 @@ public class ExcelPrintController {
         });
 
 
+        //毛利表中 人工成本
+        ArrayList<String> manRowTitleList = new ArrayList<>();
+        otherRowTitleList.add(ConstantUtil.title13);
+        otherRowTitleList.add(ConstantUtil.title11);
+
+        Incomestatement manMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title20)).collect(Collectors.toList()).get(0);
+
+
+        hashMap.clear();
+        hashMap.put("1", manMoney.getOnemonth());
+        hashMap.put("2", manMoney.getTwomonth());
+        hashMap.put("3", manMoney.getThreemonth());
+        hashMap.put("4", manMoney.getFourmonth());
+        hashMap.put("5", manMoney.getFivemonth());
+        hashMap.put("6", manMoney.getSixmonth());
+        hashMap.put("7", manMoney.getSevenmonth());
+        hashMap.put("8", manMoney.getEightmonth());
+        hashMap.put("9", manMoney.getNinemonth());
+        hashMap.put("10", manMoney.getTenmonth());
+        hashMap.put("11", manMoney.getEleventmonth());
+        hashMap.put("12", manMoney.getTwelvemonth());
+
+        exportEntityList.forEach(x -> {
+            x.setManmoney(Double.parseDouble(hashMap.get(x.getMonth()).toString()));
+        });
+
+
         //毛利表中 总成本列  如果总成本是前面几个费用相加 用这个
         ArrayList<String> otherRowTitleList1 = new ArrayList<>();
         otherRowTitleList1.add(ConstantUtil.title13);
@@ -1196,8 +1235,9 @@ public class ExcelPrintController {
         otherRowTitleList1.add(ConstantUtil.title5);
         otherRowTitleList1.add(ConstantUtil.title9);
         otherRowTitleList1.add(ConstantUtil.title8);
+        otherRowTitleList1.add(ConstantUtil.title20);
 
-        Incomestatement totalcostmoney = incomeStatementService.queryMonthMoneyOther(cartype, otherRowTitleList1);
+        Incomestatement totalcostmoney = incomeStatementService.queryMonthMoneyOther(cartype, year, otherRowTitleList1);
 
         hashMap.clear();
         hashMap.put("1", totalcostmoney.getOnemonth());
@@ -1247,7 +1287,7 @@ public class ExcelPrintController {
             BigDecimal runcount = new BigDecimal(Double.toString(x.getRuncount()));//单程
 
             //计算公里成本费用
-            BigDecimal kilocost = totalcsot.multiply(new BigDecimal(10000)).divide(Kilosum, BigDecimal.ROUND_HALF_UP);
+            BigDecimal kilocost = totalcsot.divide(Kilosum, 20, BigDecimal.ROUND_HALF_UP);
             x.setKilocost(kilocost.doubleValue());
 
             //计算毛利
@@ -1257,7 +1297,7 @@ public class ExcelPrintController {
             if (gross.compareTo(BigDecimal.ZERO) != 0) {
                 if (totalincomemoney.compareTo(BigDecimal.ZERO) != 0) {
                     //计算毛利率
-                    BigDecimal grossrate = gross.divide(totalincomemoney, BigDecimal.ROUND_HALF_UP);
+                    BigDecimal grossrate = gross.divide(totalincomemoney, 20, BigDecimal.ROUND_HALF_UP);
                     x.setGrossrate(grossrate.doubleValue());
                 } else {
                     x.setGrossrate(0.00);
@@ -1265,14 +1305,118 @@ public class ExcelPrintController {
 
                 if (runcount.compareTo(BigDecimal.ZERO) != 0) {
                     //计算单程毛利
-                    BigDecimal grossonway = gross.divide(runcount, BigDecimal.ROUND_HALF_UP);
+                    BigDecimal grossonway = gross.divide(runcount, 20, BigDecimal.ROUND_HALF_UP);
                     x.setGrossonway(grossonway.doubleValue());
                 } else {
                     x.setGrossonway(0.00);
                 }
             }
+
+            //计算每公里收入
+            x.setKiloincome(totalincomemoney.divide(Kilosum, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
         });
 
+        Double totalRuncount = 0.00;
+        Double totalkilosum = 0.00;
+        Double totalIncomeMoney = 0.00;
+        Double totalkiloIncome = 0.00;
+        Double totalTollMoney = 0.00;
+        Double totalFuelMoney = 0.00;
+        Double totalFineMoney = 0.00;
+        Double totalParkingMoney = 0.00;
+        Double totalTireMoney = 0.00;
+        Double totalRepairMoney = 0.00;
+        Double totalManMoney = 0.00;
+        Double totalOtherMoney = 0.00;
+        Double totalcostmoney1 = 0.00;
+
+        IncomeExportEntity totalIncomeEntity = new IncomeExportEntity();
+
+        for (IncomeExportEntity x : exportEntityList) {
+            totalRuncount = x.getRuncount() + totalRuncount;
+            totalkilosum = Double.parseDouble(x.getKilosum()) + totalkilosum;
+            totalIncomeMoney = x.getTotalincomemoney() + totalIncomeMoney;
+            totalkiloIncome = x.getKiloincome() + totalkiloIncome;
+            totalTollMoney = x.getTollsmoney() + totalTollMoney;
+            totalFuelMoney = x.getFuelmoney() + totalFuelMoney;
+            totalFineMoney = x.getFinesmoney() + totalFineMoney;
+            totalParkingMoney = x.getParkingmoney() + totalParkingMoney;
+            totalTireMoney = x.getTiremoney() + totalTireMoney;
+            totalRepairMoney = x.getRepairmoney() + totalRepairMoney;
+            totalManMoney = x.getManmoney() + totalManMoney;
+            totalOtherMoney = x.getOthermoney() + totalOtherMoney;
+            totalcostmoney1 = x.getTotalcostmoney() + totalcostmoney1;
+        }
+        totalIncomeEntity.setRuncount(totalRuncount);
+        totalIncomeEntity.setKilosum(totalkilosum.toString());
+        totalIncomeEntity.setTotalincomemoney(totalIncomeMoney);
+        totalIncomeEntity.setKiloincome(totalkiloIncome);
+        totalIncomeEntity.setTollsmoney(totalTollMoney);
+        totalIncomeEntity.setFuelmoney(totalFuelMoney);
+        totalIncomeEntity.setFinesmoney(totalFineMoney);
+        totalIncomeEntity.setParkingmoney(totalParkingMoney);
+        totalIncomeEntity.setTiremoney(totalTireMoney);
+        totalIncomeEntity.setRepairmoney(totalRepairMoney);
+        totalIncomeEntity.setManmoney(totalManMoney);
+        totalIncomeEntity.setOthermoney(totalOtherMoney);
+        totalIncomeEntity.setTotalcostmoney(totalcostmoney1);
+
+
+        BigDecimal monthcount = new BigDecimal(exportEntityList.size());
+        IncomeExportEntity incomeEntityAvg = new IncomeExportEntity();
+
+        incomeEntityAvg.setKilosum(new BigDecimal(totalIncomeEntity.getKilosum()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).toString());
+        incomeEntityAvg.setRuncount(new BigDecimal(totalIncomeEntity.getRuncount()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeEntityAvg.setTotalincomemoney(new BigDecimal(totalIncomeEntity.getTotalincomemoney()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeEntityAvg.setKiloincome(new BigDecimal(totalIncomeEntity.getKiloincome()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeEntityAvg.setTollsmoney(new BigDecimal(totalIncomeEntity.getTollsmoney()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeEntityAvg.setFuelmoney(new BigDecimal(totalIncomeEntity.getFuelmoney()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeEntityAvg.setFinesmoney(new BigDecimal(totalIncomeEntity.getFinesmoney()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeEntityAvg.setParkingmoney(new BigDecimal(totalIncomeEntity.getParkingmoney()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeEntityAvg.setTiremoney(new BigDecimal(totalIncomeEntity.getTiremoney()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeEntityAvg.setRepairmoney(new BigDecimal(totalIncomeEntity.getRepairmoney()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeEntityAvg.setManmoney(new BigDecimal(totalIncomeEntity.getManmoney()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeEntityAvg.setOthermoney(new BigDecimal(totalIncomeEntity.getOthermoney()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeEntityAvg.setTotalcostmoney(new BigDecimal(totalIncomeEntity.getTotalcostmoney()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+
+
+        BigDecimal totalcsot = new BigDecimal(Double.toString(incomeEntityAvg.getTotalcostmoney()));//总成本
+        BigDecimal Kilosum = new BigDecimal(incomeEntityAvg.getKilosum());//运行总里程
+        BigDecimal totalincomemoney = new BigDecimal(Double.toString(incomeEntityAvg.getTotalincomemoney()));//总收入
+        BigDecimal runcount = new BigDecimal(Double.toString(incomeEntityAvg.getRuncount()));//单程
+
+        //计算公里成本费用
+        BigDecimal kilocost = totalcsot.divide(Kilosum, 20, BigDecimal.ROUND_HALF_UP);
+        incomeEntityAvg.setKilocost(kilocost.doubleValue());
+
+        //计算毛利
+        BigDecimal gross = totalincomemoney.subtract(totalcsot);
+        incomeEntityAvg.setGross(gross.doubleValue());
+
+        if (gross.compareTo(BigDecimal.ZERO) != 0) {
+            if (totalincomemoney.compareTo(BigDecimal.ZERO) != 0) {
+                //计算毛利率
+                BigDecimal grossrate = gross.divide(totalincomemoney, 20, BigDecimal.ROUND_HALF_UP);
+                incomeEntityAvg.setGrossrate(grossrate.doubleValue());
+            } else {
+                incomeEntityAvg.setGrossrate(0.00);
+            }
+
+            if (runcount.compareTo(BigDecimal.ZERO) != 0) {
+                //计算单程毛利
+                BigDecimal grossonway = gross.divide(runcount, 20, BigDecimal.ROUND_HALF_UP);
+                incomeEntityAvg.setGrossonway(grossonway.doubleValue());
+            } else {
+                incomeEntityAvg.setGrossonway(0.00);
+            }
+        }
+
+        //计算每公里收入
+        incomeEntityAvg.setKiloincome(totalincomemoney.divide(Kilosum, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+
+        incomeEntityAvg.setMonth("均值");
+
+        exportEntityList.add(incomeEntityAvg);
 
         LinkedList<String> titleList = ConstantUtil.makeGrossTitle();
 
@@ -1292,21 +1436,30 @@ public class ExcelPrintController {
             IncomeExportEntity exportEntity = exportEntityList.get(i);
 
             String[] countListArray = {exportEntity.getMonth(), exportEntity.getRuncount().toString(), exportEntity.getKilosum(),
-                    exportEntity.getTotalincomemoney().toString(), exportEntity.getTollsmoney().toString(), exportEntity.getFuelmoney().toString(), exportEntity.getFinesmoney().toString(),
-                    exportEntity.getParkingmoney().toString(), exportEntity.getTiremoney().toString(), exportEntity.getRepairmoney().toString(), exportEntity.getOthermoney().toString(),
+                    exportEntity.getTotalincomemoney().toString(), exportEntity.getKiloincome().toString(), exportEntity.getTollsmoney().toString(), exportEntity.getFuelmoney().toString(), exportEntity.getFinesmoney().toString(),
+                    exportEntity.getParkingmoney().toString(), exportEntity.getTiremoney().toString(), exportEntity.getRepairmoney().toString(), exportEntity.getManmoney().toString(), exportEntity.getOthermoney().toString(),
                     exportEntity.getTotalcostmoney().toString(), exportEntity.getKilocost().toString(), exportEntity.getGross().toString(), exportEntity.getGrossrate().toString(),
                     exportEntity.getGrossonway().toString()};
 
             for (int j = 0; j < countListArray.length; j++) {
                 //将内容按顺序赋给对应的列对象
                 HSSFCell cell = row.createCell((short) j);
-                if (j <= 2) {
-
-                    cell.setCellValue(Long.parseLong(countListArray[j]));
-
+                if (row.getRowNum() <= exportEntityList.size() - 2) {
+                    if (j <= 2) {
+                        cell.setCellValue(Double.parseDouble(countListArray[j]));
+                    } else {
+                        //cell.setCellStyle(cellStyle);
+                        cell.setCellValue(Double.parseDouble(countListArray[j]));
+                    }
                 } else {
-                    //cell.setCellStyle(cellStyle);
-                    cell.setCellValue(Double.parseDouble(countListArray[j]));
+                    if (j == 0) {
+                        cell.setCellValue(countListArray[j]);
+                    } else if (j <= 2 && j != 0) {
+                        cell.setCellValue(Double.parseDouble(countListArray[j]));
+                    } else {
+                        //cell.setCellStyle(cellStyle);
+                        cell.setCellValue(Double.parseDouble(countListArray[j]));
+                    }
 
                 }
             }
