@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.excel.pro.dao.DepartDetailDao;
+import com.excel.pro.dao.FuleDao;
 import com.excel.pro.dao.IncomeStatementDao;
 import com.excel.pro.entity.*;
 import com.excel.pro.service.DepartService;
+import com.excel.pro.service.FuleService;
 import com.excel.pro.service.IncomeStatementService;
 import com.excel.pro.util.ConstantUtil;
 import com.excel.pro.util.RequestUtil;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -46,6 +49,12 @@ public class CurdContrtoller {
     @Resource
     private IncomeStatementDao incomeStatementDao;
 
+    @Resource
+    private FuleService fuleService;
+
+    @Resource
+    private FuleDao fuleDao;
+
     @RequestMapping("updateIncome")
     @ResponseBody
     public ResponseEntity updateIncome(HttpServletRequest request) {
@@ -56,6 +65,7 @@ public class CurdContrtoller {
 
 
             String requestParam = RequestUtil.getJsonObjectData(request);
+            String year = RequestUtil.getObjectValue(requestParam, "year");
             String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
             String carid = RequestUtil.getObjectValue(requestParam, "carid");
             String columnname = RequestUtil.getObjectValue(requestParam, "columnname");
@@ -73,6 +83,7 @@ public class CurdContrtoller {
             String twelvemonth = RequestUtil.getObjectValue(requestParam, "twelvemonth");
             LambdaQueryWrapper<Incomestatement> queryWrapper = new LambdaQueryWrapper();
             queryWrapper.eq(Incomestatement::getCartype, cartype);
+            queryWrapper.eq(Incomestatement::getYear, year);
             queryWrapper.eq(Incomestatement::getCarid, carid);
             queryWrapper.eq(Incomestatement::getColumnname, columnname);
             Incomestatement incomestatement = incomeStatementDao.selectOne(queryWrapper);
@@ -277,6 +288,240 @@ public class CurdContrtoller {
 
 
             departService.delete(queryWrapper, responseEntity);
+
+
+        } catch (Exception e) {
+            responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
+            responseEntity.setResMessage(e.getMessage());
+            e.printStackTrace();
+        }
+        return responseEntity;
+    }
+
+    @RequestMapping("insertFule")
+    @ResponseBody
+    public ResponseEntity insertFule(HttpServletRequest request) {
+        ResponseEntity responseEntity = null;
+        try {
+            responseEntity = new ResponseEntity();
+
+
+            String requestParam = RequestUtil.getJsonObjectData(request);
+            String year = RequestUtil.getObjectValue(requestParam, "year");
+            String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
+            String columnname = RequestUtil.getObjectValue(requestParam, "columnname");
+            String onemonth = RequestUtil.getObjectValue(requestParam, "onemonth");
+            String twomonth = RequestUtil.getObjectValue(requestParam, "twomonth");
+            String threemonth = RequestUtil.getObjectValue(requestParam, "threemonth");
+            String fourmonth = RequestUtil.getObjectValue(requestParam, "fourmonth");
+            String fivemonth = RequestUtil.getObjectValue(requestParam, "fivemonth");
+            String sixmonth = RequestUtil.getObjectValue(requestParam, "sixmonth");
+            String sevenmonth = RequestUtil.getObjectValue(requestParam, "sevenmonth");
+            String eightmonth = RequestUtil.getObjectValue(requestParam, "eightmonth");
+            String ninemonth = RequestUtil.getObjectValue(requestParam, "ninemonth");
+            String tenmonth = RequestUtil.getObjectValue(requestParam, "tenmonth");
+            String eleventmonth = RequestUtil.getObjectValue(requestParam, "eleventmonth");
+            String twelvemonth = RequestUtil.getObjectValue(requestParam, "twelvemonth");
+
+            Fule fule = new Fule();
+            fule.setYear(Long.parseLong(year));
+            fule.setCartype(cartype);
+            fule.setColumnname(columnname);
+            if (!StringUtils.isEmpty(onemonth)) {
+                fule.setOnemonth(Double.parseDouble(onemonth));
+            }
+            if (!StringUtils.isEmpty(twomonth)) {
+                fule.setTwomonth(Double.parseDouble(twomonth));
+
+            }
+            if (!StringUtils.isEmpty(threemonth)) {
+                fule.setThreemonth(Double.parseDouble(threemonth));
+
+            }
+            if (!StringUtils.isEmpty(fourmonth)) {
+                fule.setFourmonth(Double.parseDouble(fourmonth));
+
+            }
+            if (!StringUtils.isEmpty(fivemonth)) {
+                fule.setFivemonth(Double.parseDouble(fivemonth));
+
+            }
+            if (!StringUtils.isEmpty(sixmonth)) {
+                fule.setSixmonth(Double.parseDouble(sixmonth));
+
+            }
+            if (!StringUtils.isEmpty(sevenmonth)) {
+                fule.setSevenmonth(Double.parseDouble(sevenmonth));
+
+            }
+            if (!StringUtils.isEmpty(eightmonth)) {
+                fule.setEightmonth(Double.parseDouble(eightmonth));
+
+            }
+            if (!StringUtils.isEmpty(ninemonth)) {
+                fule.setNinemonth(Double.parseDouble(ninemonth));
+
+            }
+            if (!StringUtils.isEmpty(tenmonth)) {
+                fule.setTenmonth(Double.parseDouble(tenmonth));
+
+            }
+            if (!StringUtils.isEmpty(eleventmonth)) {
+                fule.setEleventmonth(Double.parseDouble(eleventmonth));
+
+            }
+            if (!StringUtils.isEmpty(twelvemonth)) {
+                fule.setTwelvemonth(Double.parseDouble(twelvemonth));
+
+            }
+
+            fuleService.insert(fule, responseEntity);
+
+        } catch (Exception e) {
+            responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
+            responseEntity.setResMessage(e.getMessage());
+            e.printStackTrace();
+        }
+        return responseEntity;
+    }
+
+
+    @RequestMapping("updateFule")
+    @ResponseBody
+    public ResponseEntity updateFule(HttpServletRequest request) {
+        ResponseEntity responseEntity = null;
+        try {
+            responseEntity = new ResponseEntity();
+
+
+            String requestParam = RequestUtil.getJsonObjectData(request);
+            String year = RequestUtil.getObjectValue(requestParam, "year");
+            String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
+            String columnname = RequestUtil.getObjectValue(requestParam, "columnname");
+            String onemonth = RequestUtil.getObjectValue(requestParam, "onemonth");
+            String twomonth = RequestUtil.getObjectValue(requestParam, "twomonth");
+            String threemonth = RequestUtil.getObjectValue(requestParam, "threemonth");
+            String fourmonth = RequestUtil.getObjectValue(requestParam, "fourmonth");
+            String fivemonth = RequestUtil.getObjectValue(requestParam, "fivemonth");
+            String sixmonth = RequestUtil.getObjectValue(requestParam, "sixmonth");
+            String sevenmonth = RequestUtil.getObjectValue(requestParam, "sevenmonth");
+            String eightmonth = RequestUtil.getObjectValue(requestParam, "eightmonth");
+            String ninemonth = RequestUtil.getObjectValue(requestParam, "ninemonth");
+            String tenmonth = RequestUtil.getObjectValue(requestParam, "tenmonth");
+            String eleventmonth = RequestUtil.getObjectValue(requestParam, "eleventmonth");
+            String twelvemonth = RequestUtil.getObjectValue(requestParam, "twelvemonth");
+
+            LambdaQueryWrapper<Fule> fuleWrapper = new LambdaQueryWrapper();
+
+            fuleWrapper.eq(Fule::getCartype, cartype);
+            fuleWrapper.eq(Fule::getYear, year);
+            fuleWrapper.eq(Fule::getColumnname, columnname);
+
+            Fule fule = fuleDao.selectOne(fuleWrapper);
+
+
+            if (StringUtils.isEmpty(onemonth) || onemonth.equals("null")) {
+                fule.setOnemonth(null);
+            } else {
+                fule.setOnemonth(Double.parseDouble(onemonth));
+            }
+
+            if (StringUtils.isEmpty(twomonth) || twomonth.equals("null")) {
+                fule.setTwomonth(null);
+            } else {
+                fule.setTwomonth(Double.parseDouble(twomonth));
+            }
+            if (StringUtils.isEmpty(threemonth) || threemonth.equals("null")) {
+                fule.setThreemonth(null);
+            } else {
+                fule.setThreemonth(Double.parseDouble(threemonth));
+            }
+
+            if (StringUtils.isEmpty(fourmonth) || fourmonth.equals("null")) {
+                fule.setFourmonth(null);
+            } else {
+                fule.setFourmonth(Double.parseDouble(fourmonth));
+            }
+
+            if (StringUtils.isEmpty(fivemonth) || fivemonth.equals("null")) {
+                fule.setFivemonth(null);
+            } else {
+                fule.setFivemonth(Double.parseDouble(fivemonth));
+            }
+
+            if (StringUtils.isEmpty(sixmonth) || sixmonth.equals("null")) {
+                fule.setSixmonth(null);
+            } else {
+                fule.setSixmonth(Double.parseDouble(sixmonth));
+            }
+
+            if (StringUtils.isEmpty(sevenmonth) || sevenmonth.equals("null")) {
+                fule.setSevenmonth(null);
+            } else {
+                fule.setSevenmonth(Double.parseDouble(sevenmonth));
+            }
+
+            if (StringUtils.isEmpty(eightmonth) || eightmonth.equals("null")) {
+                fule.setEightmonth(null);
+            } else {
+                fule.setEightmonth(Double.parseDouble(eightmonth));
+            }
+
+            if (StringUtils.isEmpty(ninemonth) || ninemonth.equals("null")) {
+                fule.setNinemonth(null);
+            } else {
+                fule.setNinemonth(Double.parseDouble(ninemonth));
+            }
+
+            if (StringUtils.isEmpty(tenmonth) || tenmonth.equals("null")) {
+                fule.setTenmonth(null);
+            } else {
+                fule.setTenmonth(Double.parseDouble(tenmonth));
+            }
+
+            if (StringUtils.isEmpty(eleventmonth) || eleventmonth.equals("null")) {
+                fule.setEleventmonth(null);
+            } else {
+                fule.setEleventmonth(Double.parseDouble(eleventmonth));
+            }
+            if (StringUtils.isEmpty(twelvemonth) || twelvemonth.equals("null")) {
+                fule.setTwelvemonth(null);
+            } else {
+                fule.setTwelvemonth(Double.parseDouble(twelvemonth));
+            }
+
+            fuleService.update(fule, fuleWrapper, responseEntity);
+        } catch (Exception e) {
+            responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
+            responseEntity.setResMessage(e.getMessage());
+            e.printStackTrace();
+        }
+        return responseEntity;
+    }
+
+
+    @RequestMapping("deleteFule")
+    @ResponseBody
+    public ResponseEntity deleteFule(HttpServletRequest request) {
+        ResponseEntity responseEntity = null;
+        try {
+            responseEntity = new ResponseEntity();
+
+
+            String requestParam = RequestUtil.getJsonObjectData(request);
+            String year = RequestUtil.getObjectValue(requestParam, "year");
+            String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
+            String columnname = RequestUtil.getObjectValue(requestParam, "columnname");
+
+
+            LambdaQueryWrapper<Fule> fuleWrapper = new LambdaQueryWrapper();
+
+            fuleWrapper.eq(Fule::getCartype, cartype);
+            fuleWrapper.eq(Fule::getYear, year);
+            fuleWrapper.eq(Fule::getColumnname, columnname);
+
+
+            fuleService.delete(fuleWrapper, responseEntity);
 
 
         } catch (Exception e) {

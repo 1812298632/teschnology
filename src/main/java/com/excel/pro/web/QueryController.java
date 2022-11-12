@@ -1,7 +1,9 @@
 package com.excel.pro.web;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.excel.pro.dao.DepartDetailDao;
+import com.excel.pro.dao.FuleDao;
 import com.excel.pro.dao.IncomeStatementDao;
 import com.excel.pro.entity.*;
 import com.excel.pro.service.IncomeStatementService;
@@ -26,6 +28,9 @@ public class QueryController {
 
     @Resource
     private IncomeStatementService incomeStatementService;
+
+    @Resource
+    private FuleDao fuleDao;
 
     /**
      * 台账数据查询中，起点下拉框
@@ -150,6 +155,36 @@ public class QueryController {
     }
 
 
+
+    @RequestMapping("/queryFuleType")
+    public ResponseEntity queryFuleType(HttpServletRequest request) {
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        List<SelectEntity> selectEntityList = fuleDao.queryFuleType();
+
+        responseEntity.setResList(selectEntityList);
+        return responseEntity;
+    }
+    @RequestMapping("/queryFuleYear")
+    public ResponseEntity queryFuleYear(HttpServletRequest request) {
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        List<SelectEntity> selectEntityList = fuleDao.queryFuleYear();
+
+        responseEntity.setResList(selectEntityList);
+        return responseEntity;
+    }
+
+    @RequestMapping("/quertFuleColumns")
+    public ResponseEntity quertFuleColumns(HttpServletRequest request) {
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        List<SelectEntity> selectEntityList = fuleDao.quertFuleColumns();
+
+        responseEntity.setResList(selectEntityList);
+        return responseEntity;
+    }
+
     /**
      * 查询台账列表，如果有查询条件，将查询条件拼接
      * @param request
@@ -211,6 +246,7 @@ public class QueryController {
         if(!requestParam.equals("")){
             String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
             String carid = RequestUtil.getObjectValue(requestParam, "carid");
+            String year = RequestUtil.getObjectValue(requestParam, "year");
             String columnname = RequestUtil.getObjectValue(requestParam, "columnname");
             if(!cartype.equals("")){
                 queryWrapper.lambda().eq(Incomestatement::getCartype,cartype);
@@ -220,6 +256,9 @@ public class QueryController {
             }
             if(!columnname.equals("")){
                 queryWrapper.lambda().eq(Incomestatement::getColumnname,columnname);
+            }
+            if(!year.equals("")){
+                queryWrapper.lambda().eq(Incomestatement::getYear,year);
             }
 
         }
@@ -388,4 +427,69 @@ public class QueryController {
         return responseEntity;
     }
 
+
+    /**
+     * 查询百公里油耗相关数据
+     * @param request
+     * @return
+     */
+    @RequestMapping("/queryFuleList")
+    public ResponseEntity queryFuleList(HttpServletRequest request) {
+        QueryWrapper<Fule> queryWrapper = new QueryWrapper<>();
+
+        ResponseEntity responseEntity = new ResponseEntity();
+        String requestParam = RequestUtil.getJsonObjectData(request);
+        if(!requestParam.equals("")){
+            String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
+            String year = RequestUtil.getObjectValue(requestParam, "year");
+            String columnname = RequestUtil.getObjectValue(requestParam, "columnname");
+            if(!cartype.equals("")){
+                queryWrapper.lambda().eq(Fule::getCartype,cartype);
+            }
+            if(!year.equals("")){
+                queryWrapper.lambda().eq(Fule::getYear,year);
+            }
+            if(!columnname.equals("")){
+                queryWrapper.lambda().eq(Fule::getColumnname,columnname);
+            }
+
+        }
+
+        queryWrapper.lambda().orderByAsc(Fule::getYear);
+        //queryWrapper.lambda().orderByAsc(Fule::getCarid);
+        //queryWrapper.lambda().orderByAsc(Fule::getColumnname);
+
+        List<Fule> fuleList = fuleDao.selectList(queryWrapper);
+
+        responseEntity.setResList(fuleList);
+        responseEntity.setResMessage("查询成功");
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+
+        return responseEntity;
+    }
+
+
+    @RequestMapping("/queryFuleMoney")
+    public ResponseEntity queryFuleMoney(HttpServletRequest request) {
+        ResponseEntity responseEntity = new ResponseEntity();
+        String requestParam = RequestUtil.getJsonObjectData(request);
+        String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
+        String year = RequestUtil.getObjectValue(requestParam, "year");
+        List<Fule> fuleList = new ArrayList<>();
+
+        LambdaQueryWrapper<Fule> fuleWrapper = new LambdaQueryWrapper<>();
+
+        fuleWrapper.eq(Fule::getYear,year);
+        fuleWrapper.eq(Fule::getCartype,cartype);
+        fuleWrapper.eq(Fule::getColumnname,"加油升数");
+
+        Fule fule = fuleDao.selectOne(fuleWrapper);
+        if(fule != null){
+            fuleList.add(fule);
+
+        }
+        responseEntity.setResList(fuleList);
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+        return responseEntity;
+    }
 }

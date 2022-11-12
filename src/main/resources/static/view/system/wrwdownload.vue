@@ -31,7 +31,7 @@
 
       <el-card class="box-card" style="width: 17%">
         <div slot="header" class="clearfix">
-          <span>发车统计</span>
+          <span>发车</span>
           <el-button style="float: right; padding: 3px 0" type="text" @click="createDepartCount()">生成
           </el-button>
         </div>
@@ -49,20 +49,20 @@
 
       <el-card class="box-card" style="width: 17%;margin-left: 3%">
         <div slot="header" class="clearfix">
-          <span>过路费统计</span>
+          <span>过路费</span>
           <el-button style="float: right; padding: 3px 0" type="text" @click="createGlf()">生成</el-button>
         </div>
         <div v-for="(list,index) in this.glfList" :key="index" class="text item">
           <font size="2">{{ list.carid }} {{ list.columnname }}</font><br/>
-          <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
-          <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 4月 {{ list.fourmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 5月 {{ list.fivemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 6月 {{ list.sixmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 7月 {{ list.sevenmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 8月 {{ list.eightmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 9月 {{ list.ninemonth }}</font><br/>
+          <font size="2" color="#ff291a" > 1 月 {{ list.onemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 2 月 {{ list.twomonth }}</font><br/>
+          <font size="2" color="#ff291a"> 3 月 {{ list.threemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 4 月 {{ list.fourmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 5 月 {{ list.fivemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 6 月 {{ list.sixmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 7 月 {{ list.sevenmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 8 月 {{ list.eightmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 9 月 {{ list.ninemonth }}</font><br/>
           <font size="2" color="#ff291a"> 10月 {{ list.tenmonth }}</font><br/>
           <font size="2" color="#ff291a"> 11月 {{ list.eleventmonth }}</font><br/>
           <font size="2" color="#ff291a"> 12月 {{ list.twelvemonth }}</font>
@@ -73,20 +73,20 @@
 
       <el-card class="box-card" style="width: 17%;margin-left: 3%">
         <div slot="header" class="clearfix">
-          <span>燃油费统计</span>
+          <span>燃油费</span>
           <el-button style="float: right; padding: 3px 0" type="text" @click="createRy()">生成</el-button>
         </div>
         <div v-for="(list,index) in this.ryList" :key="index" class="text item">
           <font size="2">{{ list.carid }} {{ list.columnname }}</font><br/>
-          <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
-          <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 4月 {{ list.fourmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 5月 {{ list.fivemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 6月 {{ list.sixmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 7月 {{ list.sevenmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 8月 {{ list.eightmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 9月 {{ list.ninemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 1 月{{ list.onemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 2 月{{ list.twomonth }}</font><br/>
+          <font size="2" color="#ff291a"> 3 月{{ list.threemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 4 月{{ list.fourmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 5 月{{ list.fivemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 6 月{{ list.sixmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 7 月{{ list.sevenmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 8 月{{ list.eightmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 9 月{{ list.ninemonth }}</font><br/>
           <font size="2" color="#ff291a"> 10月 {{ list.tenmonth }}</font><br/>
           <font size="2" color="#ff291a"> 11月 {{ list.eleventmonth }}</font><br/>
           <font size="2" color="#ff291a"> 12月 {{ list.twelvemonth }}</font>
@@ -98,23 +98,23 @@
 
       <el-card class="box-card" style="width: 17%;margin-left: 3%">
         <div slot="header" class="clearfix">
-          <span>罚款统计</span>
+          <span>罚款</span>
           <el-button style="float: right; padding: 3px 0" type="text" @click="createFk()">生成</el-button>
         </div>
-        <div v-for="(list,index) in this.fkList" :key="index" class="text item">
+        <div v-for="(list,index) in this.fkList" :key="index" class="text item" >
           <font size="2">{{ list.carid }} {{ list.columnname }}</font><br/>
-          <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
-          <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 4月 {{ list.fourmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 5月 {{ list.fivemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 6月 {{ list.sixmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 7月 {{ list.sevenmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 8月 {{ list.eightmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 9月 {{ list.ninemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 10月 {{ list.tenmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 11月 {{ list.eleventmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 12月 {{ list.twelvemonth }}</font>
+          <font size="2" color="#ff291a" > 1 月{{ list.onemonth }}</font><br/>
+          <font size="2" color="#ff291a" > 2 月{{ list.twomonth }}</font><br/>
+          <font size="2" color="#ff291a" > 3 月{{ list.threemonth }}</font><br/>
+          <font size="2" color="#ff291a" > 4 月{{ list.fourmonth }}</font><br/>
+          <font size="2" color="#ff291a" > 5 月{{ list.fivemonth }}</font><br/>
+          <font size="2" color="#ff291a" > 6 月{{ list.sixmonth }}</font><br/>
+          <font size="2" color="#ff291a" > 7 月{{ list.sevenmonth }}</font><br/>
+          <font size="2" color="#ff291a" > 8 月{{ list.eightmonth }}</font><br/>
+          <font size="2" color="#ff291a" > 9 月{{ list.ninemonth }}</font><br/>
+          <font size="2" color="#ff291a" > 10月 {{ list.tenmonth }}</font><br/>
+          <font size="2" color="#ff291a" > 11月 {{ list.eleventmonth }}</font><br/>
+          <font size="2" color="#ff291a" > 12月 {{ list.twelvemonth }}</font>
 
 
         </div>
@@ -122,20 +122,20 @@
 
       <el-card class="box-card" style="width: 17%;margin-left: 3%">
         <div slot="header" class="clearfix">
-          <span>停车费统计</span>
+          <span>停车费</span>
           <el-button style="float: right; padding: 3px 0" type="text" @click="createTc()">生成</el-button>
         </div>
         <div v-for="(list,index) in this.tcList" :key="index" class="text item">
           <font size="2">{{ list.carid }} {{ list.columnname }}</font><br/>
-          <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
-          <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 4月 {{ list.fourmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 5月 {{ list.fivemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 6月 {{ list.sixmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 7月 {{ list.sevenmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 8月 {{ list.eightmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 9月 {{ list.ninemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 1 月{{ list.onemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 2 月{{ list.twomonth }}</font><br/>
+          <font size="2" color="#ff291a"> 3 月{{ list.threemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 4 月{{ list.fourmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 5 月{{ list.fivemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 6 月{{ list.sixmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 7 月{{ list.sevenmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 8 月{{ list.eightmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 9 月{{ list.ninemonth }}</font><br/>
           <font size="2" color="#ff291a"> 10月 {{ list.tenmonth }}</font><br/>
           <font size="2" color="#ff291a"> 11月 {{ list.eleventmonth }}</font><br/>
           <font size="2" color="#ff291a"> 12月 {{ list.twelvemonth }}</font>
@@ -149,21 +149,21 @@
     <el-container v-show="showDetail" style="margin-top: 3%">
       <el-card class="box-card" style="width: 17%">
         <div slot="header" class="clearfix">
-          <span>轮胎费统计</span>
+          <span>轮胎费</span>
           <el-button style="float: right; padding: 3px 0" type="text" @click="createLt()">生成
           </el-button>
         </div>
         <div v-for="(list,index) in this.ltList" :key="index" class="text item">
           <font size="2">{{ list.carid }} {{ list.columnname }}</font><br/>
-          <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
-          <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 4月 {{ list.fourmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 5月 {{ list.fivemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 6月 {{ list.sixmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 7月 {{ list.sevenmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 8月 {{ list.eightmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 9月 {{ list.ninemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 1 月{{ list.onemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 2 月{{ list.twomonth }}</font><br/>
+          <font size="2" color="#ff291a"> 3 月{{ list.threemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 4 月{{ list.fourmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 5 月{{ list.fivemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 6 月{{ list.sixmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 7 月{{ list.sevenmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 8 月{{ list.eightmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 9 月{{ list.ninemonth }}</font><br/>
           <font size="2" color="#ff291a"> 10月 {{ list.tenmonth }}</font><br/>
           <font size="2" color="#ff291a"> 11月 {{ list.eleventmonth }}</font><br/>
           <font size="2" color="#ff291a"> 12月 {{ list.twelvemonth }}</font>
@@ -176,21 +176,21 @@
 
       <el-card class="box-card" style="width: 17%;margin-left: 3%">
         <div slot="header" class="clearfix">
-          <span>维修费统计</span>
+          <span>维修费</span>
           <el-button style="float: right; padding: 3px 0" type="text" @click="createWx()">生成
           </el-button>
         </div>
         <div v-for="(list,index) in this.wxList" :key="index" class="text item">
           <font size="2">{{ list.carid }} {{ list.columnname }}</font><br/>
-          <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
-          <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 4月 {{ list.fourmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 5月 {{ list.fivemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 6月 {{ list.sixmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 7月 {{ list.sevenmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 8月 {{ list.eightmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 9月 {{ list.ninemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 1 月{{ list.onemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 2 月{{ list.twomonth }}</font><br/>
+          <font size="2" color="#ff291a"> 3 月{{ list.threemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 4 月{{ list.fourmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 5 月{{ list.fivemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 6 月{{ list.sixmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 7 月{{ list.sevenmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 8 月{{ list.eightmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 9 月{{ list.ninemonth }}</font><br/>
           <font size="2" color="#ff291a"> 10月 {{ list.tenmonth }}</font><br/>
           <font size="2" color="#ff291a"> 11月 {{ list.eleventmonth }}</font><br/>
           <font size="2" color="#ff291a"> 12月 {{ list.twelvemonth }}</font>
@@ -203,21 +203,21 @@
 
       <el-card class="box-card" style="width: 17%;margin-left: 3%">
         <div slot="header" class="clearfix">
-          <span>辅料统计</span>
+          <span>辅料</span>
           <el-button style="float: right; padding: 3px 0" type="text" @click="createfl()">生成
           </el-button>
         </div>
         <div v-for="(list,index) in this.flList" :key="index" class="text item">
           <font size="2">{{ list.carid }} {{ list.columnname }}</font><br/>
-          <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
-          <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 4月 {{ list.fourmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 5月 {{ list.fivemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 6月 {{ list.sixmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 7月 {{ list.sevenmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 8月 {{ list.eightmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 9月 {{ list.ninemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 1 月{{ list.onemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 2 月{{ list.twomonth }}</font><br/>
+          <font size="2" color="#ff291a"> 3 月{{ list.threemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 4 月{{ list.fourmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 5 月{{ list.fivemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 6 月{{ list.sixmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 7 月{{ list.sevenmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 8 月{{ list.eightmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 9 月{{ list.ninemonth }}</font><br/>
           <font size="2" color="#ff291a"> 10月 {{ list.tenmonth }}</font><br/>
           <font size="2" color="#ff291a"> 11月 {{ list.eleventmonth }}</font><br/>
           <font size="2" color="#ff291a"> 12月 {{ list.twelvemonth }}</font>
@@ -227,25 +227,48 @@
 
       </el-card>
 
-
-      <el-card style="width: 39%;margin-left: 3%">
+      <el-card style="width: 17%;margin-left: 3%">
         <div slot="header">
-          <span>沃尔沃毛利</span>
+          <span>百公里油耗</span>
+          <el-button style="float: right; padding: 3px 0" type="text" @click="createJfml()">生成
+          </el-button>
+        </div>
+        <div v-for="(list,index) in this.fuleList" :key="index" class="text item">
+          <font size="2">{{ list.columnname }}</font><br/>
+          <font size="2" color="#ff291a"> 1 月{{ list.onemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 2 月{{ list.twomonth }}</font><br/>
+          <font size="2" color="#ff291a"> 3 月{{ list.threemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 4 月{{ list.fourmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 5 月{{ list.fivemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 6 月{{ list.sixmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 7 月{{ list.sevenmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 8 月{{ list.eightmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 9 月{{ list.ninemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 10月 {{ list.tenmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 11月 {{ list.eleventmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 12月 {{ list.twelvemonth }}</font>
+        </div>
+
+      </el-card>
+
+      <el-card style="width: 17%;margin-left: 3%">
+        <div slot="header">
+          <span>毛利</span>
           <el-button style="float: right; padding: 3px 0" type="text" @click="createJfml()">生成
           </el-button>
         </div>
         <div v-for="(list,index) in this.otherList" :key="index" class="text item">
           <font size="3" color="#dda0dd">{{ list.carid }} </font><br/>
           <font size="2">{{ list.columnname }}</font><br/>
-          <font size="2" color="#ff291a"> 1月 {{ list.onemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 2月 {{ list.twomonth }}</font><br/>
-          <font size="2" color="#ff291a"> 3月 {{ list.threemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 4月 {{ list.fourmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 5月 {{ list.fivemonth }}</font><br/>
-          <font size="2" color="#ff291a"> 6月 {{ list.sixmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 7月 {{ list.sevenmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 8月 {{ list.eightmonth }}</font><br/>
-          <font size="2" color="#ff291a"> 9月 {{ list.ninemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 1 月{{ list.onemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 2 月{{ list.twomonth }}</font><br/>
+          <font size="2" color="#ff291a"> 3 月{{ list.threemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 4 月{{ list.fourmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 5 月{{ list.fivemonth }}</font><br/>
+          <font size="2" color="#ff291a"> 6 月{{ list.sixmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 7 月{{ list.sevenmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 8 月{{ list.eightmonth }}</font><br/>
+          <font size="2" color="#ff291a"> 9 月{{ list.ninemonth }}</font><br/>
           <font size="2" color="#ff291a"> 10月 {{ list.tenmonth }}</font><br/>
           <font size="2" color="#ff291a"> 11月 {{ list.eleventmonth }}</font><br/>
           <font size="2" color="#ff291a"> 12月 {{ list.twelvemonth }}</font>
@@ -281,6 +304,7 @@ module.exports = {
         columnname:''
       },
       isCollapse: true,
+      fuleList :[]
     };
   },
 
@@ -601,6 +625,22 @@ module.exports = {
         }
       });
 
+      await fetch("http://localhost:9080/queryFuleMoney", {
+        method: 'POST', // 请求方法还可以是 put
+        body: JSON.stringify(this.form),
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        })
+      }).then(res => res.json()).then(response => {
+        if (response.resList.length == 0) {
+          this.fuleList = []
+        } else {
+          this.fuleList = response.resList
+
+        }
+      });
+
+
       if (
           this.glfList.length == 0 ||
           this.ryList.length == 0 ||
@@ -626,6 +666,11 @@ module.exports = {
           type: 'success'
         });
       }
+
+
+
+
+
 
 
     },

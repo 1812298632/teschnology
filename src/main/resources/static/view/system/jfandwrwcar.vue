@@ -168,7 +168,7 @@
             <el-collapse accordion style="margin-left: 10px">
               <el-collapse-item>
                 <template slot="title">
-                  当前正在修改 {{ diatitle }} {{ editform.month }} 月份，编号为 {{ editform.sheetid }} 的数据
+                  当前正在修改{{ editform.year }} 年 {{ diatitle }} {{ editform.month }} 月份，编号为 {{ editform.sheetid }} 的数据
                 </template>
 
               </el-collapse-item>

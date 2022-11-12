@@ -27,4 +27,6 @@ public interface IncomeStatementService {
     void delete( LambdaQueryWrapper<Incomestatement> queryWrapper, ResponseEntity responseEntity);
 
     List<Incomestatement> querySumByColumn(String cartype,String year );
+
+    List<IncomeExportEntity> exportIncomeAll(String cartype, String year);
 }

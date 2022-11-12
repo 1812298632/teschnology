@@ -355,4 +355,9 @@ public class IncomeStatementServiceImpl implements IncomeStatementService {
     public List<Incomestatement> querySumByColumn(String cartype,String year) {
         return incomeStatementDao.querySumByColumn(cartype,year);
     }
+
+    @Override
+    public List<IncomeExportEntity> exportIncomeAll(String cartype, String year) {
+        return incomeStatementDao.exportIncomeAll(cartype,year);
+    }
 }

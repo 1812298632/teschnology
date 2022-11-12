@@ -83,6 +83,10 @@
             <el-menu-item index="/uploadincome">损益表上传</el-menu-item>
           </el-menu-item-group>
 
+          <el-menu-item-group title="油耗">
+            <el-menu-item index="/fuleconsumption">油耗上传</el-menu-item>
+          </el-menu-item-group>
+
         </el-submenu>
 
         <el-submenu index="1">

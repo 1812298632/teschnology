@@ -6,46 +6,60 @@
     <select id="exportIncome" resultType="com.excel.pro.entity.IncomeExportEntity">
         select *
         from (
-                 select CARTYPE,
-                        month                                         month,
-                        sum(kilo) / 10000                             kilosum,
-                        count(SHEETID)                                runcount,
-                        round(sum(kilo) / count(SHEETID), 10) / 10000 avg
-                 from DEPARTDETAIL D
-                 where YEAR = #{year}
-                   <if test="carType != '总损益表'">
-                       and CARTYPE = #{carType}
-                   </if>
+        select CARTYPE,
+        month month,
+        sum(kilo) / 10000 kilosum,
+        count(SHEETID) runcount,
+        round(sum(kilo) / count(SHEETID), 10) / 10000 avg
+        from DEPARTDETAIL D
+        where YEAR = #{year}
+        <if test="carType != '总损益表'">
+            and CARTYPE = #{carType}
+        </if>
 
-                   and d.ISMONTHCOUNT = 1
-                   and d.ISKILOSUM = 1
-                 group by month, CARTYPE
-             ) a
+        and d.ISMONTHCOUNT = 1
+        and d.ISKILOSUM = 1
+        group by month, CARTYPE
+        ) a
         order by month
     </select>
 
     <select id="queryMonthMoney" resultType="com.excel.pro.entity.Incomestatement">
-        select max(CARTYPE)                                            cartype,
-               columnname,
-               listagg(CARID, ',') within group ( order by CARID desc) carid,
-               sum(THREEMONTH) / 10000                                 threemonth,
-               sum(FOURMONTH) / 10000                                  fourmonth,
-               sum(FIVEMONTH) / 10000                                  fivemonth,
-               sum(SIXMONTH) / 10000                                   sixmonth,
-               sum(SEVENMONTH) / 10000                                 sevenmonth,
-               sum(EIGHTMONTH) / 10000                                 eightmonth,
-               sum(NINEMONTH) / 10000                                  ninemonth,
-               sum(TENMONTH) / 10000                                   tenmonth,
-               sum(ELEVENTMONTH) / 10000                               eleventmonth,
-               sum(TWELVEMONTH) / 10000                                twelvemonth,
-               sum(ONEMONTH) / 10000                                   onemonth,
-               sum(TWOMONTH) / 10000                                   twomonth
+        select max(CARTYPE) cartype,
+        columnname,
+        listagg(CARID, ',') within group ( order by CARID desc) carid,
+        sum(THREEMONTH) / 10000 threemonth,
+        sum(FOURMONTH) / 10000 fourmonth,
+        sum(FIVEMONTH) / 10000 fivemonth,
+        sum(SIXMONTH) / 10000 sixmonth,
+        sum(SEVENMONTH) / 10000 sevenmonth,
+        sum(EIGHTMONTH) / 10000 eightmonth,
+        sum(NINEMONTH) / 10000 ninemonth,
+        sum(TENMONTH) / 10000 tenmonth,
+        sum(ELEVENTMONTH) / 10000 eleventmonth,
+        sum(TWELVEMONTH) / 10000 twelvemonth,
+        sum(ONEMONTH) / 10000 onemonth,
+        sum(TWOMONTH) / 10000 twomonth
         from INCOMESTATEMENT I
         where year = #{year}
 
-        <if test="carType != '总损益表'">
+       <!-- <if test="carType != '总损益表'">
             and CARTYPE = #{carType}
         </if>
+        /* todo*/
+        <if test="carType = '总损益表'">
+            and CARTYPE ！= '车队总损益表'
+        </if>-->
+
+        <choose>
+            <when test="carType != '总损益表'">
+                and CARTYPE = #{carType}
+            </when>
+            <when test="carType = '总损益表'">
+                and CARTYPE ！= '车队总损益表'
+            </when>
+
+        </choose>
 
         group by COLUMNNAME
     </select>
@@ -130,7 +144,7 @@
         sum(ONEMONTH) onemonth,
         sum(TWOMONTH) twomonth
         from INCOMESTATEMENT I
-        where  I.year =#{year}
+        where I.year =#{year}
 
         <if test="carType != '总损益表'">
             and CARTYPE = #{carType}
@@ -187,36 +201,73 @@
     </select>
     <select id="querySumByColumn" resultType="com.excel.pro.entity.Incomestatement">
         select cartype,
-               carid,
-               columnname            columnname,
-               carid,
-               (threemonth + fourmonth + fivemonth + sixmonth + sevenmonth +
-                eightmonth +
-                ninemonth +
-                tenmonth +
-                eleventmonth +
-                twelvemonth +
-                onemonth +
-                twomonth) / 10000 as subjectcode
+        carid,
+        columnname columnname,
+        carid,
+        (threemonth + fourmonth + fivemonth + sixmonth + sevenmonth +
+        eightmonth +
+        ninemonth +
+        tenmonth +
+        eleventmonth +
+        twelvemonth +
+        onemonth +
+        twomonth) / 10000 as subjectcode
         FROM (
-                 select max(CARTYPE)                                            cartype,
-                        columnname,
-                        listagg(CARID, ',') within group ( order by CARID desc) carid,
-                        sum(THREEMONTH)                                         threemonth,
-                        sum(FOURMONTH)                                          fourmonth,
-                        sum(FIVEMONTH)                                          fivemonth,
-                        sum(SIXMONTH)                                           sixmonth,
-                        sum(SEVENMONTH)                                         sevenmonth,
-                        sum(EIGHTMONTH)                                         eightmonth,
-                        sum(NINEMONTH)                                          ninemonth,
-                        sum(TENMONTH)                                           tenmonth,
-                        sum(ELEVENTMONTH)                                       eleventmonth,
-                        sum(TWELVEMONTH)                                        twelvemonth,
-                        sum(ONEMONTH)                                           onemonth,
-                        sum(TWOMONTH)                                           twomonth
-                 from INCOMESTATEMENT I
-                 where I.CARTYPE = #{cartype}
-                   and year = #{year}
-                 group by COLUMNNAME)
+        select max(CARTYPE) cartype,
+        columnname,
+        listagg(CARID, ',') within group ( order by CARID desc) carid,
+        sum(THREEMONTH) threemonth,
+        sum(FOURMONTH) fourmonth,
+        sum(FIVEMONTH) fivemonth,
+        sum(SIXMONTH) sixmonth,
+        sum(SEVENMONTH) sevenmonth,
+        sum(EIGHTMONTH) eightmonth,
+        sum(NINEMONTH) ninemonth,
+        sum(TENMONTH) tenmonth,
+        sum(ELEVENTMONTH) eleventmonth,
+        sum(TWELVEMONTH) twelvemonth,
+        sum(ONEMONTH) onemonth,
+        sum(TWOMONTH) twomonth
+        from INCOMESTATEMENT I
+        where
+        year = #{year}
+       <!-- <if test="carType != '总损益表'">
+            and I.CARTYPE = #{carType}
+
+        </if>-->
+        /* todo*/
+       <!-- <if test="carType = '总损益表'">
+            and CARTYPE ！= '车队总损益表'
+        </if>
+-->
+
+
+        <choose>
+            <when test="carType != '总损益表'">
+                and I.CARTYPE = #{carType}
+            </when>
+            <when test="carType = '总损益表'">
+                and CARTYPE ！= '车队总损益表'
+            </when>
+
+        </choose>
+        group by COLUMNNAME)
+    </select>
+    <select id="exportIncomeAll" resultType="com.excel.pro.entity.IncomeExportEntity">
+        select *
+        from (
+                 select '总损益表'                                        CATRTYPE,
+                        month                                         month,
+                        sum(kilo) / 10000                             kilosum,
+                        count(SHEETID)                                runcount,
+                        round(sum(kilo) / count(SHEETID), 10) / 10000 avg
+                 from DEPARTDETAIL D
+                 where YEAR = #{year}
+
+                   and d.ISMONTHCOUNT = 1
+                   and d.ISKILOSUM = 1
+                 group by month
+             ) a
+        order by month
     </select>
 </mapper>

@@ -16,6 +16,7 @@ const jfandwrwcar = httpVueLoader('view/system/jfandwrwcar.vue');
 const incomequery = httpVueLoader('view/system/incomequery.vue');
 const jfdownload = httpVueLoader('view/system/jfdownload.vue');
 const wrwdownload = httpVueLoader('view/system/wrwdownload.vue');
+const fuleconsumption = httpVueLoader('view/system/fuleconsumption.vue');
 const index = httpVueLoader('view/system/index.vue');
 
 
@@ -66,6 +67,11 @@ const routes = [
                 path: "/uploadincome",
                 component: uploadincome,
                 meta: {title: '损益表上传'}
+            },
+            {
+                path: "/fuleconsumption",
+                component: fuleconsumption,
+                meta: {title: '油耗上传'}
             },
             {
                 path: "/jfcar",

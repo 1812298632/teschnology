@@ -30,6 +30,7 @@ public interface IncomeStatementDao extends BaseMapper<Incomestatement> {
 
     int update(Incomestatement incomestatement, UpdateWrapper<Incomestatement> updateWrapper, ResponseEntity responseEntity);
 
-    List<Incomestatement> querySumByColumn(@Param("cartype")String cartype,@Param("year")String year);
+    List<Incomestatement> querySumByColumn(@Param("carType")String cartype,@Param("year")String year);
 
+    List<IncomeExportEntity> exportIncomeAll(@Param("carType")String cartype,@Param("year")String year);
 }

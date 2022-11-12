@@ -167,7 +167,7 @@ public class ExcelPrintController {
 
         for (String cityname : cityList) {
             //根据城市，查询出每个城市每个月份的发车次数
-            DepartExportEntity exportDepart = departService.exportDepart(cityname, cartype,year);
+            DepartExportEntity exportDepart = departService.exportDepart(cityname, cartype, year);
 
             countList.add(exportDepart);
         }
@@ -251,7 +251,13 @@ public class ExcelPrintController {
         String columnname = RequestUtil.getObjectValue(requestParam, "columnname");
         String year = RequestUtil.getObjectValue(requestParam, "year");
 
-        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome(cartype, year);
+        List<IncomeExportEntity> exportEntityList = null;
+
+        if (!cartype.equals("总损益表")) {
+            exportEntityList = incomeStatementService.exportIncome(cartype, year);
+        } else {
+            exportEntityList = incomeStatementService.exportIncomeAll(cartype, year);
+        }
 
 
         responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
@@ -998,7 +1004,13 @@ public class ExcelPrintController {
         String requestParam = RequestUtil.getJsonObjectData(request);
         String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
         String year = RequestUtil.getObjectValue(requestParam, "year");
-        List<IncomeExportEntity> exportEntityList = incomeStatementService.exportIncome(cartype, year);
+        List<IncomeExportEntity> exportEntityList = null;
+
+        if (!cartype.equals("总损益表")) {
+            exportEntityList = incomeStatementService.exportIncome(cartype, year);
+        } else {
+            exportEntityList = incomeStatementService.exportIncomeAll(cartype, year);
+        }
 
         responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
 
