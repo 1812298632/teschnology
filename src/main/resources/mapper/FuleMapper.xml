@@ -5,13 +5,72 @@
 <mapper namespace="com.excel.pro.dao.FuleDao">
 
     <select id="queryFuleType" resultType="com.excel.pro.entity.SelectEntity">
-        select distinct CARTYPE as key,CARTYPE as  value from FULE
+        select distinct CARTYPE as key, CARTYPE as value
+        from FULE
     </select>
     <select id="queryFuleYear" resultType="com.excel.pro.entity.SelectEntity">
-        select distinct YEAR as key,YEAR as  value from FULE
+        select distinct YEAR as key, YEAR as value
+        from FULE
     </select>
     <select id="quertFuleColumns" resultType="com.excel.pro.entity.SelectEntity">
-        select distinct COLUMNNAME as key,COLUMNNAME as  value from FULE
+        select distinct COLUMNNAME as key, COLUMNNAME as value
+        from FULE
 
+    </select>
+    <select id="queryMonthMoney" resultType="com.excel.pro.entity.Incomestatement">
+
+
+        select CARTYPE,
+               COLUMNNAME,
+               THREEMONTH / 10000 THREEMONTH,
+               FOURMONTH / 10000 FOURMONTH,
+               FIVEMONTH / 10000 FIVEMONTH,
+               SIXMONTH / 10000 SIXMONTH,
+               SEVENMONTH / 10000 SEVENMONTH,
+               EIGHTMONTH / 10000 EIGHTMONTH,
+               NINEMONTH / 10000 NINEMONTH,
+               TENMONTH / 10000 TENMONTH,
+               ELEVENTMONTH / 10000 ELEVENTMONTH,
+               TWELVEMONTH / 10000 TWELVEMONTH,
+               ONEMONTH / 10000 ONEMONTH,
+               TWOMONTH / 10000 TWOMONT,
+
+               YEAR
+
+        from fule
+        where year = #{year}
+          and CARTYPE = #{cartype}
+          and COLUMNNAME = #{columnname}
+
+    </select>
+    <select id="queryFuleSum" resultType="com.excel.pro.entity.Incomestatement">
+
+        select max(CARTYPE)                  CARTYPE,
+               COLUMNNAME,
+               nvl(sum(THREEMONTH / 10000), 0) +
+               nvl(sum(FOURMONTH / 10000), 0) +
+               nvl(sum(FIVEMONTH / 10000), 0) +
+               nvl(sum(SIXMONTH / 10000), 0) +
+               nvl(sum(SEVENMONTH / 10000), 0) +
+               nvl(sum(EIGHTMONTH / 10000), 0) +
+               nvl(sum(NINEMONTH / 10000), 0) +
+               nvl(sum(TENMONTH / 10000), 0) +
+               nvl(sum(ELEVENTMONTH / 10000), 0) +
+               nvl(sum(TWELVEMONTH / 10000), 0) +
+               nvl(sum(ONEMONTH / 10000), 0) +
+               nvl(sum(TWOMONTH / 10000), 0) subjectcode
+
+        from fule
+        where year = #{year}
+          and CARTYPE = #{cartype}
+
+        group by COLUMNNAME
+    </select>
+    <select id="getkiloSum" resultType="java.lang.String">
+        select  distinct  KILOSUM/10000 KILOSUM
+
+        from fule
+        where year = #{year}
+          and CARTYPE = #{cartype}
     </select>
 </mapper>

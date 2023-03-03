@@ -230,7 +230,7 @@
       <el-card style="width: 17%;margin-left: 3%">
         <div slot="header">
           <span>百公里油耗</span>
-          <el-button style="float: right; padding: 3px 0" type="text" @click="createJfml()">生成
+          <el-button style="float: right; padding: 3px 0" type="text" @click="createyh()">生成
           </el-button>
         </div>
         <div v-for="(list,index) in this.fuleList" :key="index" class="text item">
@@ -692,6 +692,33 @@ module.exports = {
         });
       });
     },
+    createyh(){
+
+      if (this.fuleList.length == 0) {
+        this.$notify({
+          title: '提示',
+          message: '暂未有油耗数据导入',
+          type: 'warning'
+        });
+      } else {
+        this.form.columnname = this.flList[0].columnname
+        fetch("http://localhost:9080/exportYh", {
+          method: 'POST', // 请求方法还可以是 put
+          body: JSON.stringify(this.form),
+          headers: new Headers({
+            'Content-Type': 'application/json'
+          })
+        }).then(res => res.json()).then(response => {
+          this.$message({
+            showClose: true,
+            message: response.resMessage,
+            center: true,
+            offset: 150,
+            type: response.res
+          });
+        });
+      }
+    }
 
 
   },

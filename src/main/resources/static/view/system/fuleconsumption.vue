@@ -34,8 +34,11 @@
             sortable
             label="项目" width="100">
         </el-table-column>
-
-
+        <el-table-column
+            prop="kilosum"
+            sortable
+            label="总里程" width="135">
+        </el-table-column>
         <el-table-column
             prop="onemonth"
             sortable
@@ -279,6 +282,12 @@
               <el-input v-model="editform.twelvemonth" style="width: 80%"></el-input>
             </el-form-item>
           </el-col>
+
+          <el-col :span="12">
+            <el-form-item align="left" label="总里程" :label-width="formLabelWidth">
+              <el-input v-model="editform.kilosum" style="width: 80%"></el-input>
+            </el-form-item>
+          </el-col>
         </el-form>
         <div class="demo-drawer__footer">
           <el-button @click="cancelForm">取 消</el-button>
@@ -320,7 +329,7 @@ module.exports = {
       buttonloading: false,
       tagsList: [],
       size: 0,
-      formLabelWidth: '50px',
+      formLabelWidth: '70px',
       isCollapse: true,
       tableData: [],
       form: {
@@ -439,6 +448,7 @@ module.exports = {
         tenmonth: '',
         eleventmonth: '',
         twelvemonth: '',
+        kilosum:''
       };
 
 

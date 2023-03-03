@@ -3,6 +3,7 @@ package com.excel.pro.web;
 import com.excel.pro.dao.UserDao;
 import com.excel.pro.entity.*;
 import com.excel.pro.service.DepartService;
+import com.excel.pro.service.FuleService;
 import com.excel.pro.service.IncomeStatementService;
 import com.excel.pro.util.ConstantUtil;
 import com.excel.pro.util.RequestUtil;
@@ -43,10 +44,14 @@ public class ExcelPrintController {
     @Resource
     private DepartService departService;
 
+
+    @Resource
+    private FuleService fuleService;
+
     @GetMapping("/query")
     public String queryUser() {
         List<SysUser> sysUsers = userDao.selectList(null);
-        return "test";
+        return "hello";
     }
 
     /**
@@ -400,6 +405,230 @@ public class ExcelPrintController {
         FileOutputStream fileOutputStream = null;
         try {
             fileOutputStream = new FileOutputStream("E:\\" + cartype + columnname.trim() + ".xlsx");
+            wb.write(fileOutputStream);
+            fileOutputStream.flush();
+        } catch (Exception e) {
+            responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
+            responseEntity.setResMessage(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        if (responseEntity.getRes().equals(ConstantUtil.RESPONSE_SUCCESS)) {
+            File f1 = new File("E:\\");
+            Desktop.getDesktop().open(f1);
+        }
+
+
+        return responseEntity;
+    }
+
+
+    @RequestMapping("/exportYh")
+    public ResponseEntity exporYh(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        String requestParam = RequestUtil.getJsonObjectData(request);
+        String cartype = RequestUtil.getObjectValue(requestParam, "cartype");
+        String columnname = RequestUtil.getObjectValue(requestParam, "columnname");
+        String year = RequestUtil.getObjectValue(requestParam, "year");
+
+        List<IncomeExportEntity> exportEntityList = null;
+
+        if (!cartype.equals("总损益表")) {
+            exportEntityList = incomeStatementService.exportIncome(cartype, year);
+        } else {
+            exportEntityList = incomeStatementService.exportIncomeAll(cartype, year);
+        }
+
+
+        Incomestatement monthMoney = fuleService.queryMonthMoney(year, cartype, "加油升数");
+
+        HashMap<Object, Object> hashMap = new HashMap<>();
+        hashMap.put("1", monthMoney.getOnemonth());
+        hashMap.put("2", monthMoney.getTwomonth());
+        hashMap.put("3", monthMoney.getThreemonth());
+        hashMap.put("4", monthMoney.getFourmonth());
+        hashMap.put("5", monthMoney.getFivemonth());
+        hashMap.put("6", monthMoney.getSixmonth());
+        hashMap.put("7", monthMoney.getSevenmonth());
+        hashMap.put("8", monthMoney.getEightmonth());
+        hashMap.put("9", monthMoney.getNinemonth());
+        hashMap.put("10", monthMoney.getTenmonth());
+        hashMap.put("11", monthMoney.getEleventmonth());
+        hashMap.put("12", monthMoney.getTwelvemonth());
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+
+
+        Incomestatement monthSaveMoney = fuleService.queryMonthMoney(year, cartype, "节油升数");
+
+        HashMap<Object, Object> hashSaveMap = new HashMap<>();
+        hashSaveMap.put("1", monthSaveMoney.getOnemonth());
+        hashSaveMap.put("2", monthSaveMoney.getTwomonth());
+        hashSaveMap.put("3", monthSaveMoney.getThreemonth());
+        hashSaveMap.put("4", monthSaveMoney.getFourmonth());
+        hashSaveMap.put("5", monthSaveMoney.getFivemonth());
+        hashSaveMap.put("6", monthSaveMoney.getSixmonth());
+        hashSaveMap.put("7", monthSaveMoney.getSevenmonth());
+        hashSaveMap.put("8", monthSaveMoney.getEightmonth());
+        hashSaveMap.put("9", monthSaveMoney.getNinemonth());
+        hashSaveMap.put("10", monthSaveMoney.getTenmonth());
+        hashSaveMap.put("11", monthSaveMoney.getEleventmonth());
+        hashSaveMap.put("12", monthSaveMoney.getTwelvemonth());
+
+
+        List<Incomestatement> monthMoneyList = incomeStatementService.queryMonthMoney(cartype, year);
+
+        Incomestatement fuleMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title3)).collect(Collectors.toList()).get(0);
+
+        HashMap<Object, Object> hashFuleMoneyMap = new HashMap<>();
+        hashFuleMoneyMap.put("1", fuleMoney.getOnemonth());
+        hashFuleMoneyMap.put("2", fuleMoney.getTwomonth());
+        hashFuleMoneyMap.put("3", fuleMoney.getThreemonth());
+        hashFuleMoneyMap.put("4", fuleMoney.getFourmonth());
+        hashFuleMoneyMap.put("5", fuleMoney.getFivemonth());
+        hashFuleMoneyMap.put("6", fuleMoney.getSixmonth());
+        hashFuleMoneyMap.put("7", fuleMoney.getSevenmonth());
+        hashFuleMoneyMap.put("8", fuleMoney.getEightmonth());
+        hashFuleMoneyMap.put("9", fuleMoney.getNinemonth());
+        hashFuleMoneyMap.put("10", fuleMoney.getTenmonth());
+        hashFuleMoneyMap.put("11", fuleMoney.getEleventmonth());
+        hashFuleMoneyMap.put("12", fuleMoney.getTwelvemonth());
+
+
+        responseEntity.setResMessage("文件生成成功,生成文件名称为[" + cartype +"百公里油耗" + "]");
+
+        exportEntityList.forEach(x -> {
+            x.setFuelingLiters(Double.parseDouble(hashMap.get(x.getMonth()).toString()));
+            x.setFuelSavingLiters(Double.parseDouble(hashSaveMap.get(x.getMonth()).toString()));
+            x.setFuelmoney(Double.parseDouble(hashFuleMoneyMap.get(x.getMonth()).toString()));
+        });
+
+        exportEntityList.forEach(x -> {
+            BigDecimal fulemoney = new BigDecimal(Double.toString(x.getFuelmoney()));
+            BigDecimal kilosum = new BigDecimal(x.getKilosum());
+            BigDecimal fuleLit = new BigDecimal(Double.toString(x.getFuelingLiters()));
+            BigDecimal fuleSaveLit = new BigDecimal(Double.toString(x.getFuelSavingLiters()));
+
+            BigDecimal sumMonth = fuleLit.divide(fulemoney, 20, BigDecimal.ROUND_HALF_UP);
+
+            x.setHundredFule(fuleLit.divide(kilosum, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+            x.setAvgonway(sumMonth.doubleValue());
+            x.setFuelSavingMoney(sumMonth.multiply(fuleSaveLit).setScale(20,BigDecimal.ROUND_HALF_UP).doubleValue());
+            //x.setFuelSavingLiters(fulemoney.divide(fuleSaveLit, 20, BigDecimal.ROUND_HALF_UP).setScale(20,BigDecimal.ROUND_HALF_UP).doubleValue());
+
+            x.setKilosum("");
+        });
+
+
+        IncomeExportEntity incomeExportEntity = new IncomeExportEntity();
+
+
+        incomeExportEntity.setMonth("总和");
+
+        List<Incomestatement> incomestatement = incomeStatementService.querySumByColumn(cartype, year);
+
+        Incomestatement summoney = incomestatement.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title3)).collect(Collectors.toList()).get(0);
+
+
+        List<Incomestatement> sumFuleMoney = fuleService.queryFuleSum(cartype, year);
+
+        BigDecimal fuelFitSum = new BigDecimal(sumFuleMoney.stream().filter(x -> x.getColumnname().equals("加油升数")).collect(Collectors.toList()).get(0).getSubjectcode());
+        BigDecimal fuelSaveFitSum = new BigDecimal(sumFuleMoney.stream().filter(x -> x.getColumnname().equals("节油升数")).collect(Collectors.toList()).get(0).getSubjectcode());
+        String kiloSum = fuleService.getkiloSum(cartype, year);
+        BigDecimal monthcount = new BigDecimal(exportEntityList.size());
+        BigDecimal fulemoneySum = new BigDecimal(summoney.getSubjectcode());
+
+        BigDecimal sumMonth = fulemoneySum.divide(fuelFitSum, 20, BigDecimal.ROUND_HALF_UP);
+        incomeExportEntity.setFuelingLiters(fuelFitSum.doubleValue());
+        incomeExportEntity.setFuelSavingLiters(fuelSaveFitSum.doubleValue());
+        incomeExportEntity.setKilosum(kiloSum);
+        incomeExportEntity.setFuelmoney(fulemoneySum.doubleValue());
+        incomeExportEntity.setFuelSavingMoney(sumMonth.multiply(fuelSaveFitSum).setScale(20,BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeExportEntity.setHundredFule(fuelFitSum.divide(new BigDecimal(kiloSum), 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeExportEntity.setAvgonway(sumMonth.doubleValue());
+        IncomeExportEntity incomeExportEntityAvg = new IncomeExportEntity();
+
+        incomeExportEntityAvg.setMonth("均值");
+
+
+
+
+        fulemoneySum = new BigDecimal(summoney.getSubjectcode()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP);
+
+
+        incomeExportEntityAvg.setKilosum(new BigDecimal(incomeExportEntity.getKilosum()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).toString());
+        incomeExportEntityAvg.setFuelingLiters(new BigDecimal(incomeExportEntity.getFuelingLiters()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeExportEntityAvg.setFuelSavingLiters(new BigDecimal(incomeExportEntity.getFuelSavingLiters()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeExportEntityAvg.setFuelmoney(new BigDecimal(incomeExportEntity.getFuelmoney()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeExportEntityAvg.setHundredFule(fuelFitSum.divide(new BigDecimal(kiloSum), 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+        BigDecimal avgMonth = fulemoneySum.divide(fuelFitSum, 20, BigDecimal.ROUND_HALF_UP).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP);
+
+        incomeExportEntityAvg.setAvgonway(sumMonth.doubleValue());
+        incomeExportEntityAvg.setFuelSavingMoney(new BigDecimal(incomeExportEntity.getFuelSavingMoney()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
+
+        exportEntityList.add(incomeExportEntity);
+        exportEntityList.add(incomeExportEntityAvg);
+
+        HSSFWorkbook wb = new HSSFWorkbook();
+
+        HSSFSheet sheet = wb.createSheet(cartype + "百公里油耗");
+
+        LinkedList<String> titleList = ConstantUtil.makeYhTitle();
+
+        HSSFRow row = sheet.createRow(0);
+        for (int i = 0; i < titleList.size(); i++) {
+            //表头
+            row.createCell((short) i).setCellValue(titleList.get(i));
+        }
+
+        for (int i = 0; i < exportEntityList.size(); i++) {
+            row = sheet.createRow(i + 1);
+            IncomeExportEntity exportEntity = exportEntityList.get(i);
+
+            String[] countListArray = {exportEntity.getMonth(), exportEntity.getFuelingLiters().toString(), exportEntity.getKilosum(),
+                    exportEntity.getHundredFule().toString(), exportEntity.getFuelSavingLiters().toString(), exportEntity.getAvgonway().toString(), exportEntity.getFuelSavingMoney().toString()};
+
+            for (int j = 0; j < countListArray.length; j++) {
+                //将内容按顺序赋给对应的列对象
+                HSSFCell cell = row.createCell((short) j);
+                if(countListArray[j].equals("")){
+                    continue;
+                }
+                if (row.getRowNum() <= exportEntityList.size() - 2) {
+                    if (j <= 2) {
+                        cell.setCellValue(Double.parseDouble(countListArray[j]));
+                    } else {
+                        //cell.setCellStyle(cellStyle);
+                        cell.setCellValue(Double.parseDouble(countListArray[j]));
+                    }
+                } else {
+                    if (j == 0) {
+                        cell.setCellValue(countListArray[j]);
+                    } else if (j <= 2 && j != 0) {
+                        cell.setCellValue(Double.parseDouble(countListArray[j]));
+                    } else {
+                        //cell.setCellStyle(cellStyle);
+                        cell.setCellValue(Double.parseDouble(countListArray[j]));
+                    }
+
+                }
+
+
+            }
+        }
+
+        //生成excel
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream("E:\\" + cartype + "百公里油耗.xlsx");
             wb.write(fileOutputStream);
             fileOutputStream.flush();
         } catch (Exception e) {

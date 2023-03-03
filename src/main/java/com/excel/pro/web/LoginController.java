@@ -24,5 +24,13 @@ public class LoginController {
     }
 
 
+    @GetMapping("/aaaaa/bbbbb")
+    public String page1() {
+        // back前面不写 斜杠
+        System.out.println("into index ...");
+        return "hello";
+    }
+
+
 
 }

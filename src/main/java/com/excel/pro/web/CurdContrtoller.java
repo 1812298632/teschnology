@@ -322,6 +322,7 @@ public class CurdContrtoller {
             String tenmonth = RequestUtil.getObjectValue(requestParam, "tenmonth");
             String eleventmonth = RequestUtil.getObjectValue(requestParam, "eleventmonth");
             String twelvemonth = RequestUtil.getObjectValue(requestParam, "twelvemonth");
+            String kiloSum = RequestUtil.getObjectValue(requestParam, "kilosum");
 
             Fule fule = new Fule();
             fule.setYear(Long.parseLong(year));
@@ -375,6 +376,10 @@ public class CurdContrtoller {
 
             }
 
+            if (!StringUtils.isEmpty(kiloSum)) {
+                fule.setKilosum(Double.parseDouble(kiloSum));
+            }
+
             fuleService.insert(fule, responseEntity);
 
         } catch (Exception e) {
@@ -410,6 +415,7 @@ public class CurdContrtoller {
             String tenmonth = RequestUtil.getObjectValue(requestParam, "tenmonth");
             String eleventmonth = RequestUtil.getObjectValue(requestParam, "eleventmonth");
             String twelvemonth = RequestUtil.getObjectValue(requestParam, "twelvemonth");
+            String kiloSum = RequestUtil.getObjectValue(requestParam, "kilosum");
 
             LambdaQueryWrapper<Fule> fuleWrapper = new LambdaQueryWrapper();
 
@@ -490,6 +496,12 @@ public class CurdContrtoller {
                 fule.setTwelvemonth(Double.parseDouble(twelvemonth));
             }
 
+            if (StringUtils.isEmpty(kiloSum) || kiloSum.equals("null")) {
+                fule.setKilosum(null);
+            } else {
+                fule.setKilosum(Double.parseDouble(kiloSum));
+            }
+
             fuleService.update(fule, fuleWrapper, responseEntity);
         } catch (Exception e) {
             responseEntity.setRes(ConstantUtil.RESPONSE_ERROR);
@@ -531,4 +543,8 @@ public class CurdContrtoller {
         }
         return responseEntity;
     }
+
+
+
+
 }

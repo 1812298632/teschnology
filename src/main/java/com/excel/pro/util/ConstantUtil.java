@@ -196,6 +196,27 @@ public class ConstantUtil {
         return toolsTitleList;
     }
 
+    public static final String fuelingLiters = "加油升数";
+    public static final String fuelSavingLiters = "节油升数";
+    public static final String hundredFule = "百公里油耗";
+    public static final String monthAvg = "月平均单价";
+    public static final String fuelSavingMoney = "节油金额";
+
+
+
+    public static LinkedList makeYhTitle() {
+        LinkedList<String> titleList = new LinkedList();
+        titleList.add(month);
+        titleList.add(fuelingLiters);
+        titleList.add(sumkilo);
+        titleList.add(hundredFule);
+        titleList.add(fuelSavingLiters);
+        titleList.add(monthAvg);
+        titleList.add(fuelSavingMoney);
+
+
+        return titleList;
+    }
 
 
 

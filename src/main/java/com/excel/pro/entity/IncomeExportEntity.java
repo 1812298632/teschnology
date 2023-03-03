@@ -11,7 +11,7 @@ public class IncomeExportEntity {
     private Double avg;
     private Double money;
 
-    private Double avgonway;//平均单程费用
+    private Double avgonway;//平均单程费用 | 月平均单价
     private Double cost;//每公里成本
 
 
@@ -33,4 +33,14 @@ public class IncomeExportEntity {
     private Double gross;//毛利
     private Double grossrate;//毛利率
     private Double grossonway;//单程毛利
+
+
+
+    private Double fuelingLiters;//加油升数
+    private Double fuelSavingLiters;//节油升数
+
+    private Double HundredFule;//百公里油耗
+    private Double fuelSavingMoney;//节油金额
+
+
 }

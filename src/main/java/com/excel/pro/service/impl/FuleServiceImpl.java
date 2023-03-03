@@ -3,6 +3,7 @@ package com.excel.pro.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.excel.pro.dao.FuleDao;
 import com.excel.pro.entity.Fule;
+import com.excel.pro.entity.Incomestatement;
 import com.excel.pro.entity.ResponseEntity;
 import com.excel.pro.service.FuleService;
 import com.excel.pro.util.ConstantUtil;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class FuleServiceImpl implements FuleService {
@@ -61,5 +63,20 @@ public class FuleServiceImpl implements FuleService {
             responseEntity.setResMessage("新增成功" + insert + "条数据");
 
         }
+    }
+
+    @Override
+    public Incomestatement queryMonthMoney(String year, String cartype, String columnname) {
+        return fuleDao.queryMonthMoney(year,cartype,columnname);
+    }
+
+    @Override
+    public List<Incomestatement> queryFuleSum(String cartype, String year) {
+        return fuleDao.queryFuleSum(cartype,year);
+    }
+
+    @Override
+    public String getkiloSum(String cartype, String year) {
+        return fuleDao.getkiloSum(cartype,year);
     }
 }

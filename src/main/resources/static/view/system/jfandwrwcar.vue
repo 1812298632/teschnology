@@ -81,7 +81,7 @@
     </el-container>
     <el-container style="height: 10%; margin-top: 30px">
       <el-form :inline="true" ref="form" :model="form" size="small " label-position="right">
-          <el-form-item label="车辆类型">
+            <el-form-item label="车辆类型">
             <el-select v-model="form.type" placeholder="选择沃尔沃或解放">
               <el-option label="全部" value=""></el-option>
 

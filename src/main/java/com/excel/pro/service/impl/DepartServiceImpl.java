@@ -202,7 +202,6 @@ public class DepartServiceImpl implements DepartService {
 
                 ArrayList<String> wew = new ArrayList<>();
                 wew.add("苏BA7657");
-                wew.add("苏BA7657");
                 wew.add("苏BA7673");
                 wew.add("苏BB0057");
                 wew.add("苏BB0065");
