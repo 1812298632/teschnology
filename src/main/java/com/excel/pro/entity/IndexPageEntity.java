@@ -6,6 +6,7 @@ import lombok.Data;
 public class IndexPageEntity {
     private String cartype;
     private String month;
+    private String year;
     private String runcount;
     private String tmp;
 

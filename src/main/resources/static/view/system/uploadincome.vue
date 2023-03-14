@@ -84,6 +84,17 @@
 
 
         </el-form>
+
+
+        <el-col :span="24">
+
+          <div  v-for="(list4,index1) in incomeList"  >
+            <el-tag size="small">
+              <font size="2">{{ list4.year }} {{ list4.cartype }}已导入车牌号为 <font size="2"  color="#1e90ff">{{ list4.tmp }}</font> 的数据 </font><br/>
+            </el-tag>
+          </div>
+
+        </el-col>
       </div>
       <div style="width: 360px;margin:0 auto;" v-show="showtwo">
         <el-upload
@@ -98,6 +109,10 @@
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
           <div class="el-upload__tip" slot="tip">支持上传xlsx文件</div>
         </el-upload>
+
+        <el-tag size="small">
+          请上传{{ruleForm.cartype}} {{ruleForm.year}}年,sheet名称为{{ruleForm.sheetname}} 的{{ruleForm.type}}数据
+        </el-tag>
       </div>
       <div v-show="showthree" height="100%"
            style="width: 100%">
@@ -199,6 +214,7 @@ module.exports = {
   name: 'uploadincome',
   data() {
     return {
+      incomeList: [],
       showbutton: false,
       shownextbutton: true,
       nextDisable: false,
@@ -246,6 +262,17 @@ module.exports = {
         msg[i].name && arr.push(msg[i].name);
       }
       this.tagsList = arr;
+    });
+
+    fetch("http://localhost:9080/queryIncomeIndex", {
+      method: 'POST', // 请求方法还可以是 put
+      body: JSON.stringify(this.form),
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    }).then(res => res.json()).then(response => {
+      this.incomeList = response.resList
+
     });
 
     this.ruleForm.type = '损益表'
@@ -428,6 +455,16 @@ module.exports = {
       }
       if (vali) {
 
+        fetch("http://localhost:9080/queryIncomeIndex", {
+          method: 'POST', // 请求方法还可以是 put
+          body: JSON.stringify(this.form),
+          headers: new Headers({
+            'Content-Type': 'application/json'
+          })
+        }).then(res => res.json()).then(response => {
+          this.incomeList = response.resList
+
+        });
         if (this.active++ > 2) this.active = 0;
       }
     }

@@ -175,14 +175,15 @@
     </select>
 
     <select id="queryincomeIndex" resultType="com.excel.pro.entity.IndexPageEntity">
-        select cartype, listagg(distinct CARID, ',') within group ( order by CARID) tmp
+        select year,cartype, listagg(distinct CARID, ',') within group ( order by CARID) tmp
         from INCOMESTATEMENT
-        group by CARTYPE
+        group by year,CARTYPE
+
     </select>
 
     <select id="queryIncomeWarning" resultType="com.excel.pro.entity.IndexPageEntity">
 
-        select cartype,
+        select year,cartype,
                carid,
                columnname
         from INCOMESTATEMENT

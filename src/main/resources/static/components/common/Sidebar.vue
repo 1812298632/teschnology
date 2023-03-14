@@ -66,7 +66,10 @@
           <i class="el-icon-upload"></i>
           <span slot="title">损益表上传</span>
         </el-menu-item>-->
-
+        <el-menu-item index="/index">
+          <i class="el-icon-view"></i>
+          <span slot="title">数据统计</span>
+        </el-menu-item>
         <el-submenu index="2">
           <template slot="title">
             <i class="el-icon-upload"></i>

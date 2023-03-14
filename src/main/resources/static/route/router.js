@@ -51,7 +51,7 @@ const routes = [
             {
                 path: "/index",
                 component: index,
-                meta: {title: '首页'}
+                meta: {title: '数据统计'}
             },
             {
                 path: "/first",

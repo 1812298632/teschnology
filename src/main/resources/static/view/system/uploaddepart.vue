@@ -3,8 +3,8 @@
     <el-container style="height: 20%">
       <el-steps :active="active" finish-status="success" style="width: 100%" align-center>
         <el-step title="选择数据" icon="el-icon-edit" description="选择完成之后，下一步"></el-step>
-        <el-step title="上传文件" icon="el-icon-upload" description="上传成功将自动跳到下一步，如果失败可以点击重新导入，重新选择数据"></el-step>
-        <el-step title="查看数据" icon="el-icon-view" description="查看导入的数据,查看无误 下一步，可以再次导入新的数据"></el-step>
+        <el-step title="上传文件" icon="el-icon-upload"  description="上传成功将自动跳到下一步"></el-step>
+        <el-step title="查看数据" icon="el-icon-view" description="查看导入的数据"></el-step>
       </el-steps>
     </el-container>
     <el-container style="height: 75%">
@@ -55,16 +55,19 @@
             </el-form-item>
           </el-col>
 
+
+
+
           <el-col :span="8">
 
             <el-form-item label="sheet名称" prop="sheetname">
               <el-select placeholder="请选择或输入" v-model="ruleForm.sheetname" allow-create filterable>
                 <el-option-group
-                    label="以下属于沃尔沃">
+                    label="以下属于解放车">
                   <el-option label="解放车明细" value="解放车明细"></el-option>
                 </el-option-group>
                 <el-option-group
-                    label="以下属于解放车">
+                    label="以下属于沃尔沃">
                   <el-option label="沃尔沃明细" value="沃尔沃明细"></el-option>
                 </el-option-group>
               </el-select>
@@ -74,10 +77,22 @@
                           <el-input  v-model="ruleForm.sheetname" placeholder="excel对应的sheet名字"></el-input>
                         </el-form-item>-->
           </el-col>
+          <el-col :span="8"></el-col>
         </el-form>
+
+        <el-col :span="24">
+
+              <div  v-for="(list1,index1) in departList"  >
+                <el-tag size="small">
+                <font size="2">{{list1.year}} {{ list1.cartype }} 已导入 <font size="2" color="#1e90ff"> {{ list1.month }} </font> 月份数据</font><br/>
+                </el-tag>
+              </div>
+
+        </el-col>
       </div>
 
       <div style="width: 360px;margin:0 auto;" v-show="showtwo">
+
         <el-upload
             class="upload-demo"
             drag
@@ -90,6 +105,9 @@
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
           <div class="el-upload__tip" slot="tip">支持上传xlsx文件</div>
         </el-upload>
+        <el-tag size="small">
+          请上传{{ruleForm.cartype}} {{ruleForm.year}}年{{ruleForm.month}}月,sheet名称为{{ruleForm.sheetname}} 的{{ruleForm.type}}数据
+        </el-tag>
       </div>
 
       <div v-show="showthree" height="100%"
@@ -175,6 +193,7 @@
 module.exports = {
   data() {
     return {
+      departList: [],
       showbutton: false,
       shownextbutton: true,
       nextDisable: false,
@@ -229,6 +248,18 @@ module.exports = {
 
     this.ruleForm.year = '2022'
     this.ruleForm.type = '台账'
+
+
+    fetch("http://localhost:9080/queryDepartIndex", {
+      method: 'POST', // 请求方法还可以是 put
+      body: JSON.stringify(this.form),
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    }).then(res => res.json()).then(response => {
+      this.departList = response.resList
+
+    });
   },
   methods: {
     uploadSuccess(response, file, fileList) {
@@ -394,6 +425,8 @@ module.exports = {
         this.shownextbutton = false
       }
       if (this.active == 3) {
+
+
         this.showbutton = false;
         this.shownextbutton = true
         this.showtwo = false
@@ -403,7 +436,16 @@ module.exports = {
       }
 
       if (vali) {
+        fetch("http://localhost:9080/queryDepartIndex", {
+          method: 'POST', // 请求方法还可以是 put
+          body: JSON.stringify(this.form),
+          headers: new Headers({
+            'Content-Type': 'application/json'
+          })
+        }).then(res => res.json()).then(response => {
+          this.departList = response.resList
 
+        });
         if (this.active++ > 2) this.active = 0;
       }
 

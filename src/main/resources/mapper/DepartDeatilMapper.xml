@@ -98,35 +98,36 @@
         group by COLUMNNAME
     </select>
     <select id="selectCountGroupByMonth" resultType="com.excel.pro.entity.IndexPageEntity">
-        select cartype, listagg(distinct MONTH, ',') within group ( order by MONTH) month
+        select year,cartype, listagg(distinct MONTH, ',') within group ( order by MONTH) month
         from DEPARTDETAIL
         where ISMONTHCOUNT = 1
-        group by cartype
-        order by CARTYPE
+        group by cartype,year
+        order by year,CARTYPE
     </select>
     <select id="selectCountClassify" resultType="com.excel.pro.entity.IndexPageEntity">
-        select CARTYPE, listagg(runcount, ',') within group ( order by MONTH) runcount
-        from (select cartype, month, month || '月份发车次数' || count(SHEETID) || '次' runcount
+        select year,CARTYPE, listagg(runcount, ',') within group ( order by MONTH) runcount
+        from (select year,cartype, month, month || '月份发车次数' || count(SHEETID) || '次' runcount
               from DEPARTDETAIL
               where ISMONTHCOUNT = 1
-              group by cartype, month
-              order by CARTYPE, MONTH
+              group by year,cartype, month
+              order by year,CARTYPE, MONTH
              )
-        group by CARTYPE
+        group by year,CARTYPE
     </select>
     <select id="queryDepartWarring" resultType="com.excel.pro.entity.IndexPageEntity">
-        select cartype, listagg(err, ',') within group ( order by month) tmp
+        select year,cartype, listagg(err, ',') within group ( order by month) tmp
         from (
-                 select CARTYPE, MONTH, MONTH || '月份,序号为' || SHEETID err
+                 select year,CARTYPE, MONTH, MONTH || '月份,序号为' || SHEETID err
                  from DEPARTDETAIL
                  where CARNUM is null
                     or STARTCITY is null
                     or ENDCITY is null
                     or STARTKILO is null
                     or ENDKILO is null
-                 order by CARTYPE, MONTH
+                 order by year,CARTYPE, MONTH
              ) a
-        group by CARTYPE
+        group by year,CARTYPE
+
     </select>
     <select id="queryincomeIndex" resultType="com.excel.pro.entity.IndexPageEntity">
 

@@ -8,15 +8,15 @@
               <h4 align="left">菜单：台账上传，上传台账信息</h4>
               <br/>
               <div align="left" v-for="(list1,index1) in departList"  class="text item">
-                <font size="2"> {{ list1.cartype }} 已导入 <font size="2" color="#1e90ff"> {{ list1.month }} </font> 月份数据</font><br/>
+                <font size="2">{{list1.year}} {{ list1.cartype }} 已导入 <font size="2" color="#1e90ff"> {{ list1.month }} </font> 月份数据</font><br/>
               </div>
               <br/>
               <div align="left" v-for="(list2,index2) in departCountList" class="text item">
-                <font size="2" >{{ list2.cartype }} <font size="2" color="green"> {{ list2.runcount }} </font></font><br/>
+                <font size="2" >{{ list2.year }} {{ list2.cartype }} <font size="2" color="green"> {{ list2.runcount }} </font></font><br/>
               </div>
               <br/>
               <div align="left" v-for="(list3,index3) in departWarringList" class="text item">
-                <font size="2"> {{ list3.cartype }} <font size="2" color="red">{{ list3.tmp }} </font> 的数据可能有误 </font><br/>
+                <font size="2">{{ list3.year }} {{ list3.cartype }} <font size="2" color="red">{{ list3.tmp }} </font> 的数据可能有误 </font><br/>
               </div>
             </el-card>
           </el-timeline-item>
@@ -25,12 +25,12 @@
               <h4 align="left">菜单：损益表上传，上传损益表信息</h4>
               <br/>
               <div align="left" v-for="(list4,index4) in this.incomeList"  class="text item">
-                <font size="2"> {{ list4.cartype }}已导入车牌号为 <font size="2"  color="#1e90ff">{{ list4.tmp }}</font> 的数据 </font><br/>
+                <font size="2">{{ list4.year }} {{ list4.cartype }}已导入车牌号为 <font size="2"  color="#1e90ff">{{ list4.tmp }}</font> 的数据 </font><br/>
               </div>
 
               <br/>
               <div align="left" v-for="(list5,index5) in this.incomeWarringList"  class="text item">
-                <font size="2"> {{ list5.cartype }} <font size="2" color="red">{{ list5.carid }}  {{ list5.columnname}}项目</font> 数据为小于0,可能有误 </font><br/>
+                <font size="2">{{ list5.year }} {{ list5.cartype }} <font size="2" color="red">{{ list5.carid }}  {{ list5.columnname}}项目</font> 数据为小于0,可能有误 </font><br/>
               </div>
             </el-card>
           </el-timeline-item>
