@@ -66,6 +66,11 @@
           <i class="el-icon-upload"></i>
           <span slot="title">损益表上传</span>
         </el-menu-item>-->
+        <el-menu-item index="/system">
+          <i class="el-icon-setting"></i>
+          <span slot="title">系统设置</span>
+        </el-menu-item>
+
         <el-menu-item index="/index">
           <i class="el-icon-view"></i>
           <span slot="title">数据统计</span>

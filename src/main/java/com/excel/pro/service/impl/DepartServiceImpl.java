@@ -161,7 +161,20 @@ public class DepartServiceImpl implements DepartService {
         HashMap<String, Object> titleColumnMap = new HashMap<>();
         ArrayList<String> columnNameList = new ArrayList<>();
         String month111 = ConstantUtil.departUploadEntity.getMonth();
-        if (ConstantUtil.departUploadEntity.getYear().equals("2022") && (month111.equals("6") || month111.equals("7") || month111.equals("8"))) {
+        if (ConstantUtil.departUploadEntity.getYear().equals("2022") &&
+
+                (month111.equals("6") || month111.equals("7") || month111.equals("8") ||
+                        month111.equals("9") || month111.equals("10") || month111.equals("11") ||
+                        month111.equals("12") || month111.equals("1") || month111.equals("2")
+
+                        ||(ConstantUtil.departUploadEntity.getCartype().equals("沃尔沃") && month111.equals("3"))
+                        ||(ConstantUtil.departUploadEntity.getCartype().equals("沃尔沃") && month111.equals("4"))
+                        ||(ConstantUtil.departUploadEntity.getCartype().equals("沃尔沃") && month111.equals("5"))
+
+                        )
+
+
+        ) {
             columnNameList = ConstantUtil.makeDepartColumnNameList1();
         } else {
             columnNameList = ConstantUtil.makeDepartColumnNameList();

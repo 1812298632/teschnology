@@ -18,6 +18,7 @@ const jfdownload = httpVueLoader('view/system/jfdownload.vue');
 const wrwdownload = httpVueLoader('view/system/wrwdownload.vue');
 const fuleconsumption = httpVueLoader('view/system/fuleconsumption.vue');
 const index = httpVueLoader('view/system/index.vue');
+const system = httpVueLoader('view/system/system.vue');
 
 
 //路由
@@ -52,6 +53,11 @@ const routes = [
                 path: "/index",
                 component: index,
                 meta: {title: '数据统计'}
+            },
+            {
+                path: "/system",
+                component: system,
+                meta: {title: '系统设置'}
             },
             {
                 path: "/first",
