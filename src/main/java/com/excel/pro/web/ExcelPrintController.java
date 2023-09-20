@@ -271,7 +271,35 @@ public class ExcelPrintController {
 
         List<Incomestatement> monthMoneyList = incomeStatementService.queryMonthMoney(cartype, year);
 
-        Incomestatement monthMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(columnname)).collect(Collectors.toList()).get(0);
+        Incomestatement monthMoney = null;
+        if (columnname.equals("            日常维修")) {
+
+            Incomestatement incomestatement1 = monthMoneyList.stream().filter(x -> x.getColumnname().equals(columnname)).collect(Collectors.toList()).get(0);
+
+
+            Incomestatement incomestatement2 = monthMoneyList.stream().filter(x -> x.getColumnname().equals("            轮胎维修")).collect(Collectors.toList()).get(0);
+
+
+            incomestatement1.setOnemonth(incomestatement1.getOnemonth() + incomestatement2.getOnemonth());
+            incomestatement1.setTwomonth(incomestatement1.getTwomonth() + incomestatement2.getTwomonth());
+            incomestatement1.setThreemonth(incomestatement1.getThreemonth() + incomestatement2.getThreemonth());
+            incomestatement1.setFourmonth(incomestatement1.getFourmonth() + incomestatement2.getFourmonth());
+            incomestatement1.setFivemonth(incomestatement1.getFivemonth() + incomestatement2.getFivemonth());
+            incomestatement1.setSixmonth(incomestatement1.getSixmonth() + incomestatement2.getSixmonth());
+            incomestatement1.setSevenmonth(incomestatement1.getSevenmonth() + incomestatement2.getSevenmonth());
+            incomestatement1.setEightmonth(incomestatement1.getEightmonth() + incomestatement2.getEightmonth());
+            incomestatement1.setNinemonth(incomestatement1.getNinemonth() + incomestatement2.getNinemonth());
+            incomestatement1.setTenmonth(incomestatement1.getTenmonth() + incomestatement2.getTenmonth());
+            incomestatement1.setEleventmonth(incomestatement1.getEleventmonth() + incomestatement2.getEleventmonth());
+            incomestatement1.setTwelvemonth(incomestatement1.getTwelvemonth() + incomestatement2.getTwelvemonth());
+
+
+            monthMoney = incomestatement1;
+        } else {
+            monthMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(columnname)).collect(Collectors.toList()).get(0);
+
+
+        }
 
         HashMap<Object, Object> hashMap = new HashMap<>();
         hashMap.put("1", monthMoney.getOnemonth());
@@ -308,11 +336,28 @@ public class ExcelPrintController {
 
         incomeExportEntity.setMonth("总和");
 
+        Incomestatement summoney = null;
+
+
         List<Incomestatement> incomestatement = incomeStatementService.querySumByColumn(cartype, year);
 
-        Incomestatement summoney = incomestatement.stream().filter(x -> x.getColumnname().equals(columnname)).collect(Collectors.toList()).get(0);
+        if (columnname.equals("            日常维修")) {
+            Incomestatement incomestatement1 = incomestatement.stream().filter(x -> x.getColumnname().equals(columnname)).collect(Collectors.toList()).get(0);
 
-        incomeExportEntity.setMoney(Double.parseDouble(summoney.getSubjectcode()));
+
+            Incomestatement incomestatement2 = incomestatement.stream().filter(x -> x.getColumnname().equals("            轮胎维修")).collect(Collectors.toList()).get(0);
+            double v = Double.parseDouble(incomestatement1.getSubjectcode()) + Double.parseDouble(incomestatement2.getSubjectcode());
+
+
+            summoney = incomestatement1;
+            incomeExportEntity.setMoney(v);
+
+
+        } else {
+            summoney = incomestatement.stream().filter(x -> x.getColumnname().equals(columnname)).collect(Collectors.toList()).get(0);
+            incomeExportEntity.setMoney(Double.parseDouble(summoney.getSubjectcode()));
+
+        }
 
 
         Double kiloSum = 0.00;
@@ -485,8 +530,13 @@ public class ExcelPrintController {
 
 
         List<Incomestatement> monthMoneyList = incomeStatementService.queryMonthMoney(cartype, year);
+        Incomestatement fuleMoney = null;
+        if (year.equals("2023")) {
+            fuleMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title26)).collect(Collectors.toList()).get(0);
 
-        Incomestatement fuleMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title3)).collect(Collectors.toList()).get(0);
+        } else {
+            fuleMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title3)).collect(Collectors.toList()).get(0);
+        }
 
         HashMap<Object, Object> hashFuleMoneyMap = new HashMap<>();
         hashFuleMoneyMap.put("1", fuleMoney.getOnemonth());
@@ -503,7 +553,7 @@ public class ExcelPrintController {
         hashFuleMoneyMap.put("12", fuleMoney.getTwelvemonth());
 
 
-        responseEntity.setResMessage("文件生成成功,生成文件名称为[" + cartype +"百公里油耗" + "]");
+        responseEntity.setResMessage("文件生成成功,生成文件名称为[" + cartype + "百公里油耗" + "]");
 
         exportEntityList.forEach(x -> {
             x.setFuelingLiters(Double.parseDouble(hashMap.get(x.getMonth()).toString()));
@@ -521,7 +571,7 @@ public class ExcelPrintController {
 
             x.setHundredFule(fuleLit.divide(kilosum, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
             x.setAvgonway(sumMonth.doubleValue());
-            x.setFuelSavingMoney(sumMonth.multiply(fuleSaveLit).setScale(20,BigDecimal.ROUND_HALF_UP).doubleValue());
+            x.setFuelSavingMoney(sumMonth.multiply(fuleSaveLit).setScale(20, BigDecimal.ROUND_HALF_UP).doubleValue());
             //x.setFuelSavingLiters(fulemoney.divide(fuleSaveLit, 20, BigDecimal.ROUND_HALF_UP).setScale(20,BigDecimal.ROUND_HALF_UP).doubleValue());
 
             x.setKilosum("");
@@ -535,7 +585,14 @@ public class ExcelPrintController {
 
         List<Incomestatement> incomestatement = incomeStatementService.querySumByColumn(cartype, year);
 
-        Incomestatement summoney = incomestatement.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title3)).collect(Collectors.toList()).get(0);
+        Incomestatement summoney = null;
+
+        if (year.equals("2023")) {
+            summoney = incomestatement.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title26)).collect(Collectors.toList()).get(0);
+
+        } else {
+            summoney = incomestatement.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title3)).collect(Collectors.toList()).get(0);
+        }
 
 
         List<Incomestatement> sumFuleMoney = fuleService.queryFuleSum(cartype, year);
@@ -551,14 +608,12 @@ public class ExcelPrintController {
         incomeExportEntity.setFuelSavingLiters(fuelSaveFitSum.doubleValue());
         incomeExportEntity.setKilosum(kiloSum);
         incomeExportEntity.setFuelmoney(fulemoneySum.doubleValue());
-        incomeExportEntity.setFuelSavingMoney(sumMonth.multiply(fuelSaveFitSum).setScale(20,BigDecimal.ROUND_HALF_UP).doubleValue());
+        incomeExportEntity.setFuelSavingMoney(sumMonth.multiply(fuelSaveFitSum).setScale(20, BigDecimal.ROUND_HALF_UP).doubleValue());
         incomeExportEntity.setHundredFule(fuelFitSum.divide(new BigDecimal(kiloSum), 20, BigDecimal.ROUND_HALF_UP).doubleValue());
         incomeExportEntity.setAvgonway(sumMonth.doubleValue());
         IncomeExportEntity incomeExportEntityAvg = new IncomeExportEntity();
 
         incomeExportEntityAvg.setMonth("均值");
-
-
 
 
         fulemoneySum = new BigDecimal(summoney.getSubjectcode()).divide(monthcount, 20, BigDecimal.ROUND_HALF_UP);
@@ -599,7 +654,7 @@ public class ExcelPrintController {
             for (int j = 0; j < countListArray.length; j++) {
                 //将内容按顺序赋给对应的列对象
                 HSSFCell cell = row.createCell((short) j);
-                if(countListArray[j].equals("")){
+                if (countListArray[j].equals("")) {
                     continue;
                 }
                 if (row.getRowNum() <= exportEntityList.size() - 2) {
@@ -1257,6 +1312,8 @@ public class ExcelPrintController {
             totalincomeMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title16)).collect(Collectors.toList()).get(0);
         } else if (year.equals("2021")) {
             totalincomeMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title1)).collect(Collectors.toList()).get(0);
+        } else if (year.equals("2023")) {
+            totalincomeMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title25)).collect(Collectors.toList()).get(0);
         }
 
 
@@ -1280,8 +1337,14 @@ public class ExcelPrintController {
 
 
         //毛利表中 过路费列
-        Incomestatement tollsMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title4)).collect(Collectors.toList()).get(0);
+        Incomestatement tollsMoney = null;
+        if (year.equals("2023")) {
+            tollsMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title27)).collect(Collectors.toList()).get(0);
 
+        } else {
+            tollsMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title4)).collect(Collectors.toList()).get(0);
+
+        }
 
         hashMap.clear();
         hashMap.put("1", tollsMoney.getOnemonth());
@@ -1303,7 +1366,14 @@ public class ExcelPrintController {
 
 
         //毛利表中 燃油费列
-        Incomestatement fuelMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title3)).collect(Collectors.toList()).get(0);
+        Incomestatement fuelMoney = null;
+        if (year.equals("2023")) {
+            fuelMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title26)).collect(Collectors.toList()).get(0);
+
+        } else {
+            fuelMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title3)).collect(Collectors.toList()).get(0);
+
+        }
 
 
         hashMap.clear();
@@ -1326,7 +1396,15 @@ public class ExcelPrintController {
 
 
         //毛利表中 罚款列
-        Incomestatement finesMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title6)).collect(Collectors.toList()).get(0);
+        Incomestatement finesMoney = null;
+        if (year.equals("2023")) {
+            finesMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title29)).collect(Collectors.toList()).get(0);
+
+        } else {
+            finesMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title6)).collect(Collectors.toList()).get(0);
+
+        }
+
 
         hashMap.clear();
         hashMap.put("1", finesMoney.getOnemonth());
@@ -1348,7 +1426,15 @@ public class ExcelPrintController {
 
 
         //毛利表中 停车费列
-        Incomestatement parkingmoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title5)).collect(Collectors.toList()).get(0);
+        Incomestatement parkingmoney = null;
+        if (year.equals("2023")) {
+            parkingmoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title28)).collect(Collectors.toList()).get(0);
+
+        } else {
+            parkingmoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title5)).collect(Collectors.toList()).get(0);
+
+        }
+
 
         hashMap.clear();
         hashMap.put("1", parkingmoney.getOnemonth());
@@ -1370,29 +1456,38 @@ public class ExcelPrintController {
 
 
         //毛利表中 轮胎费列
-        Incomestatement tiremoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title9)).collect(Collectors.toList()).get(0);
+        if (!year.equals("2023")) {
 
-        hashMap.clear();
-        hashMap.put("1", tiremoney.getOnemonth());
-        hashMap.put("2", tiremoney.getTwomonth());
-        hashMap.put("3", tiremoney.getThreemonth());
-        hashMap.put("4", tiremoney.getFourmonth());
-        hashMap.put("5", tiremoney.getFivemonth());
-        hashMap.put("6", tiremoney.getSixmonth());
-        hashMap.put("7", tiremoney.getSevenmonth());
-        hashMap.put("8", tiremoney.getEightmonth());
-        hashMap.put("9", tiremoney.getNinemonth());
-        hashMap.put("10", tiremoney.getTenmonth());
-        hashMap.put("11", tiremoney.getEleventmonth());
-        hashMap.put("12", tiremoney.getTwelvemonth());
+            Incomestatement tiremoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title9)).collect(Collectors.toList()).get(0);
 
-        exportEntityList.forEach(x -> {
-            x.setTiremoney(Double.parseDouble(hashMap.get(x.getMonth()).toString()));
-        });
+            hashMap.clear();
+            hashMap.put("1", tiremoney.getOnemonth());
+            hashMap.put("2", tiremoney.getTwomonth());
+            hashMap.put("3", tiremoney.getThreemonth());
+            hashMap.put("4", tiremoney.getFourmonth());
+            hashMap.put("5", tiremoney.getFivemonth());
+            hashMap.put("6", tiremoney.getSixmonth());
+            hashMap.put("7", tiremoney.getSevenmonth());
+            hashMap.put("8", tiremoney.getEightmonth());
+            hashMap.put("9", tiremoney.getNinemonth());
+            hashMap.put("10", tiremoney.getTenmonth());
+            hashMap.put("11", tiremoney.getEleventmonth());
+            hashMap.put("12", tiremoney.getTwelvemonth());
+
+            exportEntityList.forEach(x -> {
+                x.setTiremoney(Double.parseDouble(hashMap.get(x.getMonth()).toString()));
+            });
+        }
 
 
         //毛利表中 维修费列
-        Incomestatement repairmoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title8)).collect(Collectors.toList()).get(0);
+        Incomestatement repairmoney = null;
+
+        if (year.equals("2023")) {
+            repairmoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title30)).collect(Collectors.toList()).get(0);
+        } else {
+            repairmoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title8)).collect(Collectors.toList()).get(0);
+        }
 
         hashMap.clear();
         hashMap.put("1", repairmoney.getOnemonth());
@@ -1415,8 +1510,14 @@ public class ExcelPrintController {
 
         //毛利表中 其他列
         ArrayList<String> otherRowTitleList = new ArrayList<>();
-        otherRowTitleList.add(ConstantUtil.title13);
-        otherRowTitleList.add(ConstantUtil.title11);
+        if (year.equals("2023")) {
+            otherRowTitleList.add(ConstantUtil.title37);
+            otherRowTitleList.add(ConstantUtil.title33);
+        } else {
+            otherRowTitleList.add(ConstantUtil.title13);
+            otherRowTitleList.add(ConstantUtil.title11);
+
+        }
 
         Incomestatement otherMoney = incomeStatementService.queryMonthMoneyOther(cartype, year, otherRowTitleList);
 
@@ -1439,13 +1540,19 @@ public class ExcelPrintController {
         });
 
 
-        //毛利表中 人工成本
-        ArrayList<String> manRowTitleList = new ArrayList<>();
-        otherRowTitleList.add(ConstantUtil.title13);
-        otherRowTitleList.add(ConstantUtil.title11);
+        //otherRowTitleList.add(ConstantUtil.title13);
+        //otherRowTitleList.add(ConstantUtil.title11);
 
-        Incomestatement manMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title20)).collect(Collectors.toList()).get(0);
+        Incomestatement manMoney = null;
 
+        if (year.equals("2023")) {
+            manMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title34)).collect(Collectors.toList()).get(0);
+
+        } else {
+
+            manMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title20)).collect(Collectors.toList()).get(0);
+
+        }
 
         hashMap.clear();
         hashMap.put("1", manMoney.getOnemonth());
@@ -1468,15 +1575,31 @@ public class ExcelPrintController {
 
         //毛利表中 总成本列  如果总成本是前面几个费用相加 用这个
         ArrayList<String> otherRowTitleList1 = new ArrayList<>();
-        otherRowTitleList1.add(ConstantUtil.title13);
-        otherRowTitleList1.add(ConstantUtil.title11);
-        otherRowTitleList1.add(ConstantUtil.title4);
-        otherRowTitleList1.add(ConstantUtil.title3);
-        otherRowTitleList1.add(ConstantUtil.title6);
-        otherRowTitleList1.add(ConstantUtil.title5);
-        otherRowTitleList1.add(ConstantUtil.title9);
-        otherRowTitleList1.add(ConstantUtil.title8);
-        otherRowTitleList1.add(ConstantUtil.title20);
+
+
+        if (year.equals("2023")) {
+            otherRowTitleList1.add(ConstantUtil.title33);
+            otherRowTitleList1.add(ConstantUtil.title37);
+            otherRowTitleList1.add(ConstantUtil.title27);
+            otherRowTitleList1.add(ConstantUtil.title26);
+            otherRowTitleList1.add(ConstantUtil.title29);
+            otherRowTitleList1.add(ConstantUtil.title28);
+            otherRowTitleList1.add(ConstantUtil.title30);
+            otherRowTitleList1.add(ConstantUtil.title34);
+
+        } else {
+            otherRowTitleList1.add(ConstantUtil.title13);
+            otherRowTitleList1.add(ConstantUtil.title11);
+            otherRowTitleList1.add(ConstantUtil.title4);
+            otherRowTitleList1.add(ConstantUtil.title3);
+            otherRowTitleList1.add(ConstantUtil.title6);
+            otherRowTitleList1.add(ConstantUtil.title5);
+            otherRowTitleList1.add(ConstantUtil.title9);
+            otherRowTitleList1.add(ConstantUtil.title8);
+            otherRowTitleList1.add(ConstantUtil.title20);
+
+
+        }
 
         Incomestatement totalcostmoney = incomeStatementService.queryMonthMoneyOther(cartype, year, otherRowTitleList1);
 
@@ -1582,7 +1705,12 @@ public class ExcelPrintController {
             totalFuelMoney = x.getFuelmoney() + totalFuelMoney;
             totalFineMoney = x.getFinesmoney() + totalFineMoney;
             totalParkingMoney = x.getParkingmoney() + totalParkingMoney;
-            totalTireMoney = x.getTiremoney() + totalTireMoney;
+            if(year.equals("2023")){
+                totalTireMoney = 0.00;
+            }else{
+                totalTireMoney = x.getTiremoney() + totalTireMoney;
+
+            }
             totalRepairMoney = x.getRepairmoney() + totalRepairMoney;
             totalManMoney = x.getManmoney() + totalManMoney;
             totalOtherMoney = x.getOthermoney() + totalOtherMoney;
@@ -1675,6 +1803,11 @@ public class ExcelPrintController {
         for (int i = 0; i < exportEntityList.size(); i++) {
             row = sheet.createRow(i + 1);
             IncomeExportEntity exportEntity = exportEntityList.get(i);
+
+            if(exportEntity.getTiremoney()== null){
+                exportEntity.setTiremoney(0.00);
+            }
+
 
             String[] countListArray = {exportEntity.getMonth(), exportEntity.getRuncount().toString(), exportEntity.getKilosum(),
                     exportEntity.getTotalincomemoney().toString(), exportEntity.getKiloincome().toString(), exportEntity.getTollsmoney().toString(), exportEntity.getFuelmoney().toString(), exportEntity.getFinesmoney().toString(),

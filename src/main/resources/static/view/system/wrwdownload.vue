@@ -599,13 +599,30 @@ module.exports = {
           'Content-Type': 'application/json'
         })
       }).then(res => res.json()).then(response => {
-        this.glfList = response.resList.filter(item => item.columnname == '         路桥费')
-        this.ryList = response.resList.filter(item => item.columnname == '         燃油费')
-        this.fkList = response.resList.filter(item => item.columnname == '         罚金、滞纳金')
-        this.tcList = response.resList.filter(item => item.columnname == '         停车费')
-        this.ltList = response.resList.filter(item => item.columnname == '            轮胎维修')
-        this.wxList = response.resList.filter(item => item.columnname == '            日常维修')
-        this.flList = response.resList.filter(item => item.columnname == '         物料消耗')
+        console.log("response")
+        console.log(response)
+        console.log(this.checkyear)
+
+        if(this.checkyear === '当前选择2023'){
+          console.log("202333333")
+          this.glfList = response.resList.filter(item => item.columnname == '            通行费')
+          this.ryList = response.resList.filter(item => item.columnname == '            燃油费')
+          this.fkList = response.resList.filter(item => item.columnname == '        20.罚款、滞纳金')
+          this.tcList = response.resList.filter(item => item.columnname == '            停车费')
+          this.ltList = []//response.resList.filter(item => item.columnname == '            轮胎维修')
+          this.wxList = response.resList.filter(item => item.columnname == '            车辆维修费')
+          this.flList =[]// response.resList.filter(item => item.columnname == '         物料消耗')
+        }else{
+          this.glfList = response.resList.filter(item => item.columnname == '         路桥费')
+          this.ryList = response.resList.filter(item => item.columnname == '         燃油费')
+          this.fkList = response.resList.filter(item => item.columnname == '         罚金、滞纳金')
+          this.tcList = response.resList.filter(item => item.columnname == '         停车费')
+          this.ltList = response.resList.filter(item => item.columnname == '            轮胎维修')
+          this.wxList = response.resList.filter(item => item.columnname == '            日常维修')
+          this.flList = response.resList.filter(item => item.columnname == '         物料消耗')
+        }
+
+
 
       });
 
@@ -642,13 +659,13 @@ module.exports = {
 
 
       if (
-          this.glfList.length == 0 ||
-          this.ryList.length == 0 ||
-          this.fkList.length == 0 ||
-          this.tcList.length == 0 ||
-          this.ltList.length == 0 ||
-          this.wxList.length == 0 ||
-          this.flList.length == 0 ||
+          this.glfList.length == 0 &&
+          this.ryList.length == 0 &&
+          this.fkList.length == 0 &&
+          this.tcList.length == 0 &&
+          this.ltList.length == 0 &&
+          this.wxList.length == 0 &&
+          this.flList.length == 0 &&
           this.otherList.length == 0
       ) {
         this.showDetail = false;
@@ -675,7 +692,7 @@ module.exports = {
 
     },
     createJfml() {
-      this.form.columnname = this.flList[0].columnname
+      //this.form.columnname = this.flList[0].columnname
       fetch("http://localhost:9080/exportIncomeGross", {
         method: 'POST', // 请求方法还可以是 put
         body: JSON.stringify(this.form),
@@ -701,7 +718,7 @@ module.exports = {
           type: 'warning'
         });
       } else {
-        this.form.columnname = this.flList[0].columnname
+        //this.form.columnname = this.flList[0].columnname
         fetch("http://localhost:9080/exportYh", {
           method: 'POST', // 请求方法还可以是 put
           body: JSON.stringify(this.form),

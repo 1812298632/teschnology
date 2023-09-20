@@ -87,6 +87,13 @@
             <!--            <el-menu-item index="/wrwcar">沃尔沃</el-menu-item>
                         <el-menu-item index="/jfcar">解放车</el-menu-item>-->
           </el-menu-item-group>
+          <el-menu-item-group>
+            <span slot="title">上传</span>
+            <el-menu-item index="/uploadAll">上传</el-menu-item>
+
+            <!--            <el-menu-item index="/wrwcar">沃尔沃</el-menu-item>
+                        <el-menu-item index="/jfcar">解放车</el-menu-item>-->
+          </el-menu-item-group>
           <el-menu-item-group title="损益表">
             <el-menu-item index="/uploadincome">损益表上传</el-menu-item>
           </el-menu-item-group>

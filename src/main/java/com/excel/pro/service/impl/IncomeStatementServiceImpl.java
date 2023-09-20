@@ -224,10 +224,22 @@ public class IncomeStatementServiceImpl implements IncomeStatementService {
         DataFormatter formatter = new DataFormatter();
         HashMap<String, Object> titleColumnMap = new HashMap<>();
 
-        int titleRowIndex = -1;
-        String titleRowAndColumnName = "项  目";
         //需要保存哪些列的数据
-        ArrayList<String> columnNameList = ConstantUtil.makeIncomeImportTitle();
+        ArrayList<String> columnNameList =null;
+
+        int titleRowIndex = -1;
+        String titleRowAndColumnName = null;
+        if(ConstantUtil.incomeUploadEntity.getYear().equals("2023")){
+
+            titleRowAndColumnName = "项     目";
+            columnNameList = ConstantUtil.makeIncomeImportTitle2023();
+
+        }else{
+            titleRowAndColumnName = "项  目";
+            columnNameList = ConstantUtil.makeIncomeImportTitle();
+
+        }
+
 
 
         //获取需要插入表中的数据列的下标
@@ -253,6 +265,8 @@ public class IncomeStatementServiceImpl implements IncomeStatementService {
             rowNameList = ConstantUtil.makeIncomeImportRowTitle2022();
         } else if (ConstantUtil.incomeUploadEntity.getYear().equals("2021")) {
             rowNameList = ConstantUtil.makeIncomeImportRowTitle();
+        }else if(ConstantUtil.incomeUploadEntity.getYear().equals("2023")){
+            rowNameList = ConstantUtil.makeIncomeImportRowTitle2023();
         } else {
             rowNameList = ConstantUtil.makeIncomeImportRowTitle2022();
         }

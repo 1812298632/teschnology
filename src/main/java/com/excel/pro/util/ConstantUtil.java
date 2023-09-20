@@ -25,7 +25,7 @@ public class ConstantUtil {
     public static final String s99703 = "货物名称";
     public static final String s99704 = "核算收入";
 
-    public static ArrayList<String> makeDepartOtherList(){
+    public static ArrayList<String> makeDepartOtherList() {
         ArrayList<String> departOtherColumnNameList = new ArrayList<>();
 
         departOtherColumnNameList.add(ConstantUtil.abb01);
@@ -75,7 +75,6 @@ public class ConstantUtil {
 
         return sheetNameList;
     }
-
 
 
     public static LinkedList<String> makeSheetNameOthrList() {
@@ -157,6 +156,111 @@ public class ConstantUtil {
         return departColumnNameList;
     }
 
+    public static final String network1 = "发车网点";
+    public static final String carnumnew1 = "车牌号码";
+    public static final String startdate1 = "发车日期（分析时间）";
+    public static final String wangdian1 = "分流网点";
+    public static final String weight1 = "装车重量";
+    public static final String volume1 = "装车体积";
+    public static final String money1 = "司机总运费";
+    public static final String cost1 = "大车提送成本";
+    public static final String remark1 = "备注";
+
+    public static ArrayList<String> makeNewcar() {
+
+        ArrayList<String> list = new ArrayList<>();
+        list.add(network1);
+        list.add(carnumnew1);
+        list.add(startdate1);
+        list.add(wangdian1);
+        list.add(weight1);
+        list.add(volume1);
+        list.add(money1);
+        list.add(cost1);
+        list.add(remark1);
+
+        return list;
+    }
+
+    public static final String num2 = "序列号";
+    public static final String formno2 = "表单号";
+    public static final String carnum2 = "车头牌号";
+    public static final String platenum2 = "挂车牌号";
+    public static final String fuelmoney2 = "金额合计";
+    public static final String tollmoney2 = "过路费(元）";
+    public static final String incomemoney2 = "干线运费（元）";
+    public static final String finemoney1 = "牵引车无票罚款（元）";
+    public static final String finemoney2 = "牵引车有票罚款（元）";
+    public static final String finemoney3 = "挂车无票罚款（元）";
+    public static final String finemoney4 = "挂车有票罚款（元）";
+    public static final String startcity1 = "起点";
+
+
+    public static ArrayList<String> makeMainline2023() {
+
+        ArrayList<String> list = new ArrayList<>();
+        list.add(num2);
+        list.add(formno2);
+        list.add(carnum2);
+        list.add(platenum2);
+        list.add(fuelmoney2);
+        list.add(tollmoney2);
+        list.add(incomemoney2);
+        list.add(finemoney1);
+        list.add(finemoney2);
+        list.add(finemoney3);
+        list.add(finemoney4);
+        list.add(startcity1);
+
+        return list;
+    }
+
+
+    public static final String num3 = "序列号";
+    public static final String formno3 = "表单号";
+    public static final String carnum3 = "车头牌号";
+    public static final String platenum3 = "挂车牌号";
+    //public static final String fuelmoney3 = "油费合计金额";解放
+    public static final String fuelmoney3 = "金额合计";//沃尔沃
+    //public static final String tollmoney3 = "过路费"; 解放
+    public static final String tollmoney3 = "过路费(元）";//沃尔沃
+    public static final String incomemoney3 = "干线运费（元）";
+
+    public static final String startcity13 = "起点";
+
+    //长春 沈阳 无锡 无锡二部 油费 过路费 起点表头
+    public static ArrayList<String> makeMainline2022() {
+
+        ArrayList<String> list = new ArrayList<>();
+        list.add(num3);
+        list.add(formno3);
+        list.add(carnum3);
+        list.add(platenum3);
+        list.add(fuelmoney3);
+        list.add(tollmoney3);
+        list.add(incomemoney3);
+
+        list.add(startcity13);
+
+        return list;
+    }
+
+
+    public static final String network3 = "发车网点";
+    public static final String num5  = "发车单号";
+    public static final String length  = "车长";
+
+    //发车次数占比表头
+    public static ArrayList<String> makeCarCount() {
+
+        ArrayList<String> list = new ArrayList<>();
+        list.add(network3);
+        list.add(num5);
+        list.add(length);
+
+        return list;
+    }
+
 
     public static ArrayList<String> makeDepartColumnNameList98997() {
         ArrayList<String> departColumnNameList = new ArrayList<>();
@@ -180,8 +284,8 @@ public class ConstantUtil {
     public static final String sumkilo = "总里程";
     public static final String avg = "平均里程";
     public static final String money = "月度总费用";
-    public static final String avgonway="平均单程费用";
-    public static final String cost="每公里成本";
+    public static final String avgonway = "平均单程费用";
+    public static final String cost = "每公里成本";
 
     public static LinkedList makeToolsTitle() {
         LinkedList<String> toolsTitleList = new LinkedList();
@@ -203,7 +307,6 @@ public class ConstantUtil {
     public static final String fuelSavingMoney = "节油金额";
 
 
-
     public static LinkedList makeYhTitle() {
         LinkedList<String> titleList = new LinkedList();
         titleList.add(month);
@@ -217,7 +320,6 @@ public class ConstantUtil {
 
         return titleList;
     }
-
 
 
     //导出 毛利 表头名称
@@ -330,11 +432,31 @@ public class ConstantUtil {
 
     //需要保存损益表中哪些列的数据
     public static final String subjectcode = "科目编码";
+    public static final String nowmonth = "本年累计";
 
     public static ArrayList<String> makeIncomeImportTitle() {
         ArrayList<String> incomeImportList = new ArrayList<>();
 
         incomeImportList.add(ConstantUtil.subjectcode);
+        incomeImportList.add(ConstantUtil.onemonth);
+        incomeImportList.add(ConstantUtil.twomonth);
+        incomeImportList.add(ConstantUtil.threemonth);
+        incomeImportList.add(ConstantUtil.fourmonth);
+        incomeImportList.add(ConstantUtil.fivemonth);
+        incomeImportList.add(ConstantUtil.sixmonth);
+        incomeImportList.add(ConstantUtil.sevenmonth);
+        incomeImportList.add(ConstantUtil.eightmonth);
+        incomeImportList.add(ConstantUtil.ninemonth);
+        incomeImportList.add(ConstantUtil.tenmonth);
+        incomeImportList.add(ConstantUtil.elevenmonth);
+        incomeImportList.add(ConstantUtil.twelvemonth);
+        return incomeImportList;
+    }
+
+    public static ArrayList<String> makeIncomeImportTitle2023() {
+        ArrayList<String> incomeImportList = new ArrayList<>();
+
+        incomeImportList.add(ConstantUtil.nowmonth);
         incomeImportList.add(ConstantUtil.onemonth);
         incomeImportList.add(ConstantUtil.twomonth);
         incomeImportList.add(ConstantUtil.threemonth);
@@ -376,6 +498,21 @@ public class ConstantUtil {
     public static final String title22 = "  1.加油成本率";
     public static final String title23 = "  2.路桥成本率";
     public static final String title24 = "  3.人工成本率";
+
+
+    public static final String title25 = "主营业务收入";
+    public static final String title26 = "            燃油费";
+    public static final String title27 = "            通行费";
+    public static final String title28 = "            停车费";
+    public static final String title29 = "        20.罚款、滞纳金";
+    public static final String title30 = "            车辆维修费";
+    public static final String title31 = "        24. 其他";
+    public static final String title33 = "        11.伙食费";
+    public static final String title34 = "    作业成本";
+    public static final String title35 = "主营业务收入";
+    public static final String title36 = "减：主营业务成本";
+    public static final String title37 = "        9.差旅费";
+    public static final String title38 = "";
 
     public static ArrayList<String> makeIncomeImportRowTitle() {
         ArrayList<String> incomeImportRowTitleList = new ArrayList<>();
@@ -426,6 +563,31 @@ public class ConstantUtil {
         incomeImportRowTitleList.add(title14);
         incomeImportRowTitleList.add(title15);
         incomeImportRowTitleList.add(title20);
+
+
+        return incomeImportRowTitleList;
+    }
+
+    public static ArrayList<String> makeIncomeImportRowTitle2023() {
+        ArrayList<String> incomeImportRowTitleList = new ArrayList<>();
+
+        incomeImportRowTitleList.add(title35);//1
+        incomeImportRowTitleList.add(title25);//1
+        incomeImportRowTitleList.add(title26);//1
+        incomeImportRowTitleList.add(title27);//1
+        incomeImportRowTitleList.add(title28);//1
+        incomeImportRowTitleList.add(title29);//1
+        incomeImportRowTitleList.add(title30);//1
+        //incomeImportRowTitleList.add(title8);
+        //incomeImportRowTitleList.add(title9);//no
+        incomeImportRowTitleList.add(title10);//no
+        incomeImportRowTitleList.add(title11);//no
+        incomeImportRowTitleList.add(title31);//1
+        incomeImportRowTitleList.add(title33);//1
+        incomeImportRowTitleList.add(title36);//1
+        //incomeImportRowTitleList.add(title15);
+        incomeImportRowTitleList.add(title37);//1
+        incomeImportRowTitleList.add(title34);//1
 
 
         return incomeImportRowTitleList;
@@ -484,9 +646,9 @@ public class ConstantUtil {
     public static DepartUploadEntity departUploadEntity = new DepartUploadEntity();
     public static IncomeUploadEntity incomeUploadEntity = new IncomeUploadEntity();
 
-    public static String RESPONSE_SUCCESS ="success";
-    public static String RESPONSE_ERROR ="error";
-    public static String RESPONSE_WARNING ="warning";
+    public static String RESPONSE_SUCCESS = "success";
+    public static String RESPONSE_ERROR = "error";
+    public static String RESPONSE_WARNING = "warning";
 
 
     /**
@@ -496,7 +658,7 @@ public class ConstantUtil {
         //响应类型为application/octet- stream情况下使用了这个头信息的话，那就意味着不想直接显示内容
         httpServletResponse.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         //attachment为以附件方式下载
-        httpServletResponse.setHeader("Content-Disposition","attachment;filename=" + URLEncoder.encode(
+        httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(
                 fileName + ".xlsx",
                 "utf-8"));
         /**

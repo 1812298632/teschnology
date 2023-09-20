@@ -156,12 +156,13 @@ public class DepartServiceImpl implements DepartService {
     }
 
     @Override
+    @Transactional
     public void insertDepartDeatilByUpload(XSSFSheet sheet) {
         DataFormatter formatter = new DataFormatter();
         HashMap<String, Object> titleColumnMap = new HashMap<>();
         ArrayList<String> columnNameList = new ArrayList<>();
         String month111 = ConstantUtil.departUploadEntity.getMonth();
-        if (ConstantUtil.departUploadEntity.getYear().equals("2022") &&
+        if ((ConstantUtil.departUploadEntity.getYear().equals("2022") &&
 
                 (month111.equals("6") || month111.equals("7") || month111.equals("8") ||
                         month111.equals("9") || month111.equals("10") || month111.equals("11") ||
@@ -171,7 +172,7 @@ public class DepartServiceImpl implements DepartService {
                         ||(ConstantUtil.departUploadEntity.getCartype().equals("沃尔沃") && month111.equals("4"))
                         ||(ConstantUtil.departUploadEntity.getCartype().equals("沃尔沃") && month111.equals("5"))
 
-                        )
+                        )) || ConstantUtil.departUploadEntity.getYear().equals("2023")
 
 
         ) {

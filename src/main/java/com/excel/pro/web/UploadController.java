@@ -6,6 +6,7 @@ import com.excel.pro.dao.IncomeStatementDao;
 import com.excel.pro.entity.*;
 import com.excel.pro.service.DepartService;
 import com.excel.pro.service.IncomeStatementService;
+import com.excel.pro.service.UploadService;
 import com.excel.pro.util.ConstantUtil;
 import com.excel.pro.util.RequestUtil;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -28,8 +29,8 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class UploadContrtoller {
-    Logger logger = LoggerFactory.getLogger(UploadContrtoller.class);
+public class UploadController {
+    Logger logger = LoggerFactory.getLogger(UploadController.class);
 
     @Resource
     private DepartService departService;
@@ -42,6 +43,9 @@ public class UploadContrtoller {
 
     @Resource
     private IncomeStatementDao incomeStatementDao;
+
+    @Resource
+    private UploadService uploadService;
 
     /**
      * 上传文件之后直接解析
@@ -74,6 +78,41 @@ public class UploadContrtoller {
 
         return responseEntity;
     }
+
+    @RequestMapping("/uploadall")
+    @ResponseBody
+    public ResponseEntity uploadall(@RequestParam("file") MultipartFile file) throws IOException {
+        ResponseEntity responseEntity = new ResponseEntity();
+
+
+        Map<String, Object> map = new HashMap<>();
+        FileOutputStream out = null;
+        String fileName = file.getOriginalFilename();
+        if (fileName.indexOf("\\") != -1) {
+            fileName = fileName.substring(fileName.lastIndexOf("\\"));
+        }
+        ConstantUtil.departUploadEntity.setExcelname(fileName);
+
+        /*HSSFWorkbook workbook = new HSSFWorkbook(file.getInputStream());
+
+        HSSFSheet sheet = workbook.getSheet("解放车毛利");*/
+        XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
+        XSSFSheet sheet = workbook.getSheet("Sheet");
+
+        //2022 2023
+        uploadService.uploadNewCar(sheet);
+
+
+        //uploadService.uploadMainline(sheet);
+
+        //uploadService.uploadCarCount(sheet);
+
+        responseEntity.setRes(ConstantUtil.RESPONSE_SUCCESS);
+        responseEntity.setResMessage("上传成功");
+
+        return responseEntity;
+    }
+
 
 
     @RequestMapping("/incomeUpload")

@@ -19,6 +19,7 @@ const wrwdownload = httpVueLoader('view/system/wrwdownload.vue');
 const fuleconsumption = httpVueLoader('view/system/fuleconsumption.vue');
 const index = httpVueLoader('view/system/index.vue');
 const system = httpVueLoader('view/system/system.vue');
+const uploadAll = httpVueLoader('view/system/uploadall.vue');
 
 
 //路由
@@ -73,6 +74,11 @@ const routes = [
                 path: "/uploadincome",
                 component: uploadincome,
                 meta: {title: '损益表上传'}
+            },
+            {
+                path: "/uploadAll",
+                component: uploadAll,
+                meta: {title: '上传'}
             },
             {
                 path: "/fuleconsumption",
