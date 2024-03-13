@@ -1,11 +1,14 @@
 package com.excel.pro.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.excel.pro.dao.CarcountDao;
 import com.excel.pro.dao.MainlineDao;
 import com.excel.pro.dao.NewcarDao;
+import com.excel.pro.dao.SystemSetDao;
 import com.excel.pro.entity.Carcount;
 import com.excel.pro.entity.Mainline;
 import com.excel.pro.entity.Newcar;
+import com.excel.pro.entity.Systemset;
 import com.excel.pro.service.UploadService;
 import com.excel.pro.util.ConstantUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -13,13 +16,18 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.spring5.context.SpringContextUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -30,6 +38,13 @@ public class UploadServiceImpl implements UploadService {
     private MainlineDao mainlineDao;
     @Resource
     private CarcountDao carcountDao;
+    @Resource
+    private SystemSetDao systemSetDao;
+
+    @Autowired
+    private  ApplicationContext applicationContext;
+
+
 
     @Override
     public void uploadNewCar(XSSFSheet sheet) {
@@ -325,5 +340,65 @@ public class UploadServiceImpl implements UploadService {
             }
         }
 
+    }
+
+
+
+    public void uploadSystemSet(XSSFSheet sheet) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        DataFormatter formatter = new DataFormatter();
+        HashMap<String, Object> titleColumnMap = new HashMap<>();
+
+
+        LambdaQueryWrapper<Systemset> wrapper = new LambdaQueryWrapper<>();
+
+        wrapper.eq(Systemset::getParentid,1);
+        List<Systemset> systemsets = systemSetDao.selectList(wrapper);
+
+        List<String> columnNameList = systemsets.stream().sorted(Comparator.comparing(Systemset::getNum)).map(Systemset::getTitle).collect(Collectors.toList());
+
+        //获取需要插入表中的数据列的下标
+        for (Row row : sheet) {
+            if (row.getRowNum() < 4) {
+                //for循环row中的所有sheet
+                for (Cell cell : row) {
+                    for (String s : columnNameList) {
+                        if (formatter.formatCellValue(cell).equals(s)) {//将获取到的cell数据格式化，不然会出错
+                            //如果进入了if判断，说明找到了数据，将列的下标存入map中
+                            titleColumnMap.put(s, cell.getColumnIndex());
+                        }
+                    }
+                }
+            }
+        }
+
+        System.out.println(titleColumnMap);
+
+
+        Systemset systemset = systemSetDao.selectById(1);
+
+
+        Class<?> aClass = Class.forName(systemset.getClassname());
+
+        Constructor<?> constructor = aClass.getConstructor();
+
+        Object o = constructor.newInstance();
+
+        Method method = aClass.getMethod("setFormno", String.class);
+
+        method.invoke(o,"111");
+
+
+        Object stst = applicationContext.getBean("TestDao");
+
+
+        Method insert = stst.getClass().getDeclaredMethod("insert", Object.class);
+
+        insert.invoke(stst,o);
+
+        System.out.println(111);
+
+
+
+        System.out.println(aClass);
     }
 }

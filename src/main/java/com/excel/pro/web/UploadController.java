@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,7 +82,7 @@ public class UploadController {
 
     @RequestMapping("/uploadall")
     @ResponseBody
-    public ResponseEntity uploadall(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity uploadall(@RequestParam("file") MultipartFile file,Departdetail departdetail) throws IOException, NoSuchMethodException, ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException {
         ResponseEntity responseEntity = new ResponseEntity();
 
 
@@ -97,10 +98,12 @@ public class UploadController {
 
         HSSFSheet sheet = workbook.getSheet("解放车毛利");*/
         XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
-        XSSFSheet sheet = workbook.getSheet("Sheet");
+        XSSFSheet sheet = workbook.getSheet("干线明细");
 
         //2022 2023
-        uploadService.uploadNewCar(sheet);
+        //uploadService.uploadNewCar(sheet);
+
+        uploadService.uploadSystemSet(sheet);
 
 
         //uploadService.uploadMainline(sheet);

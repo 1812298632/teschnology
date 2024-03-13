@@ -1309,11 +1309,42 @@ public class ExcelPrintController {
 
         //2022
         if (year.equals("2022")) {
-            totalincomeMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title16)).collect(Collectors.toList()).get(0);
+            //totalincomeMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title16)).collect(Collectors.toList()).get(0);
+
+            //22年收入：营业收入总额+营业外收入
+            Incomestatement incomestatement = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title16)).collect(Collectors.toList()).get(0);
+            Incomestatement incomestatement1 = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title20222_01)).collect(Collectors.toList()).get(0);
+
+            incomestatement.setThreemonth(incomestatement.getThreemonth()+incomestatement1.getThreemonth());
+            incomestatement.setFourmonth(incomestatement.getFourmonth()+incomestatement1.getFourmonth());
+            incomestatement.setFivemonth(incomestatement.getFivemonth()+incomestatement1.getFivemonth());
+            incomestatement.setSixmonth(incomestatement.getSixmonth()+incomestatement1.getSixmonth());
+            incomestatement.setSevenmonth(incomestatement.getSevenmonth()+incomestatement1.getSevenmonth());
+            incomestatement.setEightmonth(incomestatement.getEightmonth()+incomestatement1.getEightmonth());
+
+            totalincomeMoney = incomestatement;
         } else if (year.equals("2021")) {
             totalincomeMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title1)).collect(Collectors.toList()).get(0);
         } else if (year.equals("2023")) {
-            totalincomeMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title25)).collect(Collectors.toList()).get(0);
+
+            //23年收入：主营业务收入+其他业务收入+营业外收入
+
+            /*totalincomeMoney = */
+
+            Incomestatement incomestatement = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title25)).collect(Collectors.toList()).get(0);
+
+            Incomestatement incomestatement1 = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title23_04)).collect(Collectors.toList()).get(0);
+            Incomestatement incomestatement2 = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title23_05)).collect(Collectors.toList()).get(0);
+
+            incomestatement.setThreemonth(incomestatement.getThreemonth()+incomestatement1.getThreemonth()+incomestatement2.getThreemonth());
+            incomestatement.setFourmonth(incomestatement.getFourmonth()+incomestatement1.getFourmonth()+incomestatement2.getFourmonth());
+            incomestatement.setFivemonth(incomestatement.getFivemonth()+incomestatement1.getFivemonth()+incomestatement2.getFivemonth());
+            incomestatement.setSixmonth(incomestatement.getSixmonth()+incomestatement1.getSixmonth()+incomestatement2.getSixmonth());
+            incomestatement.setSevenmonth(incomestatement.getSevenmonth()+incomestatement1.getSevenmonth()+incomestatement2.getSevenmonth());
+            incomestatement.setEightmonth(incomestatement.getEightmonth()+incomestatement1.getEightmonth()+incomestatement2.getEightmonth());
+
+
+            totalincomeMoney =incomestatement;
         }
 
 

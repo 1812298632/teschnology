@@ -63,7 +63,7 @@ public class SystemController {
                 childTreeEntity.setId(systemsetChild.getId());
                 childTreeEntity.setLabel(systemsetChild.getTitle());
                 childTreeEntity.setNum(systemsetChild.getNum().toString());
-                childTreeEntity.setParentid(Long.parseLong(systemsetChild.getParentid()));
+                childTreeEntity.setParentid(systemsetChild.getParentid());
 
                 childTreeEntities.add(childTreeEntity);
             }
@@ -198,7 +198,7 @@ public class SystemController {
             }
 
             if (!StringUtils.isEmpty(parentid)) {
-                systemset.setParentid(parentid);
+                systemset.setParentid(Long.parseLong(parentid));
 
             }
 
@@ -244,7 +244,7 @@ public class SystemController {
 
             }
             if (!StringUtils.isEmpty(parentid)) {
-                systemset.setParentid(parentid);
+                systemset.setParentid(Long.parseLong(parentid));
             }
 
             systemSetService.updateSystem(systemset,responseEntity);

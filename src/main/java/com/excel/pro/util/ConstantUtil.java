@@ -543,6 +543,11 @@ public class ConstantUtil {
         return incomeImportRowTitleList;
     }
 
+    public static final String title20222_01 = "（一）营业外收入";
+    public static final String title20222_02 = "二、营业成本总额";
+    public static final String title20222_03 = "四、  管理费用 ";
+    public static final String title20222_04 = "（二）营业外支出";
+
 
     public static ArrayList<String> makeIncomeImportRowTitle2022() {
         ArrayList<String> incomeImportRowTitleList = new ArrayList<>();
@@ -563,10 +568,24 @@ public class ConstantUtil {
         incomeImportRowTitleList.add(title14);
         incomeImportRowTitleList.add(title15);
         incomeImportRowTitleList.add(title20);
+        incomeImportRowTitleList.add(title20222_01);
+        incomeImportRowTitleList.add(title20222_02);
+        incomeImportRowTitleList.add(title20222_03);
+        incomeImportRowTitleList.add(title20222_04);
+        //营业外收入
+        //营业成本总额
+        //管理费用
+        //营业外支出
 
 
         return incomeImportRowTitleList;
     }
+
+    public static final String title23_01 = "减：其他业务支出";
+    public static final String title23_02 = "    管理费用";
+    public static final String title23_03 = "减：营业外支出";
+    public static final String title23_04 = "加：其他业务收入";
+    public static final String title23_05 = "加：营业外收入";
 
     public static ArrayList<String> makeIncomeImportRowTitle2023() {
         ArrayList<String> incomeImportRowTitleList = new ArrayList<>();
@@ -588,6 +607,11 @@ public class ConstantUtil {
         //incomeImportRowTitleList.add(title15);
         incomeImportRowTitleList.add(title37);//1
         incomeImportRowTitleList.add(title34);//1
+        incomeImportRowTitleList.add(title23_01);//1（二） 其他业务支出
+        incomeImportRowTitleList.add(title23_02);//1 管理费用
+        incomeImportRowTitleList.add(title23_04);//1其他业务收入
+        incomeImportRowTitleList.add(title23_05);//1 营业外收入
+
 
 
         return incomeImportRowTitleList;

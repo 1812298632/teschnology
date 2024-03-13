@@ -368,7 +368,8 @@ module.exports = {
       method: 'POST', // 请求方法还可以是 put
       body: '',
       headers: new Headers({
-        'Content-Type': 'application/json'
+       
+            'Content-Type': 'application/json'
       })
     }).then(res => res.json()).then(response => {
       this.yearselData = response.resList
@@ -378,7 +379,8 @@ module.exports = {
       method: 'POST', // 请求方法还可以是 put
       body: '',
       headers: new Headers({
-        'Content-Type': 'application/json'
+       
+            'Content-Type': 'application/json'
       })
     }).then(res => res.json())
         .then(response => {
@@ -389,7 +391,8 @@ module.exports = {
       method: 'POST', // 请求方法还可以是 put
       body: '',
       headers: new Headers({
-        'Content-Type': 'application/json'
+       
+            'Content-Type': 'application/json'
       })
     }).then(res => res.json())
         .then(response => {
@@ -401,7 +404,8 @@ module.exports = {
       method: 'POST', // 请求方法还可以是 put
       body: '',
       headers: new Headers({
-        'Content-Type': 'application/json'
+       
+            'Content-Type': 'application/json'
       })
     }).then(res => res.json())
         .then(response => {
@@ -413,7 +417,8 @@ module.exports = {
       method: 'POST', // 请求方法还可以是 put
       body: '',
       headers: new Headers({
-        'Content-Type': 'application/json'
+       
+            'Content-Type': 'application/json'
       })
     }).then(res => res.json())
         .then(response => {
@@ -426,7 +431,8 @@ module.exports = {
       method: 'POST', // 请求方法还可以是 put
       body: '',
       headers: new Headers({
-        'Content-Type': 'application/json'
+       
+            'Content-Type': 'application/json'
       })
     }).then(res => res.json())
         .then(response => {
@@ -450,7 +456,8 @@ module.exports = {
         method: 'POST', // 请求方法还可以是 put
         body: JSON.stringify(this.editform),
         headers: new Headers({
-          'Content-Type': 'application/json'
+         
+            'Content-Type': 'application/json'
         })
       }).then(res => res.json()).then(response => {
 
@@ -467,6 +474,7 @@ module.exports = {
           method: 'POST', // 请求方法还可以是 put
           body: JSON.stringify(this.form),
           headers: new Headers({
+           
             'Content-Type': 'application/json'
           })
         }).then(res1 => res1.json()).then(response1 => {
@@ -488,7 +496,8 @@ module.exports = {
         method: 'POST', // 请求方法还可以是 put
         body: JSON.stringify(this.editform),
         headers: new Headers({
-          'Content-Type': 'application/json'
+         
+            'Content-Type': 'application/json'
         })
       }).then(res => res.json()).then(response => {
 
@@ -506,7 +515,8 @@ module.exports = {
             method: 'POST', // 请求方法还可以是 put
             body: JSON.stringify(this.form),
             headers: new Headers({
-              'Content-Type': 'application/json'
+             
+            'Content-Type': 'application/json'
             })
           }).then(res1 => res1.json()).then(response1 => {
             this.tableData = response1.resList
@@ -549,7 +559,8 @@ module.exports = {
         method: 'POST', // 请求方法还可以是 put
         body: JSON.stringify(this.form),
         headers: new Headers({
-          'Content-Type': 'application/json'
+         
+            'Content-Type': 'application/json'
         })
       }).then(res => res.json())
           .then(response => {

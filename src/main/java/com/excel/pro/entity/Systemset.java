@@ -11,5 +11,13 @@ public class Systemset {
 
     private Long num;
     private String title;
-    private String parentid;
+    private Long parentid;
+    private String startrow;
+    private String startcolumn;
+    private String valuetype;
+    private String cellvalue;
+    private String tablename;
+    private String columnname;
+    private String classname;
+
 }
