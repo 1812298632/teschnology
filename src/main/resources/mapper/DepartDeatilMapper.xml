@@ -69,8 +69,6 @@
             and CARTYPE = #{cartype}
         </if>
         and ISMONTHCOUNT = 1
-        ++9*
-         555555555555555555555555
         group by month
         order by month
     </select>

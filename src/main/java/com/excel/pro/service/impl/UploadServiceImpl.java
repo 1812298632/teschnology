@@ -76,6 +76,10 @@ public class UploadServiceImpl implements UploadService {
 
                 String network = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(0)).toString())));
 
+                if(network.isEmpty()){
+                    continue;
+                }
+
                 newcar.setNetwork(network);
 
                 String carnum = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(1)).toString())));
@@ -136,7 +140,8 @@ public class UploadServiceImpl implements UploadService {
     public void uploadMainline(XSSFSheet sheet) {
         DataFormatter formatter = new DataFormatter();
         HashMap<String, Object> titleColumnMap = new HashMap<>();
-        ArrayList<String> columnNameList = ConstantUtil.makeMainline2022();
+        //ArrayList<String> columnNameList = ConstantUtil.makeMainline2022();
+        ArrayList<String> columnNameList = ConstantUtil.makeMainline2023();
 
 
 
@@ -211,13 +216,14 @@ public class UploadServiceImpl implements UploadService {
 
                 mainline.setFuelmoney(numericCellValue);
 
+                Cell cell3 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(5)).toString()));
 
-                String tollmoney = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(5)).toString())));
+                double tollmoney = cell3.getNumericCellValue();
+                //String tollmoney = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(5)).toString())));
 
-                if (!tollmoney.isEmpty()) {
-                    mainline.setTollmoney(Double.parseDouble(tollmoney));
+                    mainline.setTollmoney(tollmoney);
 
-                }
+
 
 
                 Cell cell1 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(6)).toString()));
@@ -226,46 +232,48 @@ public class UploadServiceImpl implements UploadService {
 
                 mainline.setIncomemoney(numericCellValue1);
 
+                //23年开启  22年注释 finemoney1-finemoney4
+                double finemoney1 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(7)).toString())).getNumericCellValue();
+                //String finemoney1 = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(7)).toString())));
 
-                /*String finemoney1 = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(7)).toString())));
+                //if (!finemoney1.isEmpty()) {
+                    mainline.setFinemoney1(finemoney1);
 
-                if (!finemoney1.isEmpty()) {
-                    mainline.setFinemoney1(Double.parseDouble(finemoney1));
+                //}
 
-                }
+                double finemoney2 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(8)).toString())).getNumericCellValue();
+                //String finemoney2 = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(8)).toString())));
 
+                //if (!finemoney2.isEmpty()) {
+                    mainline.setFinemoney2(finemoney2);
 
-                String finemoney2 = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(8)).toString())));
+                //}
 
-                if (!finemoney2.isEmpty()) {
-                    mainline.setFinemoney2(Double.parseDouble(finemoney2));
+                double finemoney3 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(9)).toString())).getNumericCellValue();
+                //String finemoney3 = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(9)).toString())));
 
-                }
+                //if (!finemoney3.isEmpty()) {
+                    mainline.setFinemoney3(finemoney3);
 
+                //}
 
-                String finemoney3 = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(9)).toString())));
+                double finemoney4 = row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(10)).toString())).getNumericCellValue();
+                //String finemoney4 = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(10)).toString())));
 
-                if (!finemoney3.isEmpty()) {
-                    mainline.setFinemoney3(Double.parseDouble(finemoney3));
+                //if (!finemoney4.isEmpty()) {
+                    mainline.setFinemoney4(finemoney4);
 
-                }
+                //}
 
-
-                String finemoney4 = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(10)).toString())));
-
-                if (!finemoney4.isEmpty()) {
-                    mainline.setFinemoney4(Double.parseDouble(finemoney4));
-
-                }*/
-
-                String startcity = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(7)).toString())));
+                //在计算新挂旧挂罚款的时候 需要用到，如果不是 columnNameList.get(7) 如果是 columnNameList.get(11)
+                String startcity = formatter.formatCellValue(row.getCell(Integer.parseInt(titleColumnMap.get(columnNameList.get(11)).toString())));
                 if (!startcity.isEmpty()) {
                     mainline.setStartcity(startcity);
 
                 }
 
-                mainline.setYear(2022L);
-                mainline.setMonth(8L);
+                mainline.setYear(2023L);
+                mainline.setMonth(12L);
 
 
                 log.info("正在插入数据第" + i + "条----" + mainline);
@@ -326,8 +334,8 @@ public class UploadServiceImpl implements UploadService {
                 String len = cell.getStringCellValue();
 
                 carcount.setLength(len);
-                carcount.setYear(2022);
-                carcount.setMonth(8);
+                carcount.setYear(2023);
+                carcount.setMonth(12);
 
 
 

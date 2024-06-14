@@ -16,6 +16,7 @@
                 <el-option label="2021" value="2021"></el-option>
                 <el-option label="2022" value="2022"></el-option>
                 <el-option label="2023" value="2023"></el-option>
+                <el-option label="2024" value="2024"></el-option>
 
               </el-select>
             </el-form-item>

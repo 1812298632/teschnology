@@ -212,7 +212,11 @@ public class ExcelPrintController {
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\ " + cartype + "发车明细.xlsx");
+            File file = new File("E:\\"+year+cartype);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            fileOutputStream = new FileOutputStream("E:\\" + year+cartype+"\\" + year+cartype + "发车明细.xlsx");
 
             wb.write(fileOutputStream);
             fileOutputStream.flush();
@@ -449,7 +453,11 @@ public class ExcelPrintController {
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\" + cartype + columnname.trim() + ".xlsx");
+            File file = new File("E:\\"+year+cartype);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            fileOutputStream = new FileOutputStream("E:\\" + year+cartype+"\\" + year+cartype + columnname.trim() + ".xlsx");
             wb.write(fileOutputStream);
             fileOutputStream.flush();
         } catch (Exception e) {
@@ -566,8 +574,13 @@ public class ExcelPrintController {
             BigDecimal kilosum = new BigDecimal(x.getKilosum());
             BigDecimal fuleLit = new BigDecimal(Double.toString(x.getFuelingLiters()));
             BigDecimal fuleSaveLit = new BigDecimal(Double.toString(x.getFuelSavingLiters()));
+            BigDecimal sumMonth ;
 
-            BigDecimal sumMonth = fuleLit.divide(fulemoney, 20, BigDecimal.ROUND_HALF_UP);
+            if(x.getFuelmoney() == 0.0){
+                sumMonth = new BigDecimal(0.0);
+            }else{
+                sumMonth = fuleLit.divide(fulemoney, 20, BigDecimal.ROUND_HALF_UP);
+            }
 
             x.setHundredFule(fuleLit.divide(kilosum, 20, BigDecimal.ROUND_HALF_UP).doubleValue());
             x.setAvgonway(sumMonth.doubleValue());
@@ -683,7 +696,11 @@ public class ExcelPrintController {
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\" + cartype + "百公里油耗.xlsx");
+            File file = new File("E:\\"+year+cartype);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            fileOutputStream = new FileOutputStream("E:\\" +year+cartype+"\\" + year+cartype + "百公里油耗.xlsx");
             wb.write(fileOutputStream);
             fileOutputStream.flush();
         } catch (Exception e) {
@@ -1315,12 +1332,18 @@ public class ExcelPrintController {
             Incomestatement incomestatement = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title16)).collect(Collectors.toList()).get(0);
             Incomestatement incomestatement1 = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title20222_01)).collect(Collectors.toList()).get(0);
 
+            incomestatement.setOnemonth(incomestatement.getOnemonth()+incomestatement1.getOnemonth());
+            incomestatement.setTwomonth(incomestatement.getTwomonth()+incomestatement1.getTwomonth());
             incomestatement.setThreemonth(incomestatement.getThreemonth()+incomestatement1.getThreemonth());
             incomestatement.setFourmonth(incomestatement.getFourmonth()+incomestatement1.getFourmonth());
             incomestatement.setFivemonth(incomestatement.getFivemonth()+incomestatement1.getFivemonth());
             incomestatement.setSixmonth(incomestatement.getSixmonth()+incomestatement1.getSixmonth());
             incomestatement.setSevenmonth(incomestatement.getSevenmonth()+incomestatement1.getSevenmonth());
             incomestatement.setEightmonth(incomestatement.getEightmonth()+incomestatement1.getEightmonth());
+            incomestatement.setNinemonth(incomestatement.getNinemonth()+incomestatement1.getNinemonth());
+            incomestatement.setTenmonth(incomestatement.getTenmonth()+incomestatement1.getTenmonth());
+            incomestatement.setEleventmonth(incomestatement.getEleventmonth()+incomestatement1.getEleventmonth());
+            incomestatement.setTwelvemonth(incomestatement.getTwelvemonth()+incomestatement1.getTwelvemonth());
 
             totalincomeMoney = incomestatement;
         } else if (year.equals("2021")) {
@@ -1336,13 +1359,18 @@ public class ExcelPrintController {
             Incomestatement incomestatement1 = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title23_04)).collect(Collectors.toList()).get(0);
             Incomestatement incomestatement2 = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title23_05)).collect(Collectors.toList()).get(0);
 
-            incomestatement.setThreemonth(incomestatement.getThreemonth()+incomestatement1.getThreemonth()+incomestatement2.getThreemonth());
-            incomestatement.setFourmonth(incomestatement.getFourmonth()+incomestatement1.getFourmonth()+incomestatement2.getFourmonth());
-            incomestatement.setFivemonth(incomestatement.getFivemonth()+incomestatement1.getFivemonth()+incomestatement2.getFivemonth());
-            incomestatement.setSixmonth(incomestatement.getSixmonth()+incomestatement1.getSixmonth()+incomestatement2.getSixmonth());
-            incomestatement.setSevenmonth(incomestatement.getSevenmonth()+incomestatement1.getSevenmonth()+incomestatement2.getSevenmonth());
-            incomestatement.setEightmonth(incomestatement.getEightmonth()+incomestatement1.getEightmonth()+incomestatement2.getEightmonth());
-
+            incomestatement.setOnemonth(incomestatement.getOnemonth()+incomestatement1.getOnemonth());
+            incomestatement.setTwomonth(incomestatement.getTwomonth()+incomestatement1.getTwomonth());
+            incomestatement.setThreemonth(incomestatement.getThreemonth()+incomestatement1.getThreemonth());
+            incomestatement.setFourmonth(incomestatement.getFourmonth()+incomestatement1.getFourmonth());
+            incomestatement.setFivemonth(incomestatement.getFivemonth()+incomestatement1.getFivemonth());
+            incomestatement.setSixmonth(incomestatement.getSixmonth()+incomestatement1.getSixmonth());
+            incomestatement.setSevenmonth(incomestatement.getSevenmonth()+incomestatement1.getSevenmonth());
+            incomestatement.setEightmonth(incomestatement.getEightmonth()+incomestatement1.getEightmonth());
+            incomestatement.setNinemonth(incomestatement.getNinemonth()+incomestatement1.getNinemonth());
+            incomestatement.setTenmonth(incomestatement.getTenmonth()+incomestatement1.getTenmonth());
+            incomestatement.setEleventmonth(incomestatement.getEleventmonth()+incomestatement1.getEleventmonth());
+            incomestatement.setTwelvemonth(incomestatement.getTwelvemonth()+incomestatement1.getTwelvemonth());
 
             totalincomeMoney =incomestatement;
         }
@@ -1840,10 +1868,23 @@ public class ExcelPrintController {
             }
 
 
-            String[] countListArray = {exportEntity.getMonth(), exportEntity.getRuncount().toString(), exportEntity.getKilosum(),
-                    exportEntity.getTotalincomemoney().toString(), exportEntity.getKiloincome().toString(), exportEntity.getTollsmoney().toString(), exportEntity.getFuelmoney().toString(), exportEntity.getFinesmoney().toString(),
-                    exportEntity.getParkingmoney().toString(), exportEntity.getTiremoney().toString(), exportEntity.getRepairmoney().toString(), exportEntity.getManmoney().toString(), exportEntity.getOthermoney().toString(),
-                    exportEntity.getTotalcostmoney().toString(), exportEntity.getKilocost().toString(), exportEntity.getGross().toString(), exportEntity.getGrossrate().toString(),
+            String[] countListArray = {exportEntity.getMonth(),
+                    exportEntity.getRuncount().toString(),
+                    exportEntity.getKilosum(),
+                    exportEntity.getTotalincomemoney().toString(),
+                    exportEntity.getKiloincome().toString(),
+                    exportEntity.getTollsmoney().toString(),
+                    exportEntity.getFuelmoney().toString(),
+                    exportEntity.getFinesmoney().toString(),
+                    exportEntity.getParkingmoney().toString(),
+                    exportEntity.getTiremoney().toString(),
+                    exportEntity.getRepairmoney().toString(),
+                    exportEntity.getManmoney().toString(),
+                    exportEntity.getOthermoney().toString(),
+                    exportEntity.getTotalcostmoney().toString(),
+                    exportEntity.getKilocost().toString(),
+                    exportEntity.getGross().toString(),
+                    exportEntity.getGrossrate().toString(),
                     exportEntity.getGrossonway().toString()};
 
             for (int j = 0; j < countListArray.length; j++) {
@@ -1873,7 +1914,12 @@ public class ExcelPrintController {
         //生成excel
         FileOutputStream fileOutputStream = null;
         try {
-            fileOutputStream = new FileOutputStream("E:\\" + cartype + "毛利.xlsx");
+
+            File file = new File("E:\\"+year+cartype);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            fileOutputStream = new FileOutputStream("E:\\"+year+cartype+"\\" + year+cartype + "毛利.xlsx");
             wb.write(fileOutputStream);
             fileOutputStream.flush();
         } catch (Exception e) {

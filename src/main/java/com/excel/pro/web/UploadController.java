@@ -82,7 +82,7 @@ public class UploadController {
 
     @RequestMapping("/uploadall")
     @ResponseBody
-    public ResponseEntity uploadall(@RequestParam("file") MultipartFile file,Departdetail departdetail) throws IOException, NoSuchMethodException, ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException {
+    public ResponseEntity uploadall(@RequestParam("file") MultipartFile file) throws IOException, NoSuchMethodException, ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException {
         ResponseEntity responseEntity = new ResponseEntity();
 
 
@@ -99,14 +99,16 @@ public class UploadController {
         HSSFSheet sheet = workbook.getSheet("解放车毛利");*/
         XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
         XSSFSheet sheet = workbook.getSheet("干线明细");
+        //XSSFSheet sheet = workbook.getSheet("sheet");
+        //XSSFSheet sheet = workbook.getSheet("基础数据");
 
         //2022 2023
         //uploadService.uploadNewCar(sheet);
 
-        uploadService.uploadSystemSet(sheet);
+        //uploadService.uploadSystemSet(sheet);
 
 
-        //uploadService.uploadMainline(sheet);
+        uploadService.uploadMainline(sheet);
 
         //uploadService.uploadCarCount(sheet);
 

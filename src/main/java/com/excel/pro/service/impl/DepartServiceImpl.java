@@ -220,6 +220,7 @@ public class DepartServiceImpl implements DepartService {
                 wew.add("苏BB0057");
                 wew.add("苏BB0065");
                 wew.add("苏BB0066");
+                wew.add("苏BKK188");
                 ArrayList<String> jf = new ArrayList<>();
                 jf.add("苏BX6609");
                 jf.add("苏BX6615");
