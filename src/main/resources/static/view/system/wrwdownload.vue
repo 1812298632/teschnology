@@ -11,6 +11,7 @@
           <el-dropdown-item command="总损益表">总损益表</el-dropdown-item>
           <el-dropdown-item command="沃尔沃">沃尔沃</el-dropdown-item>
           <el-dropdown-item command="解放车">解放车</el-dropdown-item>
+          <el-dropdown-item command="德龙">德龙</el-dropdown-item>
 
         </el-dropdown-menu>
       </el-dropdown>
@@ -23,6 +24,7 @@
           <el-dropdown-item command="2021">2021</el-dropdown-item>
           <el-dropdown-item command="2022">2022</el-dropdown-item>
           <el-dropdown-item command="2023">2023</el-dropdown-item>
+          <el-dropdown-item command="2024">2024</el-dropdown-item>
 
         </el-dropdown-menu>
       </el-dropdown>
@@ -603,7 +605,7 @@ module.exports = {
         console.log(response)
         console.log(this.checkyear)
 
-        if(this.checkyear === '当前选择2023'){
+        if(this.checkyear === '当前选择2023' || this.checkyear === '当前选择2024'){
           console.log("202333333")
           this.glfList = response.resList.filter(item => item.columnname == '            通行费')
           this.ryList = response.resList.filter(item => item.columnname == '            燃油费')

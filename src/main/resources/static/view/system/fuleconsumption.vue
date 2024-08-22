@@ -187,6 +187,7 @@
                 <el-option label="2021" value="2021"></el-option>
                 <el-option label="2022" value="2022"></el-option>
                 <el-option label="2023" value="2023"></el-option>
+                <el-option label="2024" value="2024"></el-option>
 
 
               </el-select>
@@ -198,6 +199,7 @@
               <el-select v-model="editform.cartype" allow-create filterable style="width: 80%">
                 <el-option label="沃尔沃" value="沃尔沃"></el-option>
                 <el-option label="解放车" value="解放车"></el-option>
+                <el-option label="德龙" value="德龙"></el-option>
 
               </el-select>
             </el-form-item>

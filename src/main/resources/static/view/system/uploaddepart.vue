@@ -26,6 +26,7 @@
               <el-select v-model="ruleForm.cartype">
                 <el-option label="沃尔沃" value="沃尔沃"></el-option>
                 <el-option label="解放车" value="解放车"></el-option>
+                <el-option label="德龙" value="德龙"></el-option>
               </el-select>
             </el-form-item>
 
@@ -63,6 +64,11 @@
 
             <el-form-item label="sheet名称" prop="sheetname">
               <el-select placeholder="请选择或输入" v-model="ruleForm.sheetname" allow-create filterable>
+
+                <el-option-group
+                    label="不区分类型，使用车牌号区分不同车辆">
+                  <el-option label="干线明细" value="干线明细"></el-option>
+                </el-option-group>
                 <el-option-group
                     label="以下属于解放车">
                   <el-option label="解放车明细" value="解放车明细"></el-option>
@@ -70,6 +76,10 @@
                 <el-option-group
                     label="以下属于沃尔沃">
                   <el-option label="沃尔沃明细" value="沃尔沃明细"></el-option>
+                </el-option-group>
+                <el-option-group
+                    label="以下属于德龙">
+                  <el-option label="德龙" value="德龙"></el-option>
                 </el-option-group>
               </el-select>
             </el-form-item>
@@ -247,7 +257,7 @@ module.exports = {
       this.tagsList = arr;
     });
 
-    this.ruleForm.year = '2022'
+    this.ruleForm.year = '2024'
     this.ruleForm.type = '台账'
 
 

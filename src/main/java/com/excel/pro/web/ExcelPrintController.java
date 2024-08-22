@@ -539,7 +539,7 @@ public class ExcelPrintController {
 
         List<Incomestatement> monthMoneyList = incomeStatementService.queryMonthMoney(cartype, year);
         Incomestatement fuleMoney = null;
-        if (year.equals("2023")) {
+        if (year.equals("2023") || year.equals("2024")) {
             fuleMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title26)).collect(Collectors.toList()).get(0);
 
         } else {
@@ -600,7 +600,7 @@ public class ExcelPrintController {
 
         Incomestatement summoney = null;
 
-        if (year.equals("2023")) {
+        if (year.equals("2023") || year.equals("2024")) {
             summoney = incomestatement.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title26)).collect(Collectors.toList()).get(0);
 
         } else {
@@ -1348,7 +1348,7 @@ public class ExcelPrintController {
             totalincomeMoney = incomestatement;
         } else if (year.equals("2021")) {
             totalincomeMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title1)).collect(Collectors.toList()).get(0);
-        } else if (year.equals("2023")) {
+        } else if (year.equals("2023") || year.equals("2024")) {
 
             //23年收入：主营业务收入+其他业务收入+营业外收入
 
@@ -1397,7 +1397,7 @@ public class ExcelPrintController {
 
         //毛利表中 过路费列
         Incomestatement tollsMoney = null;
-        if (year.equals("2023")) {
+        if (year.equals("2023") || year.equals("2024")) {
             tollsMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title27)).collect(Collectors.toList()).get(0);
 
         } else {
@@ -1426,7 +1426,7 @@ public class ExcelPrintController {
 
         //毛利表中 燃油费列
         Incomestatement fuelMoney = null;
-        if (year.equals("2023")) {
+        if (year.equals("2023") || year.equals("2024")) {
             fuelMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title26)).collect(Collectors.toList()).get(0);
 
         } else {
@@ -1456,7 +1456,7 @@ public class ExcelPrintController {
 
         //毛利表中 罚款列
         Incomestatement finesMoney = null;
-        if (year.equals("2023")) {
+        if (year.equals("2023") || year.equals("2024")) {
             finesMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title29)).collect(Collectors.toList()).get(0);
 
         } else {
@@ -1486,7 +1486,7 @@ public class ExcelPrintController {
 
         //毛利表中 停车费列
         Incomestatement parkingmoney = null;
-        if (year.equals("2023")) {
+        if (year.equals("2023") || year.equals("2024")) {
             parkingmoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title28)).collect(Collectors.toList()).get(0);
 
         } else {
@@ -1515,7 +1515,7 @@ public class ExcelPrintController {
 
 
         //毛利表中 轮胎费列
-        if (!year.equals("2023")) {
+        if (!(year.equals("2023") || year.equals("2024"))) {
 
             Incomestatement tiremoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title9)).collect(Collectors.toList()).get(0);
 
@@ -1542,7 +1542,7 @@ public class ExcelPrintController {
         //毛利表中 维修费列
         Incomestatement repairmoney = null;
 
-        if (year.equals("2023")) {
+        if (year.equals("2023") || year.equals("2024")) {
             repairmoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title30)).collect(Collectors.toList()).get(0);
         } else {
             repairmoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title8)).collect(Collectors.toList()).get(0);
@@ -1569,7 +1569,7 @@ public class ExcelPrintController {
 
         //毛利表中 其他列
         ArrayList<String> otherRowTitleList = new ArrayList<>();
-        if (year.equals("2023")) {
+        if (year.equals("2023") || year.equals("2024")) {
             otherRowTitleList.add(ConstantUtil.title37);
             otherRowTitleList.add(ConstantUtil.title33);
         } else {
@@ -1604,7 +1604,7 @@ public class ExcelPrintController {
 
         Incomestatement manMoney = null;
 
-        if (year.equals("2023")) {
+        if (year.equals("2023") || year.equals("2024")) {
             manMoney = monthMoneyList.stream().filter(x -> x.getColumnname().equals(ConstantUtil.title34)).collect(Collectors.toList()).get(0);
 
         } else {
@@ -1636,7 +1636,7 @@ public class ExcelPrintController {
         ArrayList<String> otherRowTitleList1 = new ArrayList<>();
 
 
-        if (year.equals("2023")) {
+        if (year.equals("2023") || year.equals("2024")) {
             otherRowTitleList1.add(ConstantUtil.title33);
             otherRowTitleList1.add(ConstantUtil.title37);
             otherRowTitleList1.add(ConstantUtil.title27);
@@ -1764,7 +1764,7 @@ public class ExcelPrintController {
             totalFuelMoney = x.getFuelmoney() + totalFuelMoney;
             totalFineMoney = x.getFinesmoney() + totalFineMoney;
             totalParkingMoney = x.getParkingmoney() + totalParkingMoney;
-            if(year.equals("2023")){
+            if(year.equals("2023") || year.equals("2024") ){
                 totalTireMoney = 0.00;
             }else{
                 totalTireMoney = x.getTiremoney() + totalTireMoney;

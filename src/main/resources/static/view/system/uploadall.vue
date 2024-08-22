@@ -18,6 +18,7 @@
             <el-select v-model="form.cartype">
               <el-option label="沃尔沃" value="沃尔沃"></el-option>
               <el-option label="解放车" value="解放车"></el-option>
+              <el-option label="德龙" value="德龙"></el-option>
             </el-select>
           </el-form-item>
 

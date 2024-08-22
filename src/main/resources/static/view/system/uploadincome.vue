@@ -50,6 +50,16 @@
                   <el-option label="合股车4（苏BX6667） " value="合股车4（苏BX6667） "></el-option>
                   <el-option label="合股车5（苏BX6697）" value="合股车5（苏BX6697）"></el-option>
                 </el-option-group>
+                <el-option-group
+                    label="以下属于德龙">
+                  <el-option label="合股车（苏BPW911)" value="合股车（苏BPW911)"></el-option>
+                  <el-option label="合股车（苏BXG670)" value="合股车（苏BXG670)"></el-option>
+                  <el-option label="合股车（苏BXU528）" value="合股车（苏BXU528）"></el-option>
+                  <el-option label="合股车（苏BEF199)" value="合股车（苏BEF199)"></el-option>
+                  <el-option label="合股车（苏BXC502)" value="合股车（苏BXC502)"></el-option>
+                  <el-option label="合股车（苏BEM529)" value="合股车（苏BEM529)"></el-option>
+
+                </el-option-group>
 
                 <el-option-group
                     label="以下属于沃尔沃(旧)">
@@ -77,6 +87,7 @@
               <el-select v-model="ruleForm.cartype" allow-create filterable>
                 <el-option label="沃尔沃" value="沃尔沃"></el-option>
                 <el-option label="解放车" value="解放车"></el-option>
+                <el-option label="德龙" value="德龙"></el-option>
                 <el-option label="辽ABB872" value="辽ABB872"></el-option>
                 <el-option label="苏B98997" value="苏B98997"></el-option>
               </el-select>
@@ -277,7 +288,7 @@ module.exports = {
     });
 
     this.ruleForm.type = '损益表'
-    this.ruleForm.year = '2022'
+    this.ruleForm.year = '2024'
   },
   methods: {
     uploadSuccess(response, file, fileList) {

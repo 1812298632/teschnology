@@ -172,7 +172,7 @@ public class DepartServiceImpl implements DepartService {
                         ||(ConstantUtil.departUploadEntity.getCartype().equals("沃尔沃") && month111.equals("4"))
                         ||(ConstantUtil.departUploadEntity.getCartype().equals("沃尔沃") && month111.equals("5"))
 
-                        )) || ConstantUtil.departUploadEntity.getYear().equals("2023")
+                        )) || ConstantUtil.departUploadEntity.getYear().equals("2023") || ConstantUtil.departUploadEntity.getYear().equals("2024")
 
 
         ) {
@@ -230,6 +230,17 @@ public class DepartServiceImpl implements DepartService {
                 jf.add("苏BX6683");
                 jf.add("苏BX6697");
 
+                ArrayList<String> dl = new ArrayList<>();
+                dl.add("苏BEF199");
+                dl.add("苏BXG670");
+                dl.add("苏BPW911");
+                dl.add("苏BXC502");
+                dl.add("苏BEM529");
+                dl.add("苏BXU528");
+
+
+
+
                 boolean isErr = true;
 
                 if (ConstantUtil.departUploadEntity.getCartype().equals("沃尔沃")) {
@@ -247,6 +258,12 @@ public class DepartServiceImpl implements DepartService {
                         }
                     }
 
+                }else if(ConstantUtil.departUploadEntity.getCartype().equals("德龙")){
+                    for (String s : dl) {
+                        if (s.equals(headPlate)) {
+                            isErr = false;
+                        }
+                    }
                 }
 
                 //车牌号不对应，结束循环

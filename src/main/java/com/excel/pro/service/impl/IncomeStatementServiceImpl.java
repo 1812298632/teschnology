@@ -229,7 +229,7 @@ public class IncomeStatementServiceImpl implements IncomeStatementService {
 
         int titleRowIndex = -1;
         String titleRowAndColumnName = null;
-        if(ConstantUtil.incomeUploadEntity.getYear().equals("2023")){
+        if(ConstantUtil.incomeUploadEntity.getYear().equals("2023") || ConstantUtil.incomeUploadEntity.getYear().equals("2024")){
 
             titleRowAndColumnName = "项     目";
             columnNameList = ConstantUtil.makeIncomeImportTitle2023();
@@ -265,7 +265,7 @@ public class IncomeStatementServiceImpl implements IncomeStatementService {
             rowNameList = ConstantUtil.makeIncomeImportRowTitle2022();
         } else if (ConstantUtil.incomeUploadEntity.getYear().equals("2021")) {
             rowNameList = ConstantUtil.makeIncomeImportRowTitle();
-        }else if(ConstantUtil.incomeUploadEntity.getYear().equals("2023")){
+        }else if(ConstantUtil.incomeUploadEntity.getYear().equals("2023") || ConstantUtil.incomeUploadEntity.getYear().equals("2024")){
             rowNameList = ConstantUtil.makeIncomeImportRowTitle2023();
         } else {
             rowNameList = ConstantUtil.makeIncomeImportRowTitle2022();
