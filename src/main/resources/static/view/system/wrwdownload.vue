@@ -606,7 +606,6 @@ module.exports = {
         console.log(this.checkyear)
 
         if(this.checkyear === '当前选择2023' || this.checkyear === '当前选择2024'){
-          console.log("202333333")
           this.glfList = response.resList.filter(item => item.columnname == '            通行费')
           this.ryList = response.resList.filter(item => item.columnname == '            燃油费')
           this.fkList = response.resList.filter(item => item.columnname == '        20.罚款、滞纳金')
